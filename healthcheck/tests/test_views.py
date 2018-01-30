@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from rest_framework import status
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 def test_ping(client):

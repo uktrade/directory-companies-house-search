@@ -5,10 +5,9 @@ from directory_healthcheck.views import BaseHealthCheckAPIView
 from health_check.db.backends import DatabaseBackend
 from health_check.cache.backends import CacheBackend
 
-from api.signature import SignatureCheckPermission
-from healthcheck.backends import (
-    ElasticSearchCheckBackend, SigngleSignOnBackend
-)
+from chsearch.signature import SignatureCheckPermission
+from healthcheck.backends import ElasticSearchCheckBackend
+
 
 
 class DatabaseAPIView(BaseHealthCheckAPIView):
@@ -19,11 +18,6 @@ class DatabaseAPIView(BaseHealthCheckAPIView):
 class CacheAPIView(BaseHealthCheckAPIView):
     def create_service_checker(self):
         return CacheBackend()
-
-
-class SingleSignOnAPIView(BaseHealthCheckAPIView):
-    def create_service_checker(self):
-        return SigngleSignOnBackend()
 
 
 class ElasticsearchAPIView(BaseHealthCheckAPIView):

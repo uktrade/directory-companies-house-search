@@ -1,5 +1,5 @@
 {
-  "host_env_var_prefix": "DIRECTORY_API",
+  "host_env_var_prefix": "DIRECTORY_CH_SEARCH",
   "file_path": "./docker/.env-postgres.test",
   "env_vars": {
     "required": [
