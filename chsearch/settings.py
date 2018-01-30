@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     "raven.contrib.django.raven_compat",
     'core.apps.CoreConfig',
     'company.apps.CompanyConfig',
-    'directory_constants',
     'directory_healthcheck',
     'health_check',
     'health_check.db',
