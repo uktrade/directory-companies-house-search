@@ -8,7 +8,6 @@ test_requirements:
 	pip install -r requirements_test.txt
 
 DJANGO_MIGRATE := python manage.py distributed_migrate --noinput
-DJANGO_MIGRATE_ELASTICSEARCH := python manage.py distributed_elasticsearch_migrate
 FLAKE8 := flake8 . --exclude=migrations,.venv
 PYTEST := pytest . --cov=. --capture=no --cov-config=.coveragerc $(pytest_args)
 COLLECT_STATIC := python manage.py collectstatic --noinput
@@ -18,7 +17,7 @@ CODECOV := \
 	fi
 
 test:
-	$(DJANGO_MIGRATE) && $(DJANGO_MIGRATE_ELASTICSEARCH) && $(COLLECT_STATIC) && $(FLAKE8) && $(PYTEST) && $(CODECOV)
+	$(DJANGO_MIGRATE) && $(COLLECT_STATIC) && $(FLAKE8) && $(PYTEST) && $(CODECOV)
 
 DJANGO_WEBSERVER := \
 	python manage.py collectstatic --noinput; \
@@ -38,58 +37,26 @@ docker_run:
 	docker-compose up --build
 
 DOCKER_SET_DEBUG_ENV_VARS := \
-	export DIRECTORY_API_PORT=8000; \
-	export DIRECTORY_API_DEBUG=true; \
-	export DIRECTORY_API_SECRET_KEY=debug; \
-	export DIRECTORY_API_SIGNATURE_SECRET=debug; \
-	export DIRECTORY_API_POSTGRES_USER=debug; \
-	export DIRECTORY_API_POSTGRES_PASSWORD=debug; \
-	export DIRECTORY_API_POSTGRES_DB=directory_api_debug; \
-	export DIRECTORY_API_DATABASE_URL=postgres://debug:debug@postgres:5432/directory_api_debug; \
-	export DIRECTORY_API_COMPANIES_HOUSE_API_KEY=debug; \
-	export DIRECTORY_API_EMAIL_HOST=debug; \
-	export DIRECTORY_API_EMAIL_PORT=debug; \
-	export DIRECTORY_API_EMAIL_HOST_USER=debug; \
-	export DIRECTORY_API_EMAIL_HOST_PASSWORD=debug; \
-	export DIRECTORY_API_DEFAULT_FROM_EMAIL=debug; \
-	export DIRECTORY_API_COMPANY_EMAIL_CONFIRMATION_URL=debug ;\
-	export DIRECTORY_API_COMPANY_EMAIL_CONFIRMATION_FROM=debug; \
-	export DIRECTORY_API_COMPANY_EMAIL_CONFIRMATION_SUBJECT=debug; \
-	export DIRECTORY_API_AWS_STORAGE_BUCKET_NAME=debug; \
-	export DIRECTORY_API_SESSION_COOKIE_DOMAIN=.trade.great; \
-	export DIRECTORY_API_CSRF_COOKIE_SECURE=false; \
-	export DIRECTORY_API_SESSION_COOKIE_SECURE=false; \
-	export DIRECTORY_API_GECKO_API_KEY=gecko; \
-	export DIRECTORY_API_STANNP_API_KEY=debug; \
-	export DIRECTORY_API_STANNP_VERIFICATION_LETTER_TEMPLATE_ID=debug; \
-	export DIRECTORY_API_STANNP_TEST_MODE=true; \
-	export DIRECTORY_API_CONTACT_SUPPLIER_SUBJECT=debug; \
-	export DIRECTORY_API_CONTACT_SUPPLIER_FROM_EMAIL=debug; \
-	export DIRECTORY_API_REDIS_URL=debug; \
-	export DIRECTORY_API_STORAGE_CLASS_NAME=local-storage; \
-	export DIRECTORY_API_SSO_PROXY_SIGNATURE_SECRET=proxy_signature_debug; \
-	export DIRECTORY_API_SSO_PROXY_API_CLIENT_BASE_URL=http://sso.trade.great:8004/;\
-	export DIRECTORY_API_NEW_COMPANIES_IN_SECTOR_FREQUENCY_DAYS=7; \
-	export DIRECTORY_API_FAS_COMPANY_LIST_URL=http://supplier.trade.great:8005/suppliers; \
-	export DIRECTORY_API_FAS_COMPANY_PROFILE_URL=http://supplier.trade.great:8005/suppliers/{number}; \
-	export DIRECTORY_API_FAS_NOTIFICATIONS_UNSUBSCRIBE_URL=http://supplier.trade.great:8005/unsubscribe; \
-	export DIRECTORY_API_FAB_NOTIFICATIONS_UNSUBSCRIBE_URL=http://buyer.trade.great:8001/unsubscribe/; \
-	export DIRECTORY_API_FAS_FROM_EMAIL=no-reply@trade.great.gov.uk; \
-	export DIRECTORY_API_FAB_FROM_EMAIL=no-reply@find-a-buyer.export.great.gov.uk; \
-	export DIRECTORY_API_ELASTICSEARCH_ENDPOINT=elasticsearch; \
-	export DIRECTORY_API_ELASTICSEARCH_PORT=9200; \
-	export DIRECTORY_API_ELASTICSEARCH_USE_SSL=false; \
-	export DIRECTORY_API_ELASTICSEARCH_VERIFY_CERTS=false; \
-	export DIRECTORY_API_ELASTICSEARCH_AWS_ACCESS_KEY_ID=debug; \
-	export DIRECTORY_API_ELASTICSEARCH_AWS_SECRET_ACCESS_KEY=debug; \
-	export DIRECTORY_API_FAB_TRUSTED_SOURCE_ENROLMENT_LINK=http://buyer.trade.great:8001/register-code/{code}/; \
-	export DIRECTORY_API_LOCAL_STORAGE_DOMAIN=http://0.0.0.0:8000; \
-	export DIRECTORY_API_FAB_OWNERSHIP_URL=http://foo.bar/account/transfer/accept/?invite_key={uuid}; \
-	export DIRECTORY_API_FAB_COLLABORATOR_URL=http://foo.bar/account/collaborate/accept/?invite_key={uuid}; \
-	export DIRECTORY_API_HEALTH_CHECK_TOKEN=debug; \
-	export DIRECTORY_API_CSV_DUMP_BUCKET_NAME=debug; \
-	export DIRECTORY_API_CSV_DUMP_AUTH_TOKEN=debug
-
+	export DIRECTORY_CH_SEARCH_PORT=8000; \
+	export DIRECTORY_CH_SEARCH_DEBUG=true; \
+	export DIRECTORY_CH_SEARCH_SECRET_KEY=debug; \
+	export DIRECTORY_CH_SEARCH_SIGNATURE_SECRET=debug; \
+	export DIRECTORY_CH_SEARCH_POSTGRES_USER=debug; \
+	export DIRECTORY_CH_SEARCH_POSTGRES_PASSWORD=debug; \
+	export DIRECTORY_CH_SEARCH_POSTGRES_DB=directory_ch_search_debug; \
+	export DIRECTORY_CH_SEARCH_DATABASE_URL=postgres://debug:debug@postgres:5432/directory_ch_search_debug; \
+	export DIRECTORY_CH_SEARCH_SESSION_COOKIE_DOMAIN=.trade.great; \
+	export DIRECTORY_CH_SEARCH_CSRF_COOKIE_SECURE=false; \
+	export DIRECTORY_CH_SEARCH_SESSION_COOKIE_SECURE=false; \
+	export DIRECTORY_CH_SEARCH_GECKO_API_KEY=gecko; \
+	export DIRECTORY_CH_SEARCH_REDIS_URL=debug; \
+	export DIRECTORY_CH_SEARCH_ELASTICSEARCH_ENDPOINT=elasticsearch; \
+	export DIRECTORY_CH_SEARCH_ELASTICSEARCH_PORT=9200; \
+	export DIRECTORY_CH_SEARCH_ELASTICSEARCH_USE_SSL=false; \
+	export DIRECTORY_CH_SEARCH_ELASTICSEARCH_VERIFY_CERTS=false; \
+	export DIRECTORY_CH_SEARCH_ELASTICSEARCH_AWS_ACCESS_KEY_ID=debug; \
+	export DIRECTORY_CH_SEARCH_ELASTICSEARCH_AWS_SECRET_ACCESS_KEY=debug; \
+	export DIRECTORY_CH_SEARCH_HEALTH_CHECK_TOKEN=debug
 
 docker_test_env_files:
 	$(DOCKER_SET_DEBUG_ENV_VARS) && \
@@ -97,7 +64,7 @@ docker_test_env_files:
 
 DOCKER_REMOVE_ALL := \
 	docker ps -a | \
-	grep -e directoryapi_ | \
+	grep -e directorychsearch_ | \
 	awk '{print $$1 }' | \
 	xargs -I {} docker rm -f {}
 
@@ -117,7 +84,7 @@ debug_test_last_failed:
 	make debug_test pytest_args='--last-failed'
 
 docker_webserver_bash:
-	docker exec -it directoryapi_webserver_1 sh
+	docker exec -it directorychsearch_webserver_1 sh
 
 docker_psql:
 	docker-compose run postgres psql -h postgres -U debug
@@ -131,74 +98,40 @@ docker_test: docker_remove_all
 	docker-compose -f docker-compose-test.yml run sut
 
 docker_build:
-	docker build -t ukti/directory-api:latest .
+	docker build -t ukti/directory-ch-search:latest .
 
 DEBUG_SET_ENV_VARS := \
 	export SECRET_KEY=debug; \
 	export SIGNATURE_SECRET=debug; \
 	export PORT=8000; \
 	export DEBUG=true; \
-	export DB_NAME=directory_api_debug; \
+	export DB_NAME=directory_ch_search_debug; \
 	export DB_USER=debug; \
 	export DB_PASSWORD=debug; \
-	export DATABASE_URL=postgres://debug:debug@localhost:5432/directory_api_debug; \
-	export EMAIL_HOST=debug; \
-	export EMAIL_PORT=debug; \
-	export EMAIL_HOST_USER=debug; \
-	export EMAIL_HOST_PASSWORD=debug; \
-	export DEFAULT_FROM_EMAIL=debug; \
-	export COMPANY_EMAIL_CONFIRMATION_URL=debug; \
-	export COMPANY_EMAIL_CONFIRMATION_FROM=debug; \
-	export COMPANY_EMAIL_CONFIRMATION_SUBJECT=debug; \
-	export COMPANIES_HOUSE_API_KEY=debug; \
-	export AWS_STORAGE_BUCKET_NAME=debug; \
+	export DATABASE_URL=postgres://debug:debug@localhost:5432/directory_ch_search_debug; \
 	export SESSION_COOKIE_DOMAIN=.trade.great; \
 	export CSRF_COOKIE_SECURE=false; \
 	export SESSION_COOKIE_SECURE=false; \
 	export GECKO_API_KEY=gecko; \
-	export STANNP_API_KEY=debug; \
-	export STANNP_VERIFICATION_LETTER_TEMPLATE_ID=debug; \
-	export STANNP_TEST_MODE=true; \
-	export CONTACT_SUPPLIER_SUBJECT=debug; \
-	export CONTACT_SUPPLIER_FROM_EMAIL=debug; \
 	export REDIS_URL=redis://127.0.0.1:6379; \
 	export CELERY_BROKER_URL=debug; \
 	export CELERY_RESULT_BACKEND=debug; \
-	export STORAGE_CLASS_NAME=local-storage; \
-	export SSO_PROXY_SIGNATURE_SECRET=proxy_signature_debug; \
-	export SSO_PROXY_API_CLIENT_BASE_URL=http://sso.trade.great:8004/; \
-	export NEW_COMPANIES_IN_SECTOR_FREQUENCY_DAYS=7; \
-	export FAS_COMPANY_LIST_URL=http://supplier.trade.great:8005/suppliers; \
-	export FAS_COMPANY_PROFILE_URL=http://supplier.trade.great:8005/suppliers/{number}; \
-	export FAS_NOTIFICATIONS_UNSUBSCRIBE_URL=http://supplier.trade.great:8005/unsubscribe; \
-	export FAB_NOTIFICATIONS_UNSUBSCRIBE_URL=http://buyer.trade.great:8001/unsubscribe; \
-	export FAS_FROM_EMAIL=no-reply@trade.great.gov.uk; \
-	export FAB_FROM_EMAIL=no-reply@find-a-buyer.export.great.gov.uk; \
 	export ELASTICSEARCH_ENDPOINT=localhost; \
 	export ELASTICSEARCH_PORT=9200; \
 	export ELASTICSEARCH_USE_SSL=false; \
 	export ELASTICSEARCH_VERIFY_CERTS=false; \
 	export ELASTICSEARCH_AWS_ACCESS_KEY_ID=debug; \
 	export ELASTICSEARCH_AWS_SECRET_ACCESS_KEY=debug; \
-	export EMAIL_BACKEND_CLASS_NAME=console; \
-	export FAB_TRUSTED_SOURCE_ENROLMENT_LINK=http://buyer.trade.great:8001/register-code/\{code\}/; \
-	export SSO_PROXY_SIGNATURE_SECRET=proxy_signature_debug; \
-	export LOCAL_STORAGE_DOMAIN=http://0.0.0.0:8000; \
-	export FAB_OWNERSHIP_URL=http://buyer.trade.great:8001/account/transfer/accept/?invite_key={uuid}; \
-	export FAB_COLLABORATOR_URL=http://buyer.trade.great:8001/account/collaborate/accept/?invite_key={uuid}; \
-	export HEALTH_CHECK_TOKEN=debug; \
-	export CSV_DUMP_BUCKET_NAME=debug; \
-	export CSV_DUMP_AUTH_TOKEN=debug
-
+	export HEALTH_CHECK_TOKEN=debug
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER); $(DJANGO_MIGRATE_ELASTICSEARCH);
 
 debug_celery_beat_scheduler:
-	$(DEBUG_SET_ENV_VARS); export CELERY_ENABLED=true; export CELERY_BROKER_URL=redis://127.0.0.1:6379; export CELERY_RESULT_BACKEND=redis://127.0.0.1:6379; celery -A api beat -l info -S django
+	$(DEBUG_SET_ENV_VARS); export CELERY_ENABLED=true; export CELERY_BROKER_URL=redis://127.0.0.1:6379; export CELERY_RESULT_BACKEND=redis://127.0.0.1:6379; celery -A chsearch beat -l info -S django
 
 debug_celery_worker:
-	$(DEBUG_SET_ENV_VARS); export CELERY_ENABLED=true; export CELERY_BROKER_URL=redis://127.0.0.1:6379; export CELERY_RESULT_BACKEND=redis://127.0.0.1:6379; celery -A api worker -l info
+	$(DEBUG_SET_ENV_VARS); export CELERY_ENABLED=true; export CELERY_BROKER_URL=redis://127.0.0.1:6379; export CELERY_RESULT_BACKEND=redis://127.0.0.1:6379; celery -A chsearch worker -l info
 
 DEBUG_CREATE_DB := \
 	psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = '$$DB_NAME'" | \
@@ -234,12 +167,12 @@ debug: test_requirements debug_db debug_test
 
 heroku_deploy_dev:
 	docker login --email=$$HEROKU_EMAIL --username=$$HEROKU_EMAIL --password=$$HEROKU_API_KEY registry.heroku.com
-	docker build -t registry.heroku.com/directory-api-dev/web .
-	docker push registry.heroku.com/directory-api-dev/web
-	docker build -t registry.heroku.com/directory-api-dev/celery_beat_scheduler -f Dockerfile-celery_beat_scheduler .
-	docker push registry.heroku.com/directory-api-dev/celery_beat_scheduler
-	docker build -t registry.heroku.com/directory-api-dev/celery_worker -f Dockerfile-celery_worker .
-	docker push registry.heroku.com/directory-api-dev/celery_worker
+	docker build -t registry.heroku.com/directory-ch-search-dev/web .
+	docker push registry.heroku.com/directory-ch-search-dev/web
+	docker build -t registry.heroku.com/directory-ch-search-dev/celery_beat_scheduler -f Dockerfile-celery_beat_scheduler .
+	docker push registry.heroku.com/directory-ch-search-dev/celery_beat_scheduler
+	docker build -t registry.heroku.com/directory-ch-search-dev/celery_worker -f Dockerfile-celery_worker .
+	docker push registry.heroku.com/directory-ch-search-dev/celery_worker
 
 integration_tests:
 	cd $(mktemp -d) && \
