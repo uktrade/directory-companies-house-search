@@ -9,7 +9,6 @@ from chsearch.signature import SignatureCheckPermission
 from healthcheck.backends import ElasticSearchCheckBackend
 
 
-
 class DatabaseAPIView(BaseHealthCheckAPIView):
     def create_service_checker(self):
         return DatabaseBackend()

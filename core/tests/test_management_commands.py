@@ -1,7 +1,5 @@
 from unittest.mock import call, patch
 
-import pytest
-
 from django.core.management import call_command
 
 
@@ -12,22 +10,4 @@ def test_distributed_migration(mocked_advisory_lock, mocked_handle):
     assert mocked_handle.call_count == 1
     assert mocked_advisory_lock.call_args == call(
         lock_id='migrations', wait=False,
-    )
-
-
-@pytest.mark.django_db
-@patch(
-    'core.management.commands.distributed_elasticsearch_migrate.'
-    'MigrateCommand.handle'
-)
-@patch(
-    'core.management.commands.helpers.advisory_lock'
-)
-def test_distributed_migration_elasticsearch(
-    mocked_advisory_lock, mocked_handle
-):
-    call_command('distributed_elasticsearch_migrate')
-    assert mocked_handle.call_count == 1
-    assert mocked_advisory_lock.call_args == call(
-        lock_id='es_migrations', wait=False,
     )
