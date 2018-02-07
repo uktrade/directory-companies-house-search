@@ -2,15 +2,16 @@ import csv
 import io
 import tempfile
 import zipfile
+from collections import deque
 from contextlib import contextmanager
 from urllib.parse import urlparse
-from xml import etree
 
 import requests
+from bs4 import BeautifulSoup
 from django.core.management import BaseCommand
 from django_pglocks import advisory_lock
 from elasticsearch.client.indices import IndicesClient
-from elasticsearch.helpers import bulk
+from elasticsearch.helpers import parallel_bulk
 from elasticsearch_dsl import Index, analyzer
 from elasticsearch_dsl.index import connections
 from elasticsearch.exceptions import NotFoundError
@@ -79,41 +80,28 @@ CH_CSV_FIELDNAMES = (
     'ConfStmtLastMadeUpDate'
 )
 
-
-ALLOWED_COUNTRIES = (
-    'Wales',
-    'England',
-    'Scotland',
-    'Great Britain',
-    'United Kingdom',
-    'Northern Ireland'
-)
-
-ALLOWED_COUNTRIES = [country.upper() for country in ALLOWED_COUNTRIES]
+CH_DOWNLOAD_URL = 'http://download.companieshouse.gov.uk/en_output.html'
 
 
-def get_ch_latest_dump_file_list(url, selector='.omega a'):
+def get_ch_latest_dump_file_list():
     """
     Fetch a list of last published basic data dumps from CH,
     using a given selector.
     """
-    response = requests.get(url)
-    parser = etree.HTMLParser()
-    root = etree.parse(io.BytesIO(response.content), parser).getroot()
-
-    url_base = urlparse(url)
-
-    result = []
-    for anchor in root.cssselect(selector):
-        href = anchor.attrib['href']
+    response = requests.get(CH_DOWNLOAD_URL)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    url_base = urlparse(CH_DOWNLOAD_URL)
+    urls = []
+    for link in soup.find(class_='omega').find_all('a'):
+        href = link.get('href')
         # Fix broken url
         if 'AsOneFile' not in href:
-            result.append('{scheme}://{hostname}/{href}'.format(
+            urls.append('{scheme}://{hostname}/{href}'.format(
                 scheme=url_base.scheme,
                 hostname=url_base.hostname,
                 href=href
             ))
-    return result
+    return urls
 
 
 @contextmanager
@@ -132,7 +120,7 @@ def open_zipped_csv(file_pointer):
             yield csv.DictReader(csv_fp, fieldnames=CH_CSV_FIELDNAMES)
 
 
-def iter_and_filter_csv_from_url(url, tmp_file_creator):
+def filter_csv_from_url(url, tmp_file_creator):
     """Fetch & cache zipped CSV, and then iterate though contents."""
     with tmp_file_creator() as tf:
         stream_to_file_pointer(url, tf)
@@ -141,7 +129,7 @@ def iter_and_filter_csv_from_url(url, tmp_file_creator):
         with open_zipped_csv(tf) as csv_reader:
             next(csv_reader)  # skip the csv header
             for row in csv_reader:
-                yield from process_row(row)
+                yield create_company_document(row)
 
 
 def stream_to_file_pointer(url, file_pointer):
@@ -152,34 +140,55 @@ def stream_to_file_pointer(url, file_pointer):
         file_pointer.write(chunk)
 
 
-def process_row(row):
-    if row['RegAddress.Country'] in ALLOWED_COUNTRIES:
+def create_company_document(row):
+    address = {
+        'care_of': row['RegAddress.CareOf'],
+        'po_box': row['RegAddress.POBox'],
+        'address_line_1': row['RegAddress.AddressLine1'],
+        'address_line_2': row['RegAddress.AddressLine2'],
+        'locality': row['RegAddress.PostTown'],
+        'region': row['RegAddress.County'],
+        'country': row['RegAddress.Country'],
+        'postal_code': row['RegAddress.PostCode']
+    }
+    address_snippet = ','.join((
+        address['address_line_1'],
+        address['address_line_2'],
+        address['locality'],
+        address['region'],
+        address['country'],
+        address['postal_code']
+    ))
 
-        company = {
-            'company_number': row['CompanyNumber'],
-            'company_status': row['CompanyStatus']
-        }
-        address = {
-
-        }
-        yield company, address
+    company = {
+        'company_number': row['CompanyNumber'],
+        'company_status': row['CompanyStatus'],
+        'company_type': row['CompanyCategory'],
+        'date_of_cessation': row['DissolutionDate'],
+        'date_of_creation': row['IncorporationDate'],
+        'country_of_origin': row['CountryOfOrigin'],
+        'address_snippet': address_snippet,
+        'address': address
+    }
+    return CompanyDocType(
+        meta={'id': company['company_number']},
+        **company
+    )
 
 
 class Command(BaseCommand):
-    help = ""
-    lock_id = None
+    help = "Load CH companies in Elasticsearch"
+    lock_id = 'es_migrations'
     company_index_alias = settings.ELASTICSEARCH_COMPANY_INDEX_ALIAS
-    new_company_index = None
 
     def __init__(self, *args, **kwargs):
         unique_id = get_random_string(length=32).lower()
-        self.new_company_index = 'companies-' + unique_id
-        self.new_case_study_index = 'casestudies-' + unique_id
+        self.new_company_index = 'ch-companies-' + unique_id
         self.client = connections.get_connection()
         super().__init__(*args, **kwargs)
 
     @staticmethod
-    def create_index(self, name, doc_type, alias):
+    def create_index(name, doc_type, alias):
         index = Index(name)
         index.doc_type(doc_type)
         index.analyzer(analyzer('english'))
@@ -196,29 +205,33 @@ class Command(BaseCommand):
         except NotFoundError:
             return []
 
-    def create_new_indices(self):
+    def create_new_index(self):
         self.create_index(
             name=self.new_company_index,
             doc_type=CompanyDocType,
             alias=self.company_index_alias,
         )
 
-    def get_data(self):
-        endpoint = settings.CH_DOWNLOAD_URL
-        ch_csv_urls = get_ch_latest_dump_file_list(endpoint)
-
+    def populate_new_index(self):
+        ch_csv_urls = get_ch_latest_dump_file_list()
         for csv_url in ch_csv_urls:
-            ch_company_rows = iter_and_filter_csv_from_url(
+            companies = filter_csv_from_url(
                 csv_url,
                 tempfile.TemporaryFile
             )
-            yield ch_company_rows
+            companies_dicts = (company.to_dict(True) for company in companies)
 
-    def populate_new_indices(self):
-        data = self.get_data()
-        bulk(self.client, data)
+            deque(
+                parallel_bulk(
+                    self.client,
+                    companies_dicts,
+                    chunk_size=20000,
+                    raise_on_exception=True
+                ),
+                maxlen=0
+            )
 
-    def delete_old_indices(self):
+    def delete_old_index(self):
         for index_name in self.get_indices(self.company_index_alias):
             if index_name != self.new_company_index:
                 Index(index_name).delete()
@@ -231,9 +244,9 @@ class Command(BaseCommand):
             # if this instance was the first to call the command then
             # continue to execute the underlying management command...
             if acquired:
-                self.create_new_indices()
-                self.populate_new_indices()
-                self.delete_old_indices()
+                self.create_new_index()
+                self.populate_new_index()
+                self.delete_old_index()
                 self.refresh_aliases()
             else:
                 # ...otherwise wait for the command to finish to finish.

@@ -15,6 +15,7 @@ class CompanyDocType(DocType):
             'postal_code': field.Text()
         }
     )
+    country_of_origin = field.Text()
     address_snippet = field.Text()
     company_number = field.Text()
     company_status = field.Text()
