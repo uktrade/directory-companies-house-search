@@ -1,0 +1,76 @@
+import datetime
+from unittest import mock
+
+import pytest
+from django.core.management import call_command
+
+CH_HOMEPAGE_CONTENT = b"""
+<div class="grid_7 push_1 omega">
+<ul><li><a href="BasicCompanyDataAsOneFile-2018-02-01.zip">
+BasicCompanyDataAsOneFile-2018-02-01.zip  (339Mb)</a></li></ul>
+<h2>Company data as multiple files:</h2>
+<ul>
+<li><a href="BasicCompanyData-2018-02-01-part1_2.zip">
+BasicCompanyData-2018-02-01-part1_2.zip  (69Mb)</a></li>
+<li><a href="BasicCompanyData-2018-02-01-part2_2.zip">
+BasicCompanyData-2018-02-01-part2_2.zip  (69Mb)</a></li>
+</ul>
+</div>"""
+
+
+@pytest.mark.django_db
+@mock.patch('company.management.commands.import_ch_companies.parallel_bulk')
+@mock.patch('company.management.commands.import_ch_companies.'
+            'Command.delete_old_index')
+def test_import_ch_companies(
+        mocked_delete_old_index,
+        mocked_parallel_bulk,
+        requests_mocker,
+        settings
+):
+    settings.CH_DOWNLOAD_URL = 'http://test.com/index.html'
+    requests_mocker.get(
+        'http://test.com/index.html',
+        content=CH_HOMEPAGE_CONTENT
+    )
+    with open('company/tests/ch_part1_2.zip', 'rb') as zipfile1, \
+            open('company/tests/ch_part1_2.zip', 'rb') as zipfile2:
+        requests_mocker.get(
+            'http://test.com/BasicCompanyData-2018-02-01-part1_2.zip',
+            body=zipfile1
+        )
+        requests_mocker.get(
+            'http://test.com/BasicCompanyData-2018-02-01-part2_2.zip',
+            body=zipfile2
+        )
+        call_command('import_ch_companies')
+
+        data = list(mocked_parallel_bulk.call_args[0][1])
+        assert mocked_parallel_bulk.called is True
+        assert len(data) == 21
+        data = sorted(data, key=lambda x: x['_id'])
+        assert data[-1] == {
+            '_index': 'ch-companies',
+            '_id': 'SC421617',
+            '_source': {
+                'date_of_creation': datetime.datetime(2012, 11, 4, 0, 0),
+                'company_status': 'Active',
+                'address': {
+                    'postal_code': 'AB11 7SY',
+                    'address_line_2': '',
+                    'po_box': '',
+                    'country': 'UNITED KINGDOM',
+                    'locality': 'ABERDEEN',
+                    'region': '',
+                    'care_of': '',
+                    'address_line_1': '26 POLMUIR ROAD'
+                },
+                'company_type': 'Private Limited Company',
+                'country_of_origin': 'United Kingdom',
+                'address_snippet': '26 POLMUIR ROAD,,ABERDEEN,'
+                                   ',UNITED KINGDOM,AB11 7SY',
+                'company_number': 'SC421617'
+            },
+            '_type': 'company_doc_type'
+        }
+        assert mocked_delete_old_index.called is True

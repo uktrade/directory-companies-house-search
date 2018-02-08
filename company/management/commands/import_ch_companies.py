@@ -80,29 +80,6 @@ CH_CSV_FIELDNAMES = (
     'ConfStmtLastMadeUpDate'
 )
 
-CH_DOWNLOAD_URL = 'http://download.companieshouse.gov.uk/en_output.html'
-
-
-def get_ch_latest_dump_file_list():
-    """
-    Fetch a list of last published basic data dumps from CH,
-    using a given selector.
-    """
-    response = requests.get(CH_DOWNLOAD_URL)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    url_base = urlparse(CH_DOWNLOAD_URL)
-    urls = []
-    for link in soup.find(class_='omega').find_all('a'):
-        href = link.get('href')
-        # Fix broken url
-        if 'AsOneFile' not in href:
-            urls.append('{scheme}://{hostname}/{href}'.format(
-                scheme=url_base.scheme,
-                hostname=url_base.hostname,
-                href=href
-            ))
-    return urls
-
 
 @contextmanager
 def open_zipped_csv(file_pointer):
@@ -120,60 +97,12 @@ def open_zipped_csv(file_pointer):
             yield csv.DictReader(csv_fp, fieldnames=CH_CSV_FIELDNAMES)
 
 
-def filter_csv_from_url(url, tmp_file_creator):
-    """Fetch & cache zipped CSV, and then iterate though contents."""
-    with tmp_file_creator() as tf:
-        stream_to_file_pointer(url, tf)
-        tf.seek(0, 0)
-
-        with open_zipped_csv(tf) as csv_reader:
-            next(csv_reader)  # skip the csv header
-            for row in csv_reader:
-                yield create_company_document(row)
-
-
 def stream_to_file_pointer(url, file_pointer):
     """Efficiently stream given url to given file pointer."""
     response = requests.get(url, stream=True)
     chuck_size = 4096
     for chunk in response.iter_content(chunk_size=chuck_size):
         file_pointer.write(chunk)
-
-
-def create_company_document(row):
-    address = {
-        'care_of': row['RegAddress.CareOf'],
-        'po_box': row['RegAddress.POBox'],
-        'address_line_1': row['RegAddress.AddressLine1'],
-        'address_line_2': row['RegAddress.AddressLine2'],
-        'locality': row['RegAddress.PostTown'],
-        'region': row['RegAddress.County'],
-        'country': row['RegAddress.Country'],
-        'postal_code': row['RegAddress.PostCode']
-    }
-    address_snippet = ','.join((
-        address['address_line_1'],
-        address['address_line_2'],
-        address['locality'],
-        address['region'],
-        address['country'],
-        address['postal_code']
-    ))
-
-    company = {
-        'company_number': row['CompanyNumber'],
-        'company_status': row['CompanyStatus'],
-        'company_type': row['CompanyCategory'],
-        'date_of_cessation': row['DissolutionDate'],
-        'date_of_creation': row['IncorporationDate'],
-        'country_of_origin': row['CountryOfOrigin'],
-        'address_snippet': address_snippet,
-        'address': address
-    }
-    return CompanyDocType(
-        meta={'id': company['company_number']},
-        **company
-    )
 
 
 class Command(BaseCommand):
@@ -212,15 +141,84 @@ class Command(BaseCommand):
             alias=self.company_index_alias,
         )
 
+    @property
+    def ch_dump_file_list(self):
+        """
+        Fetch a list of last published basic data dumps from CH,
+        using a given selector.
+        """
+        url = settings.CH_DOWNLOAD_URL
+        response = requests.get(url)
+        soup = BeautifulSoup(response.content, 'html.parser')
+        url_base = urlparse(url)
+        urls = []
+        for link in soup.find(class_='omega').find_all('a'):
+            href = link.get('href')
+            # Fix relative url
+            if 'AsOneFile' not in href:
+                urls.append('{scheme}://{hostname}/{href}'.format(
+                    scheme=url_base.scheme,
+                    hostname=url_base.hostname,
+                    href=href
+                ))
+        return urls
+
+    @staticmethod
+    def create_company_document(row):
+        address = {
+            'care_of': row['RegAddress.CareOf'],
+            'po_box': row['RegAddress.POBox'],
+            'address_line_1': row['RegAddress.AddressLine1'],
+            'address_line_2': row['RegAddress.AddressLine2'],
+            'locality': row['RegAddress.PostTown'],
+            'region': row['RegAddress.County'],
+            'country': row['RegAddress.Country'],
+            'postal_code': row['RegAddress.PostCode']
+        }
+        address_snippet = ','.join((
+            address['address_line_1'],
+            address['address_line_2'],
+            address['locality'],
+            address['region'],
+            address['country'],
+            address['postal_code']
+        ))
+
+        company = {
+            'company_number': row['CompanyNumber'],
+            'company_status': row['CompanyStatus'],
+            'company_type': row['CompanyCategory'],
+            'date_of_cessation': row['DissolutionDate'],
+            'date_of_creation': row['IncorporationDate'],
+            'country_of_origin': row['CountryOfOrigin'],
+            'address_snippet': address_snippet,
+            'address': address
+        }
+        return CompanyDocType(
+            meta={'id': company['company_number']},
+            **company
+        )
+
+    def companies_from_csv(self, url, tmp_file_creator):
+        """Fetch & cache zipped CSV, and then iterate though contents."""
+        with tmp_file_creator() as tf:
+            stream_to_file_pointer(url, tf)
+            tf.seek(0, 0)
+
+            with open_zipped_csv(tf) as csv_reader:
+                next(csv_reader)  # skip the csv header
+                for row in csv_reader:
+                    yield self.create_company_document(row)
+
     def populate_new_index(self):
-        ch_csv_urls = get_ch_latest_dump_file_list()
-        for csv_url in ch_csv_urls:
-            companies = filter_csv_from_url(
+        for csv_url in self.ch_dump_file_list:
+            companies = self.companies_from_csv(
                 csv_url,
                 tempfile.TemporaryFile
             )
             companies_dicts = (company.to_dict(True) for company in companies)
 
+            #  parallel_bulk is a generator that needs to be consumed
             deque(
                 parallel_bulk(
                     self.client,

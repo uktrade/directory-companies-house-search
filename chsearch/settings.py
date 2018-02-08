@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     "rest_framework",
     'django_celery_beat',
     "raven.contrib.django.raven_compat",
-    'core.apps.CoreConfig',
     'company.apps.CompanyConfig',
     'directory_healthcheck',
     'health_check',
@@ -293,4 +292,6 @@ FEATURE_FLAG_ELASTICSEARCH_REBUILD_INDEX = os.getenv(
 
 # health check
 HEALTH_CHECK_TOKEN = os.environ['HEALTH_CHECK_TOKEN']
+
 ELASTICSEARCH_COMPANY_INDEX_ALIAS = 'ch-companies'
+CH_DOWNLOAD_URL = 'http://download.companieshouse.gov.uk/en_output.html'

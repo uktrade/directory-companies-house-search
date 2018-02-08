@@ -7,7 +7,7 @@ clean:
 test_requirements:
 	pip install -r requirements_test.txt
 
-DJANGO_MIGRATE := python manage.py distributed_migrate --noinput
+DJANGO_MIGRATE := python manage.py migrate --noinput
 FLAKE8 := flake8 . --exclude=migrations,.venv
 PYTEST := pytest . --cov=. --capture=no --cov-config=.coveragerc $(pytest_args)
 COLLECT_STATIC := python manage.py collectstatic --noinput
@@ -143,10 +143,10 @@ debug_db:
 	$(DEBUG_SET_ENV_VARS) && $(DEBUG_CREATE_DB)
 
 debug_pytest:
-	$(DEBUG_SET_ENV_VARS) && $(DJANGO_MIGRATE) && $(DJANGO_MIGRATE_ELASTICSEARCH) && $(COLLECT_STATIC) && $(PYTEST)
+	$(DEBUG_SET_ENV_VARS) && $(DJANGO_MIGRATE) && $(COLLECT_STATIC) && $(PYTEST)
 
 debug_test:
-	$(DEBUG_SET_ENV_VARS) && $(DJANGO_MIGRATE) && $(DJANGO_MIGRATE_ELASTICSEARCH) && $(COLLECT_STATIC) && $(FLAKE8) && $(PYTEST)
+	$(DEBUG_SET_ENV_VARS) && $(DJANGO_MIGRATE) && $(COLLECT_STATIC) && $(FLAKE8) && $(PYTEST)
 
 debug_manage:
 	$(DEBUG_SET_ENV_VARS) && ./manage.py $(cmd)
