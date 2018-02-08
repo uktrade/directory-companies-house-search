@@ -8,6 +8,7 @@
 -e git+https://github.com/uktrade/directory-signature-auth.git@v2.0.0#egg=sigauth
 amqp==2.1.4               # via kombu
 asn1crypto==0.23.0        # via cryptography
+beautifulsoup4==4.6.0
 billiard==3.5.0.2         # via celery
 celery==4.0.2
 cffi==1.11.2              # via cryptography
@@ -54,7 +55,7 @@ raven==5.19.0
 redis==2.10.5             # via django-redis
 requests-aws4auth==0.9
 requests[security]==2.13.0
-requests_mock==1.1.0
+requests_mock==1.4.0
 six==1.11.0               # via cryptography, django-extensions, elasticsearch-dsl, faker, freezegun, mohawk, pyopenssl, python-dateutil, requests-mock
 termcolor==1.1.0          # via pytest-sugar
 urllib3==1.21.1           # via elasticsearch
