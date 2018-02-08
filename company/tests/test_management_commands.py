@@ -74,3 +74,44 @@ def test_import_ch_companies(
             '_type': 'company_doc_type'
         }
         assert mocked_delete_old_index.called is True
+
+
+@pytest.mark.django_db
+@mock.patch('company.management.commands.import_ch_companies.IndicesClient')
+@mock.patch('company.management.commands.import_ch_companies.'
+            'Command.populate_new_index', mock.Mock())
+def test_import_ch_companies_delete_indices(
+        mocked_indices_client,
+        requests_mocker
+):
+        mocked_indices_client().get_alias.return_value = {'foo': 'bar'}
+        call_command('import_ch_companies')
+
+        mocked_indices_client().get_alias.assert_called_once_with(
+            name='ch-companies'
+        )
+
+
+class FalseAdvisoryMock:
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def __enter__(self):
+        return False
+
+    def __exit__(self, *args, **kwargs):
+        pass
+
+
+@pytest.mark.django_db
+@mock.patch('company.management.commands.import_ch_companies.'
+            'Command.create_new_index')
+@mock.patch(
+    'company.management.commands.import_ch_companies.advisory_lock',
+    FalseAdvisoryMock
+)
+def test_import_ch_companies_pass_if_locked(
+        mocked_create_new_index,
+):
+        call_command('import_ch_companies')
+        assert mocked_create_new_index.called is False
