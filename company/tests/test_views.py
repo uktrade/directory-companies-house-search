@@ -1,3 +1,4 @@
+import pytest
 from django.urls import reverse
 from rest_framework import status
 
@@ -12,6 +13,7 @@ def test_company_search_view_missing_querystring(
     assert response.json() == {'q': ['This field is required.']}
 
 
+@pytest.mark.elasticsearch_test_data
 def test_company_search_view(
         api_client, mock_signature_check
 ):

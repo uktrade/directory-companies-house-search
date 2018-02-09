@@ -65,11 +65,12 @@ def test_import_ch_companies(
                     'care_of': '',
                     'address_line_1': '26 POLMUIR ROAD'
                 },
+                'address_snippet': '26 POLMUIR ROAD, ABERDEEN, '
+                                   'UNITED KINGDOM, AB11 7SY',
                 'company_type': 'Private Limited Company',
                 'country_of_origin': 'United Kingdom',
-                'address_snippet': '26 POLMUIR ROAD,,ABERDEEN,'
-                                   ',UNITED KINGDOM,AB11 7SY',
-                'company_number': 'SC421617'
+                'company_number': 'SC421617',
+                'company_name': '!NSPIRED LTD',
             },
             '_type': 'company_doc_type'
         }

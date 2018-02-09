@@ -18,4 +18,3 @@ class CompanySearchResultSerializer(serializers.Serializer):
     company_type = serializers.CharField()
     date_of_cessation = serializers.DateField(required=False)
     date_of_creation = serializers.DateTimeField()
-

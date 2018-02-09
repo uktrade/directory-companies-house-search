@@ -47,7 +47,7 @@ def requests_mocker():
 
 
 @pytest.fixture(autouse=True)
-def elasticsearch_marker(request):
-    if request.node.get_marker('rebuild_elasticsearch'):
-        # sanitize the companies index before each test that uses it
-        call_command('elasticsearch_migrate')
+def elasticsearch_test_data(request):
+    if request.node.get_marker('elasticsearch_test_data'):
+        # load companies before each test that uses it
+        call_command('populate_es_test_data')
