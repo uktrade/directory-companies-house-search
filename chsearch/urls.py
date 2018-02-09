@@ -31,5 +31,8 @@ urlpatterns = [
         r'^healthcheck/ping/$',
         healthcheck.views.PingAPIView.as_view(),
         name='health-check-ping'
+    ),
+    url(
+        r'^api/', include('company.urls', namespace='api')
     )
 ]

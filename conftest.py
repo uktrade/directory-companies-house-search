@@ -6,6 +6,7 @@ import requests_mock
 
 from django.conf import settings
 from django.core.management import call_command
+from rest_framework.test import APIClient
 
 
 @pytest.fixture(autouse=True)
@@ -21,6 +22,12 @@ def enable_signature_check(mock_signature_check):
     mock_signature_check.stop()
     yield
     mock_signature_check.start()
+
+
+@pytest.fixture
+def api_client():
+    client = APIClient()
+    return client
 
 
 @pytest.fixture

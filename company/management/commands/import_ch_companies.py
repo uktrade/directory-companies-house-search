@@ -106,7 +106,7 @@ def stream_to_file_pointer(url, file_pointer):
 
 
 class Command(BaseCommand):
-    help = "Load CH companies in Elasticsearch"
+    help = "Load CH companies in Elasticsearch downloading CH dumps"
     lock_id = 'es_migrations'
     company_index_alias = settings.ELASTICSEARCH_COMPANY_INDEX_ALIAS
 
@@ -175,16 +175,20 @@ class Command(BaseCommand):
             'country': row['RegAddress.Country'],
             'postal_code': row['RegAddress.PostCode']
         }
-        address_snippet = ','.join((
-            address['address_line_1'],
-            address['address_line_2'],
-            address['locality'],
-            address['region'],
-            address['country'],
-            address['postal_code']
-        ))
-
+        address_snippet_elements = filter(
+            lambda x: x != '',
+            (
+                address['address_line_1'],
+                address['address_line_2'],
+                address['locality'],
+                address['region'],
+                address['country'],
+                address['postal_code']
+            )
+        )
+        address_snippet = ', '.join(address_snippet_elements)
         company = {
+            'company_name': row['CompanyName'],
             'company_number': row['CompanyNumber'],
             'company_status': row['CompanyStatus'],
             'company_type': row['CompanyCategory'],

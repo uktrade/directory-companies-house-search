@@ -17,6 +17,7 @@ class CompanyDocType(DocType):
     )
     country_of_origin = field.Text()
     address_snippet = field.Text()
+    company_name = field.Text()
     company_number = field.Text()
     company_status = field.Text()
     company_type = field.Text()
