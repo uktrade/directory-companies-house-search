@@ -48,7 +48,7 @@ class BaseCompanyView(APIView):
         except NotFoundError:
             raise Http404()
 
-    def get_data(self, company):  # NOQA
+    def get_data(self, company):
         raise NotImplementedError
 
     def get(self, request, company_number, format=None):
