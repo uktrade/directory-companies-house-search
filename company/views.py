@@ -46,7 +46,7 @@ class BaseCompanyView(APIView):
         try:
             return CompanyDocType.get(id=company_number)
         except NotFoundError:
-            raise Http404
+            raise Http404()
 
     def get_data(self, company):  # NOQA
         raise NotImplementedError
