@@ -1,9 +1,11 @@
+from django.http import HttpResponseNotFound
+from elasticsearch import NotFoundError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .doctypes import CompanyDocType
 from .serializers import CompanySearchResultSerializer, \
-    CompanySearchQuerySerializer
+    CompanySearchQuerySerializer, RegisteredOfficeAddressSerializer
 
 
 class CompanySearchView(APIView):
@@ -33,3 +35,18 @@ class CompanySearchView(APIView):
             results.append(hit['_source'])
 
         return results
+
+
+class CompanyRegisteredOfficeAddress(APIView):
+
+    def get(self, request, company_number, format=None):
+        try:
+            result = CompanyDocType.get(id=company_number)
+        except NotFoundError:
+            return HttpResponseNotFound()
+
+        result_serializer = RegisteredOfficeAddressSerializer(
+            data=result.address.to_dict()
+        )
+        result_serializer.is_valid()
+        return Response(data=result_serializer.validated_data)
