@@ -9,6 +9,11 @@ urlpatterns = [
         name='search-companies'
     ),
     url(
+        r'^company/(?P<company_number>.*)/$',
+        views.CompanyProfile.as_view(),
+        name='company-profile'
+    ),
+    url(
         r'^company/(?P<company_number>.*)/registered-office-address/$',
         views.CompanyRegisteredOfficeAddress.as_view(),
         name='company-registered-office-address'

@@ -1,11 +1,12 @@
-from django.http import HttpResponseNotFound
+from django.http import Http404
 from elasticsearch import NotFoundError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .doctypes import CompanyDocType
-from .serializers import CompanySearchResultSerializer, \
-    CompanySearchQuerySerializer, RegisteredOfficeAddressSerializer
+from .serializers import CompanyProfileSerializer, \
+    CompanySearchResultSerializer, CompanySearchQuerySerializer, \
+    RegisteredOfficeAddressSerializer
 
 
 class CompanySearchView(APIView):
@@ -37,16 +38,39 @@ class CompanySearchView(APIView):
         return results
 
 
-class CompanyRegisteredOfficeAddress(APIView):
+class BaseCompanyView(APIView):
+    serializer_class = None
+
+    @staticmethod
+    def get_company_or_404(company_number):
+        try:
+            return CompanyDocType.get(id=company_number)
+        except NotFoundError:
+            raise Http404
+
+    def get_data(self, company):  # NOQA
+        raise NotImplementedError
 
     def get(self, request, company_number, format=None):
-        try:
-            result = CompanyDocType.get(id=company_number)
-        except NotFoundError:
-            return HttpResponseNotFound()
-
-        result_serializer = RegisteredOfficeAddressSerializer(
-            data=result.address.to_dict()
-        )
+        company = self.get_company_or_404(company_number)
+        data = self.get_data(company)
+        result_serializer = self.serializer_class(data=data)
         result_serializer.is_valid()
         return Response(data=result_serializer.validated_data)
+
+
+class CompanyProfile(BaseCompanyView):
+    serializer_class = CompanyProfileSerializer
+
+    def get_data(self, company):
+        company = company.to_dict()
+        # in the profile Ch returns the address in a different key name
+        company['registered_address'] = company['address']
+        return company
+
+
+class CompanyRegisteredOfficeAddress(BaseCompanyView):
+    serializer_class = RegisteredOfficeAddressSerializer
+
+    def get_data(self, company):
+        return company.address.to_dict()
