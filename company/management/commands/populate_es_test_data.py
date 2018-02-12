@@ -1,8 +1,6 @@
-from collections import deque
-
 from django.core.management import BaseCommand
-from elasticsearch.helpers import parallel_bulk
-from elasticsearch_dsl.index import connections
+from elasticsearch.helpers import bulk
+from elasticsearch_dsl.index import connections, Index
 
 from django.conf import settings
 
@@ -27,16 +25,16 @@ class Command(BaseCommand):
             companies = self.companies_from_csv(zipped_csv)
             companies_dicts = (company.to_dict(True) for company in companies)
 
-            #  parallel_bulk is a generator that needs to be consumed
-            deque(
-                parallel_bulk(
-                    client,
-                    companies_dicts,
-                    chunk_size=20000,
-                    raise_on_exception=True
-                ),
-                maxlen=0
-            )
+            bulk(
+                client,
+                companies_dicts,
+                chunk_size=100,
+                raise_on_exception=True
+                )
+
+    def refresh_index(self):
+        Index(self.company_index_alias).refresh()
 
     def handle(self, *args, **options):
         self.populate_new_index()
+        self.refresh_index()

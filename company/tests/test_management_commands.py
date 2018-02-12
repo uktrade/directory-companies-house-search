@@ -116,3 +116,7 @@ def test_import_ch_companies_pass_if_locked(
 ):
         call_command('import_ch_companies')
         assert mocked_create_new_index.called is False
+
+
+def test_populate_es_test_data():
+    call_command('populate_es_test_data')
