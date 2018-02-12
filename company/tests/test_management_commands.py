@@ -65,11 +65,12 @@ def test_import_ch_companies(
                     'care_of': '',
                     'address_line_1': '26 POLMUIR ROAD'
                 },
+                'address_snippet': '26 POLMUIR ROAD, ABERDEEN, '
+                                   'UNITED KINGDOM, AB11 7SY',
                 'company_type': 'Private Limited Company',
                 'country_of_origin': 'United Kingdom',
-                'address_snippet': '26 POLMUIR ROAD,,ABERDEEN,'
-                                   ',UNITED KINGDOM,AB11 7SY',
-                'company_number': 'SC421617'
+                'company_number': 'SC421617',
+                'company_name': '!NSPIRED LTD',
             },
             '_type': 'company_doc_type'
         }
@@ -115,3 +116,7 @@ def test_import_ch_companies_pass_if_locked(
 ):
         call_command('import_ch_companies')
         assert mocked_create_new_index.called is False
+
+
+def test_populate_es_test_data():
+    call_command('populate_es_test_data')
