@@ -54,7 +54,7 @@ def test_import_ch_companies(
             '_id': 'SC421617',
             '_source': {
                 'date_of_creation': datetime.datetime(2012, 11, 4, 0, 0),
-                'company_status': 'Active',
+                'company_status': 'active',
                 'address': {
                     'postal_code': 'AB11 7SY',
                     'address_line_2': '',
@@ -67,7 +67,7 @@ def test_import_ch_companies(
                 },
                 'address_snippet': '26 POLMUIR ROAD, ABERDEEN, '
                                    'UNITED KINGDOM, AB11 7SY',
-                'company_type': 'Private Limited Company',
+                'company_type': 'ltd',
                 'country_of_origin': 'United Kingdom',
                 'company_number': 'SC421617',
                 'company_name': '!NSPIRED LTD',

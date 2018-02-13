@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 from django.core.management import BaseCommand
+from django.utils.timezone import now
 from django_pglocks import advisory_lock
 from elasticsearch.client.indices import IndicesClient
 from elasticsearch.helpers import parallel_bulk
@@ -89,8 +90,7 @@ class Command(BaseCommand):
         self.client = connections.get_connection()
         super().__init__(*args, **kwargs)
 
-    @staticmethod
-    def create_index(name, doc_type, alias):
+    def create_index(self, name, doc_type, alias):
         index = Index(name)
         index.doc_type(doc_type)
         index.analyzer(analyzer('english'))
@@ -98,6 +98,9 @@ class Command(BaseCommand):
         # when the application searches from or inserts into `campaign_alias`.
         index.aliases(**{alias: {}})  # same  as .aliases(company-alias: {})
         index.create()
+        self.stdout.write(
+            self.style.SUCCESS('New index created')
+        )
         return index
 
     def get_indices(self, alias_name):
@@ -136,7 +139,8 @@ class Command(BaseCommand):
                 ))
         return urls
 
-    def companies_from_csv(self, url, tmp_file_creator):
+    @staticmethod
+    def companies_from_csv(url, tmp_file_creator):
         """Fetch & cache zipped CSV, and then iterate though contents."""
         with tmp_file_creator() as tf:
             stream_to_file_pointer(url, tf)
@@ -156,7 +160,12 @@ class Command(BaseCommand):
                 tempfile.TemporaryFile
             )
             companies_dicts = (company.to_dict(True) for company in companies)
-
+            self.stdout.write(
+                self.style.SUCCESS(
+                    'Downloading {url} and writing companies to ES...'.format(
+                        url=csv_url))
+            )
+            starting_time = now()
             #  parallel_bulk is a generator that needs to be consumed
             deque(
                 parallel_bulk(
@@ -167,24 +176,48 @@ class Command(BaseCommand):
                 ),
                 maxlen=0
             )
+            end_time = now()
+            self.stdout.write(
+                self.style.SUCCESS('File completed in {time}'.format(
+                        time=str(end_time-starting_time)
+                    ))
+            )
 
     def delete_old_index(self):
         for index_name in self.get_indices(self.company_index_alias):
             if index_name != self.new_company_index:
                 Index(index_name).delete()
+        self.stdout.write(
+            self.style.SUCCESS('Old index deleted')
+        )
 
     def refresh_aliases(self):
         Index(self.company_index_alias).refresh()
+        self.stdout.write(
+            self.style.SUCCESS('Alias refreshed')
+        )
 
     def handle(self, *args, **options):
         with advisory_lock(lock_id=self.lock_id, wait=False) as acquired:
             # if this instance was the first to call the command then
             # continue to execute the underlying management command...
             if acquired:
+                starting_time = now()
+                self.stdout.write(
+                    self.style.SUCCESS('Lock acquired')
+                )
+
                 self.create_new_index()
                 self.populate_new_index()
                 self.delete_old_index()
                 self.refresh_aliases()
+
+                end_time = now()
+                self.stdout.write(
+                    self.style.SUCCESS('Import completed in {time}'.format(
+                        time=str(end_time-starting_time)
+                    ))
+                )
             else:
                 # ...otherwise wait for the command to finish to finish.
                 with advisory_lock(lock_id=self.lock_id):
