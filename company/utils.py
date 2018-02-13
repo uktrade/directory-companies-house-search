@@ -7,7 +7,6 @@ import requests
 
 from company.doctypes import CompanyDocType
 
-
 COMPANY_STATUSES = {
     'Active': 'active',
     'Active - Proposal to Strike off': 'active',
@@ -25,8 +24,6 @@ COMPANY_STATUSES = {
     'Voluntary Arrangement': 'voluntary-arrangement',
     'VOLUNTARY ARRANGEMENT / ADMINISTRATIVE RECEIVER': 'voluntary-arrangement',
     'VOLUNTARY ARRANGEMENT / RECEIVER MANAGER': 'voluntary-arrangement'
-    #'': 'converted-closed',
-    #'': 'insolvency-proceedings'
 }
 
 COMPANY_TYPES = {
@@ -40,12 +37,12 @@ COMPANY_TYPES = {
                                                        'exemption',
     'Limited Partnership': 'limited-partnership',
     'PRI/LTD BY GUAR/NSC (Private, limited by guarantee, no '
-                    'share capital)': 'private-limited-guarant-nsc',
+    'share capital)': 'private-limited-guarant-nsc',
     'Private Unlimited': 'private-unlimited-nsc',
     'Public Limited Company': 'plc',
     'PRIV LTD SECT. 30 (Private limited company, section 30 of '
-                    'the Companies Act)': 'private-limited-shares-'
-                                          'section-30-exemption',
+    'the Companies Act)': 'private-limited-shares-'
+                          'section-30-exemption',
     'Investment Company with Variable Capital(Umbrella)': 'icvc-umbrella',
     'Industrial and Provident Society': 'industrial-and-provident-society',
     'Northern Ireland': 'northern-ireland',
@@ -67,13 +64,7 @@ COMPANY_TYPES = {
                                                      'incorporated-'
                                                      'organisation',
     'Protected Cell Company': 'protected-cell-company',
-    #'': 'converted-or-closed',
-    #'': 'assurance-company',
-    #'': 'oversea-company',
-    #'': 'eeig',
     'Investment Company with Variable Capital (Securities)': 'icvc-securities',
-    #'': 'icvc-warrant',
-    #'': 'northern-ireland-other',
 }
 
 
