@@ -27,6 +27,7 @@ COMPANY_STATUSES = {
 }
 
 LIMITED_COMPANY = 'ltd'
+OTHER = 'other'
 
 COMPANY_TYPES = {
     'Private Unlimited Company': 'private-unlimited',
@@ -53,8 +54,8 @@ COMPANY_TYPES = {
         'investment-company-with-variable-capital',
     'Unregistered Company': 'unregistered-company',
     'Registered Society': 'registered-society-non-jurisdictional',
-    'Other Company Type': 'other',
-    'Other company type': 'other',
+    'Other Company Type': OTHER,
+    'Other company type': OTHER,
     'European Public Limited-Liability Company (SE)':
         'european-public-limited-liability-company-se',
     'Scottish Partnership': 'scottish-partnership',

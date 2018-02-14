@@ -218,7 +218,3 @@ class Command(BaseCommand):
                         time=str(end_time-starting_time)
                     ))
                 )
-            else:
-                # ...otherwise wait for the command to finish.
-                with advisory_lock(lock_id=self.lock_id):
-                    pass
