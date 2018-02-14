@@ -4,6 +4,8 @@ from unittest import mock
 import pytest
 from django.core.management import call_command
 
+from company.doctypes import CompanyDocType
+
 CH_HOMEPAGE_CONTENT = b"""
 <div class="grid_7 push_1 omega">
 <ul><li><a href="BasicCompanyDataAsOneFile-2018-02-01.zip">
@@ -47,14 +49,14 @@ def test_import_ch_companies(
 
         data = list(mocked_parallel_bulk.call_args[0][1])
         assert mocked_parallel_bulk.called is True
-        assert len(data) == 21
+        assert len(data) == 9
         data = sorted(data, key=lambda x: x['_id'])
         assert data[-1] == {
             '_index': 'ch-companies',
             '_id': 'SC421617',
             '_source': {
                 'date_of_creation': datetime.datetime(2012, 11, 4, 0, 0),
-                'company_status': 'Active',
+                'company_status': 'active',
                 'address': {
                     'postal_code': 'AB11 7SY',
                     'address_line_2': '',
@@ -67,7 +69,7 @@ def test_import_ch_companies(
                 },
                 'address_snippet': '26 POLMUIR ROAD, ABERDEEN, '
                                    'UNITED KINGDOM, AB11 7SY',
-                'company_type': 'Private Limited Company',
+                'company_type': 'ltd',
                 'country_of_origin': 'United Kingdom',
                 'company_number': 'SC421617',
                 'company_name': '!NSPIRED LTD',
@@ -120,3 +122,24 @@ def test_import_ch_companies_pass_if_locked(
 
 def test_populate_es_test_data():
     call_command('populate_es_test_data')
+    result = CompanyDocType.get(id='8209948')
+    assert result.to_dict() == {
+        'company_type': 'foobar',
+        'country_of_origin': 'United Kingdom',
+        'company_name': '! LTD',
+        'company_number': '8209948',
+        'date_of_creation': datetime.datetime(2012, 11, 9, 0, 0),
+        'address_snippet':
+            'METROHOUSE 57 PEPPER ROAD, HUNSLET, LEEDS, YORKSHIRE, LS10 2RU',
+        'company_status': 'foobar',
+        'address': {
+            'locality': 'LEEDS',
+            'region': 'YORKSHIRE',
+            'address_line_2': 'HUNSLET',
+            'care_of': '',
+            'postal_code': 'LS10 2RU',
+            'po_box': '',
+            'country': '',
+            'address_line_1': 'METROHOUSE 57 PEPPER ROAD'
+        }
+    }

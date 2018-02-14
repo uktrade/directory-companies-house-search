@@ -90,8 +90,8 @@ def test_company_profile(
                            'UNITED KINGDOM, WC1X 8HB',
         'company_name': '!NNOV8 LIMITED',
         'company_number': '11006939',
-        'company_status': 'Active',
-        'company_type': 'Private Limited Company',
+        'company_status': 'active',
+        'company_type': 'ltd',
         'country_of_origin': 'United Kingdom',
         'date_of_creation': '2017-11-10T00:00:00Z',
         'registered_address': {
