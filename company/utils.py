@@ -118,8 +118,11 @@ def create_company_document(row):
     company = {
         'company_name': row['CompanyName'],
         'company_number': row['CompanyNumber'],
-        'company_status': COMPANY_STATUSES[row['CompanyStatus']],
-        'company_type': COMPANY_TYPES[row['CompanyCategory']],
+        'company_status': COMPANY_STATUSES.get(
+            row['CompanyStatus'], row['CompanyStatus']
+        ),
+        'company_type': COMPANY_TYPES.get(
+            row['CompanyCategory'], row['CompanyCategory']),
         'date_of_cessation': row['DissolutionDate'],
         'date_of_creation': row['IncorporationDate'],
         'country_of_origin': row['CountryOfOrigin'],
