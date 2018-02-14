@@ -219,6 +219,6 @@ class Command(BaseCommand):
                     ))
                 )
             else:
-                # ...otherwise wait for the command to finish to finish.
+                # ...otherwise wait for the command to finish.
                 with advisory_lock(lock_id=self.lock_id):
                     pass

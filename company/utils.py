@@ -26,43 +26,42 @@ COMPANY_STATUSES = {
     'VOLUNTARY ARRANGEMENT / RECEIVER MANAGER': 'voluntary-arrangement'
 }
 
+LIMITED_COMPANY = 'ltd'
+
 COMPANY_TYPES = {
     'Private Unlimited Company': 'private-unlimited',
-    'Community Interest Company': 'ltd',
-    'Private Limited Company': 'ltd',
+    'Community Interest Company': LIMITED_COMPANY,
+    'Private Limited Company': LIMITED_COMPANY,
     'Old Public Company': 'old-public-company',
     'PRI/LBG/NSC (Private, Limited by guarantee, '
-    'no share capital, use of \'Limited\' exemption)': 'private-limited-'
-                                                       'guarant-nsc-limited-'
-                                                       'exemption',
+    'no share capital, use of \'Limited\' exemption)':
+        'private-limited-guarant-nsc-limited-exemption',
     'Limited Partnership': 'limited-partnership',
     'PRI/LTD BY GUAR/NSC (Private, limited by guarantee, no '
     'share capital)': 'private-limited-guarant-nsc',
     'Private Unlimited': 'private-unlimited-nsc',
     'Public Limited Company': 'plc',
     'PRIV LTD SECT. 30 (Private limited company, section 30 of '
-    'the Companies Act)': 'private-limited-shares-'
-                          'section-30-exemption',
+    'the Companies Act)':
+        'private-limited-shares-section-30-exemption',
     'Investment Company with Variable Capital(Umbrella)': 'icvc-umbrella',
     'Industrial and Provident Society': 'industrial-and-provident-society',
     'Northern Ireland': 'northern-ireland',
     'Limited Liability Partnership': 'llp',
     'Royal Charter Company': 'royal-charter',
-    'Investment Company with Variable Capital': 'investment-company-with-'
-                                                'variable-capital',
+    'Investment Company with Variable Capital':
+        'investment-company-with-variable-capital',
     'Unregistered Company': 'unregistered-company',
     'Registered Society': 'registered-society-non-jurisdictional',
     'Other Company Type': 'other',
     'Other company type': 'other',
-    'European Public Limited-Liability Company (SE)': 'european-public-'
-                                                      'limited-liability-'
-                                                      'company-se',
+    'European Public Limited-Liability Company (SE)':
+        'european-public-limited-liability-company-se',
     'Scottish Partnership': 'scottish-partnership',
-    'Charitable Incorporated Organisation': 'charitable-'
-                                            'incorporated-organisation',
-    'Scottish Charitable Incorporated Organisation': 'scottish-charitable-'
-                                                     'incorporated-'
-                                                     'organisation',
+    'Charitable Incorporated Organisation':
+        'charitable-incorporated-organisation',
+    'Scottish Charitable Incorporated Organisation':
+        'scottish-charitable-incorporated-organisation',
     'Protected Cell Company': 'protected-cell-company',
     'Investment Company with Variable Capital (Securities)': 'icvc-securities',
 }
