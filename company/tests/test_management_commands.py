@@ -2,6 +2,7 @@ import datetime
 from unittest import mock
 
 import pytest
+from django.conf import settings
 from django.core.management import call_command
 
 from company.doctypes import CompanyDocType
@@ -21,12 +22,12 @@ BasicCompanyData-2018-02-01-part2_2.zip  (69Mb)</a></li>
 
 
 @pytest.mark.django_db
-@mock.patch('company.management.commands.import_ch_companies.parallel_bulk')
+@mock.patch('company.management.commands.import_ch_companies.streaming_bulk')
 @mock.patch('company.management.commands.import_ch_companies.'
             'Command.delete_old_index')
 def test_import_ch_companies(
         mocked_delete_old_index,
-        mocked_parallel_bulk,
+        mocked_streaming_bulk,
         requests_mocker,
         settings
 ):
@@ -47,8 +48,8 @@ def test_import_ch_companies(
         )
         call_command('import_ch_companies')
 
-        data = list(mocked_parallel_bulk.call_args[0][1])
-        assert mocked_parallel_bulk.called is True
+        data = list(mocked_streaming_bulk.call_args[0][1])
+        assert mocked_streaming_bulk.called is True
         assert len(data) == 9
         data = sorted(data, key=lambda x: x['_id'])
         assert data[-1] == {
@@ -91,7 +92,7 @@ def test_import_ch_companies_delete_indices(
         call_command('import_ch_companies')
 
         mocked_indices_client().get_alias.assert_called_once_with(
-            name='ch-companies'
+            name=settings.ELASTICSEARCH_COMPANY_INDEX_ALIAS
         )
 
 
