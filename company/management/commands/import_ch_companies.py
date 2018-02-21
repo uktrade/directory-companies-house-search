@@ -8,7 +8,7 @@ from django.core.management import BaseCommand
 from django.utils.timezone import now
 from django_pglocks import advisory_lock
 from elasticsearch.client.indices import IndicesClient
-from elasticsearch.helpers import parallel_bulk
+from elasticsearch.helpers import streaming_bulk
 from elasticsearch_dsl import Index, analyzer
 from elasticsearch_dsl.index import connections
 from elasticsearch.exceptions import NotFoundError
@@ -166,12 +166,13 @@ class Command(BaseCommand):
                         url=csv_url))
             )
             starting_time = now()
-            #  parallel_bulk is a generator that needs to be consumed
+            #  streaming_bulk is a generator that needs to be consumed
             deque(
-                parallel_bulk(
+                streaming_bulk(
                     self.client,
                     companies_dicts,
-                    chunk_size=20000,
+                    chunk_size=settings.ELASTICSEARCH_CHUNK_SIZE,
+                    request_timeout=settings.ELASTICSEARCH_TIMEOUT_SECONDS,
                     raise_on_exception=True
                 ),
                 maxlen=0

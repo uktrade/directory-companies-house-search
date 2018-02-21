@@ -281,17 +281,17 @@ connections.create_connection(
     connection_class=RequestsHttpConnection
 )
 ELASTICSEARCH_COMPANY_INDEX_ALIAS = os.getenv(
-    'ELASTICSEARCH_COMPANY_INDEX_ALIAS', 'companies-alias'
+    'ELASTICSEARCH_COMPANY_INDEX_ALIAS', 'ch-companies'
 )
-ELASTICSEARCH_CASE_STUDY_INDEX_ALIAS = os.getenv(
-    'ELASTICSEARCH_CASE_STUDY_INDEX_ALIAS', 'casestudies-alias'
-)
-FEATURE_FLAG_ELASTICSEARCH_REBUILD_INDEX = os.getenv(
-    'FEATURE_FLAG_ELASTICSEARCH_REBUILD_INDEX', 'true'
-) == 'true'
 
 # health check
 HEALTH_CHECK_TOKEN = os.environ['HEALTH_CHECK_TOKEN']
 
-ELASTICSEARCH_COMPANY_INDEX_ALIAS = 'ch-companies'
 CH_DOWNLOAD_URL = 'http://download.companieshouse.gov.uk/en_output.html'
+ELASTICSEARCH_CHUNK_SIZE = os.getenv(
+    'ELASTICSEARCH_CHUNK_SIZE', 10000
+)
+ELASTICSEARCH_TIMEOUT_SECONDS = os.getenv(
+    'ELASTICSEARCH_TIMEOUT_SECONDS',
+    30
+)
