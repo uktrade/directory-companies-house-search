@@ -16,5 +16,4 @@ deployment:
   dev:
     branch: master
     commands:
-      - make heroku_deploy_dev
       - make integration_tests

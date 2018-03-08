@@ -165,15 +165,6 @@ migrations:
 
 debug: test_requirements debug_db debug_test
 
-heroku_deploy_dev:
-	docker login --email=$$HEROKU_EMAIL --username=$$HEROKU_EMAIL --password=$$HEROKU_API_KEY registry.heroku.com
-	docker build -t registry.heroku.com/directory-ch-search-dev/web .
-	docker push registry.heroku.com/directory-ch-search-dev/web
-	docker build -t registry.heroku.com/directory-ch-search-dev/celery_beat_scheduler -f Dockerfile-celery_beat_scheduler .
-	docker push registry.heroku.com/directory-ch-search-dev/celery_beat_scheduler
-	docker build -t registry.heroku.com/directory-ch-search-dev/celery_worker -f Dockerfile-celery_worker .
-	docker push registry.heroku.com/directory-ch-search-dev/celery_worker
-
 integration_tests:
 	cd $(mktemp -d) && \
 	git clone https://github.com/uktrade/directory-tests && \
