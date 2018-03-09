@@ -12,7 +12,11 @@ from raven.contrib.celery import register_signal, register_logger_signal
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chsearch.settings')
 
-app = Celery('chsearch')
+app = Celery(
+    'chsearch',
+    redis_backend_use_ssl=True,
+    broker_use_ssl=True
+)
 
 # Using a string here means the worker don't have to serialize
 # the configuration object to child processes.
