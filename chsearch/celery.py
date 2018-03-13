@@ -14,8 +14,6 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chsearch.settings')
 
 app = Celery(
     'chsearch',
-    redis_backend_use_ssl=True,
-    broker_use_ssl=True
 )
 
 # Using a string here means the worker don't have to serialize
