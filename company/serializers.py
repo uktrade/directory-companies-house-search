@@ -35,4 +35,4 @@ class CompanySearchResultSerializer(CompanySerializer):
 
 
 class CompanyProfileSerializer(CompanySerializer):
-    registered_address = RegisteredOfficeAddressSerializer()
+    registered_office_address = RegisteredOfficeAddressSerializer()

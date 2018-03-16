@@ -65,7 +65,7 @@ class CompanyProfile(BaseCompanyView):
     def get_data(self, company):
         company = company.to_dict()
         # in the profile Ch returns the address in a different key name
-        company['registered_address'] = company['address']
+        company['registered_office_address'] = company['address']
         return company
 
 
