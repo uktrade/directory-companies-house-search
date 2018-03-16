@@ -29,6 +29,7 @@ class CompanySerializer(serializers.Serializer):
 
 
 class CompanySearchResultSerializer(CompanySerializer):
+    title = serializers.CharField()
     address = serializers.DictField(
         child=serializers.CharField(allow_blank=True)
     )

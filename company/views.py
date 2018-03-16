@@ -33,8 +33,9 @@ class CompanySearchView(APIView):
         results = []
         hits = search_object.execute().to_dict()
         for hit in hits['hits']['hits']:
-            results.append(hit['_source'])
-
+            company = hit['_source']
+            company['title'] = company['company_name']
+            results.append(company)
         return results
 
 
