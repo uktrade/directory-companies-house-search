@@ -21,7 +21,7 @@ def test_company_search_view(
     response = api_client.get(url + '?q=yozo fass')
 
     assert response.status_code == status.HTTP_200_OK
-    assert response.json()[0]['company_name'] == '!YOZO FASS LIMITED'
+    assert response.json()['items'][0]['company_name'] == '!YOZO FASS LIMITED'
 
 
 @pytest.mark.elasticsearch_test_data
