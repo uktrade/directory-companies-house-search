@@ -4,8 +4,6 @@
 #
 #    pip-compile --output-file requirements_test.txt requirements_test.in
 #
--e git+https://github.com/uktrade/directory-healthcheck.git@v0.3.0#egg=directory_healthcheck
--e git+https://github.com/uktrade/directory-signature-auth.git@v2.0.0#egg=sigauth
 amqp==2.1.4               # via kombu
 asn1crypto==0.23.0        # via cryptography
 beautifulsoup4==4.6.0
@@ -16,10 +14,11 @@ codecov==2.0.9
 contextlib2==0.5.5        # via raven
 coverage==4.4.1           # via codecov, pytest-cov
 cryptography==2.1.4       # via pyopenssl, requests
+directory-healthcheck==0.4.2
 dj-database-url==0.4.1
 django-celery-beat==1.0.1
 django-filter==1.0.4
-django-health-check==3.0.0
+django-health-check==3.0.0  # via directory-healthcheck
 django-pglocks==1.0.2
 django-redis==4.7.0
 django==1.11.5
@@ -31,11 +30,13 @@ factory-boy==2.8.1
 faker==0.7.17             # via factory-boy
 flake8==3.0.4
 freezegun==0.3.8
+gevent==1.2.2
+greenlet==0.4.13          # via gevent
 gunicorn==19.5.0
 idna==2.6                 # via cryptography, requests
 kombu==4.0.2              # via celery
 mccabe==0.5.3             # via flake8
-mohawk==0.3.4
+mohawk==0.3.4             # via sigauth
 olefile==0.44             # via pillow
 pillow==4.2.1
 psycopg2==2.6.1
@@ -50,12 +51,13 @@ pytest-django==3.0.0
 pytest-sugar==0.8.0
 pytest==3.0.2
 python-dateutil==2.6.0    # via elasticsearch-dsl, faker, freezegun
-pytz==2017.2              # via celery, django
+pytz==2017.2              # via celery, directory-healthcheck, django
 raven==5.19.0
 redis==2.10.5             # via django-redis
 requests-aws4auth==0.9
 requests[security]==2.13.0
 requests_mock==1.4.0
+sigauth==2.1.2
 six==1.11.0               # via cryptography, django-extensions, elasticsearch-dsl, faker, freezegun, mohawk, pyopenssl, python-dateutil, requests-mock
 termcolor==1.1.0          # via pytest-sugar
 urllib3==1.21.1           # via elasticsearch

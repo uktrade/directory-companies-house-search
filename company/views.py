@@ -26,7 +26,7 @@ class CompanySearchView(APIView):
             data=results, many=True
         )
         result_serializer.is_valid(raise_exception=True)
-        return Response(data=result_serializer.validated_data)
+        return Response(data={'items': result_serializer.validated_data})
 
     @staticmethod
     def from_ch_results_to_dicts(search_object):
