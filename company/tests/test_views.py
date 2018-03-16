@@ -94,7 +94,7 @@ def test_company_profile(
         'company_type': 'ltd',
         'country_of_origin': 'United Kingdom',
         'date_of_creation': '2017-11-10T00:00:00Z',
-        'registered_address': {
+        'registered_office_address': {
             'address_line_1': 'C/O FRANK HIRTH 1ST FLOOR',
             'address_line_2': "236 GRAY'S INN ROAD",
             'care_of': '',
