@@ -14,7 +14,7 @@ def test_company_search_view_missing_querystring(
 
 
 @pytest.mark.elasticsearch_test_data
-def test_company_search_view(
+def test_company_search_by_name(
         api_client, mock_signature_check
 ):
     url = reverse('api:search-companies')
@@ -28,10 +28,42 @@ def test_company_search_view(
                 'address_snippet':
                     '1 VERONICA HOUSE, WICKHAM ROAD, BROCKLEY, SE4 1NQ',
                 'company_name': '!YOZO FASS LIMITED',
-                'company_number': '2714021', 'company_status': 'active',
+                'company_number': '2714021',
+                'company_status': 'active',
                 'company_type': 'ltd',
                 'date_of_creation': '1992-12-05T00:00:00Z',
-                'title': '!YOZO FASS LIMITED', 'address': {
+                'title': '!YOZO FASS LIMITED',
+                'address': {
+                    'care_of': '', 'po_box': '',
+                    'address_line_1': '1 VERONICA HOUSE',
+                    'address_line_2': 'WICKHAM ROAD', 'locality': 'BROCKLEY',
+                    'region': '', 'country': '', 'postal_code': 'SE4 1NQ'
+                }
+            }]
+    }
+
+
+@pytest.mark.elasticsearch_test_data
+def test_company_search_by_number(
+        api_client, mock_signature_check
+):
+    url = reverse('api:search-companies')
+    response = api_client.get(url + '?q=2714021')
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {
+        'items': [
+            {
+                'country_of_origin': 'United Kingdom',
+                'address_snippet':
+                    '1 VERONICA HOUSE, WICKHAM ROAD, BROCKLEY, SE4 1NQ',
+                'company_name': '!YOZO FASS LIMITED',
+                'company_number': '2714021',
+                'company_status': 'active',
+                'company_type': 'ltd',
+                'date_of_creation': '1992-12-05T00:00:00Z',
+                'title': '!YOZO FASS LIMITED',
+                'address': {
                     'care_of': '', 'po_box': '',
                     'address_line_1': '1 VERONICA HOUSE',
                     'address_line_2': 'WICKHAM ROAD', 'locality': 'BROCKLEY',
