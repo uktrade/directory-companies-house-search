@@ -1,5 +1,6 @@
 from django.http import Http404
 from elasticsearch import NotFoundError
+from elasticsearch_dsl import Q
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -16,11 +17,12 @@ class CompanySearchView(APIView):
             data=request.query_params
         )
         request_serializer.is_valid(raise_exception=True)
-
-        search_object = CompanyDocType.search().query(
-            'match_phrase',
-            company_name=request_serializer.data['q']
+        query = Q(
+            "multi_match",
+            query=request_serializer.data['q'],
+            fields=['company_name', 'company_number']
         )
+        search_object = CompanyDocType.search().query(query)
         results = self.from_ch_results_to_dicts(search_object)
         result_serializer = CompanySearchResultSerializer(
             data=results, many=True
