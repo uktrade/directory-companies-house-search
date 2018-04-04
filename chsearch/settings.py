@@ -1,5 +1,4 @@
 import os
-import ssl
 
 import dj_database_url
 
@@ -257,15 +256,11 @@ GECKO_API_PASS = os.getenv('GECKO_API_PASS', 'X')
 # Celery
 CELERY_BROKER_URL = os.getenv('REDIS_URL')
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
-CELERY_REDIS_BACKEND_USE_SSL = {
-            'ssl_cert_reqs': ssl.CERT_NONE
-        }
-CELERY_BROKER_USE_SSL = CELERY_REDIS_BACKEND_USE_SSL
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
-CELERY_BROKER_POOL_LIMIT = int(os.getenv('CELERY_BROKER_POOL_LIMIT', '5'))
+CELERY_BROKER_POOL_LIMIT = None
 
 # Initialise default Elasticsearch connection
 ELASTICSEARCH_ENDPOINT = os.getenv("ELASTICSEARCH_ENDPOINT")
