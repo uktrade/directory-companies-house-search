@@ -1,6 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 import logging
 import os
+import ssl
 
 from django.conf import settings
 
@@ -21,6 +22,15 @@ app = Celery(
 # - namespace='CELERY' means all celery-related configuration keys
 #   should have a `CELERY_` prefix.
 app.config_from_object('django.conf:settings', namespace='CELERY')
+
+ssl_conf = {
+    'ssl_cert_reqs': ssl.CERT_NONE,
+    'ssl_ca_certs': None,
+    'ssl_certfile': None,
+    'ssl_keyfile': None
+}
+app.conf.broker_use_ssl = ssl_conf
+app.conf.redis_backend_use_ssl = ssl_conf
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
