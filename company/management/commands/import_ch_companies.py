@@ -8,7 +8,7 @@ from django.core.management import BaseCommand
 from django.utils.timezone import now
 from django_pglocks import advisory_lock
 from elasticsearch.client.indices import IndicesClient
-from elasticsearch.helpers import streaming_bulk
+from elasticsearch.helpers import parallel_bulk, streaming_bulk
 from elasticsearch_dsl import Index, analyzer
 from elasticsearch_dsl.index import connections
 from elasticsearch.exceptions import NotFoundError
@@ -166,17 +166,29 @@ class Command(BaseCommand):
                         url=csv_url))
             )
             starting_time = now()
-            #  streaming_bulk is a generator that needs to be consumed
-            deque(
-                streaming_bulk(
-                    self.client,
-                    companies_dicts,
-                    chunk_size=settings.ELASTICSEARCH_CHUNK_SIZE,
-                    request_timeout=settings.ELASTICSEARCH_TIMEOUT_SECONDS,
-                    raise_on_exception=True
-                ),
-                maxlen=0
-            )
+            if settings.ELASTICSEARCH_USE_PARALLEL_BULK:
+                deque(
+                    parallel_bulk(
+                        self.client,
+                        companies_dicts,
+                        thread_count=settings.ELASTICSEARCH_THREAD_COUNT,
+                        chunk_size=settings.ELASTICSEARCH_CHUNK_SIZE,
+                        request_timeout=settings.ELASTICSEARCH_TIMEOUT_SECONDS,
+                        raise_on_exception=True
+                    )
+                )
+            else:
+                #  streaming_bulk is a generator that needs to be consumed
+                deque(
+                    streaming_bulk(
+                        self.client,
+                        companies_dicts,
+                        chunk_size=settings.ELASTICSEARCH_CHUNK_SIZE,
+                        request_timeout=settings.ELASTICSEARCH_TIMEOUT_SECONDS,
+                        raise_on_exception=True
+                    ),
+                    maxlen=0
+                )
             end_time = now()
             self.stdout.write(
                 self.style.SUCCESS('File completed in {time}'.format(
