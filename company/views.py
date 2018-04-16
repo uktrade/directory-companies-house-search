@@ -1,10 +1,8 @@
 from django.http import Http404
-from elasticsearch import NotFoundError
-from elasticsearch_dsl import Q
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .doctypes import CompanyDocType
+from company.data import DataLoader
 from .serializers import CompanyProfileSerializer, \
     CompanySearchResultSerializer, CompanySearchQuerySerializer, \
     RegisteredOfficeAddressSerializer
@@ -17,46 +15,25 @@ class CompanySearchView(APIView):
             data=request.query_params
         )
         request_serializer.is_valid(raise_exception=True)
-        query = Q(
-            "multi_match",
-            query=request_serializer.data['q'],
-            fields=['company_name', 'company_number']
-        )
-        search_object = CompanyDocType.search().query(query)
-        results = self.from_ch_results_to_dicts(search_object)
+        query = request_serializer.validated_data['q']
+        results = DataLoader().search(query)
         result_serializer = CompanySearchResultSerializer(
             data=results, many=True
         )
         result_serializer.is_valid(raise_exception=True)
         return Response(data={'items': result_serializer.validated_data})
 
-    @staticmethod
-    def from_ch_results_to_dicts(search_object):
-        results = []
-        hits = search_object.execute().to_dict()
-        for hit in hits['hits']['hits']:
-            company = hit['_source']
-            company['title'] = company['company_name']
-            results.append(company)
-        return results
-
 
 class BaseCompanyView(APIView):
     serializer_class = None
 
-    @staticmethod
-    def get_company_or_404(company_number):
-        try:
-            return CompanyDocType.get(id=company_number)
-        except NotFoundError:
-            raise Http404()
-
-    def get_data(self, company):
+    def get_data(self, company_number):
         raise NotImplementedError
 
     def get(self, request, company_number, format=None):
-        company = self.get_company_or_404(company_number)
-        data = self.get_data(company)
+        data = self.get_data(company_number)
+        if not data:
+            raise Http404()
         result_serializer = self.serializer_class(data=data)
         result_serializer.is_valid()
         return Response(data=result_serializer.validated_data)
@@ -65,15 +42,12 @@ class BaseCompanyView(APIView):
 class CompanyProfile(BaseCompanyView):
     serializer_class = CompanyProfileSerializer
 
-    def get_data(self, company):
-        company = company.to_dict()
-        # in the profile Ch returns the address in a different key name
-        company['registered_office_address'] = company['address']
-        return company
+    def get_data(self, company_number):
+        return DataLoader().retrieve_profile(company_number=company_number)
 
 
 class CompanyRegisteredOfficeAddress(BaseCompanyView):
     serializer_class = RegisteredOfficeAddressSerializer
 
-    def get_data(self, company):
-        return company.address.to_dict()
+    def get_data(self, company_number):
+        return DataLoader().retrieve_address(company_number=company_number)
