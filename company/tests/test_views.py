@@ -1,6 +1,10 @@
+from unittest import mock
+
 import pytest
 from rest_framework import status
 from rest_framework.reverse import reverse
+
+from company.data import CompaniesHouseException
 
 
 def test_company_search_view_missing_querystring(
@@ -14,7 +18,11 @@ def test_company_search_view_missing_querystring(
 
 
 @pytest.mark.elasticsearch_test_data
-def test_company_search_by_name(
+@mock.patch(
+    'company.data.CompaniesHouseClient.get',
+    mock.Mock(side_effect=CompaniesHouseException)
+)
+def test_company_search_by_name_local_fallback(
         api_client, mock_signature_check
 ):
     url = reverse('api:search-companies')
@@ -44,7 +52,11 @@ def test_company_search_by_name(
 
 
 @pytest.mark.elasticsearch_test_data
-def test_company_search_by_number(
+@mock.patch(
+    'company.data.CompaniesHouseClient.get',
+    mock.Mock(side_effect=CompaniesHouseException)
+)
+def test_company_search_by_number_local_fallback(
         api_client, mock_signature_check
 ):
     url = reverse('api:search-companies')
@@ -74,7 +86,11 @@ def test_company_search_by_number(
 
 
 @pytest.mark.elasticsearch_test_data
-def test_company_registered_office_address(
+@mock.patch(
+    'company.data.CompaniesHouseClient.get',
+    mock.Mock(side_effect=CompaniesHouseException)
+)
+def test_company_registered_office_address_local_fallback(
         api_client, mock_signature_check
 ):
     url = reverse(
@@ -97,7 +113,11 @@ def test_company_registered_office_address(
 
 
 @pytest.mark.elasticsearch_test_data
-def test_company_registered_office_address_company_not_found(
+@mock.patch(
+    'company.data.CompaniesHouseClient.get',
+    mock.Mock(side_effect=CompaniesHouseException)
+)
+def test_company_registered_office_address_company_not_found_local_fallback(
         api_client, mock_signature_check
 ):
     url = reverse(
@@ -110,7 +130,11 @@ def test_company_registered_office_address_company_not_found(
 
 
 @pytest.mark.elasticsearch_test_data
-def test_company_profile_company_not_found(
+@mock.patch(
+    'company.data.CompaniesHouseClient.get',
+    mock.Mock(side_effect=CompaniesHouseException)
+)
+def test_company_profile_company_not_found_local_fallback(
         api_client, mock_signature_check
 ):
     url = reverse(
@@ -123,7 +147,11 @@ def test_company_profile_company_not_found(
 
 
 @pytest.mark.elasticsearch_test_data
-def test_company_profile(
+@mock.patch(
+    'company.data.CompaniesHouseClient.get',
+    mock.Mock(side_effect=CompaniesHouseException)
+)
+def test_company_profile_local_fallback(
         api_client, mock_signature_check
 ):
     url = reverse(

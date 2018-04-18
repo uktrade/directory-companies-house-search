@@ -1,6 +1,5 @@
 import csv
 import io
-import logging
 import zipfile
 from contextlib import contextmanager
 
@@ -68,10 +67,6 @@ COMPANY_TYPES = {
     'Investment Company with Variable Capital (Securities)': 'icvc-securities',
 }
 
-MESSAGE_AUTH_FAILED = 'Auth failed with Companies House'
-
-logger = logging.getLogger(__name__)
-
 
 @contextmanager
 def open_zipped_csv(file_pointer, fieldnames):
@@ -138,5 +133,3 @@ def create_company_document(row):
         meta={'id': company['company_number']},
         **company
     )
-
-

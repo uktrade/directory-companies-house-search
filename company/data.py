@@ -1,25 +1,26 @@
-import http
 import urllib
 from collections import OrderedDict
-from functools import partial
+from functools import partial, wraps
 from urllib.parse import urljoin
 
 import requests
 from django.conf import settings
-from django.db.models import Q
 from elasticsearch import NotFoundError
 
 from company.doctypes import CompanyDocType
-from company.utils import logger, MESSAGE_AUTH_FAILED
+
+
+class CompaniesHouseException(Exception):
+    pass
 
 
 def local_fallback(fallback_function):
     def closure(func):
-        def wrapper(*args, **kwargs):
-            response = func(*args, **kwargs)
-            if response.ok:
-                return response
-            else:
+        @wraps(func)
+        def wrapper(class_instance, *args, **kwargs):
+            try:
+                return func(class_instance, *args, **kwargs)
+            except CompaniesHouseException:
                 return fallback_function(*args, **kwargs)
         return wrapper
 
@@ -52,10 +53,10 @@ def search_in_es(query):
         fields=['company_name', 'company_number']
     )
     search_object = CompanyDocType.search().query(query)
-    return from_ch_results_to_dicts(search_object)
+    return from_es_results_to_dicts(search_object)
 
 
-def from_ch_results_to_dicts(search_object):
+def from_es_results_to_dicts(search_object):
     results = []
     hits = search_object.execute().to_dict()
     for hit in hits['hits']['hits']:
@@ -106,8 +107,8 @@ class CompaniesHouseClient:
     @classmethod
     def get(cls, url, params={}):
         response = cls.session.get(url=url, params=params, auth=cls.get_auth())
-        if response.status_code == http.client.UNAUTHORIZED:
-            logger.error(MESSAGE_AUTH_FAILED)
+        if response.status_code != requests.codes.ok:
+            raise CompaniesHouseException()
         return response
 
     @classmethod

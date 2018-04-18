@@ -2,7 +2,7 @@ from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from company.data import DataLoader
+from .data import DataLoader
 from .serializers import CompanyProfileSerializer, \
     CompanySearchResultSerializer, CompanySearchQuerySerializer, \
     RegisteredOfficeAddressSerializer
@@ -16,7 +16,7 @@ class CompanySearchView(APIView):
         )
         request_serializer.is_valid(raise_exception=True)
         query = request_serializer.validated_data['q']
-        results = DataLoader().search(query)
+        results = DataLoader().search(query=query)
         result_serializer = CompanySearchResultSerializer(
             data=results, many=True
         )
