@@ -20,7 +20,7 @@ class CompanyDocType(DocType):
     company_name = field.Text()
     company_number = field.Text()
     company_status = field.Text()
-    company_type = field.Text()
+    type = field.Text()
     date_of_cessation = field.Date()
     date_of_creation = field.Date()
 

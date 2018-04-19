@@ -70,7 +70,7 @@ def test_import_ch_companies_streaming_bulk(
                 },
                 'address_snippet': '26 POLMUIR ROAD, ABERDEEN, '
                                    'UNITED KINGDOM, AB11 7SY',
-                'company_type': 'ltd',
+                'type': 'ltd',
                 'country_of_origin': 'United Kingdom',
                 'company_number': 'SC421617',
                 'company_name': '!NSPIRED LTD',
@@ -130,7 +130,7 @@ def test_import_ch_companies_parallel_bulk(
                 },
                 'address_snippet': '26 POLMUIR ROAD, ABERDEEN, '
                                    'UNITED KINGDOM, AB11 7SY',
-                'company_type': 'ltd',
+                'type': 'ltd',
                 'country_of_origin': 'United Kingdom',
                 'company_number': 'SC421617',
                 'company_name': '!NSPIRED LTD',
@@ -185,7 +185,7 @@ def test_populate_es_test_data():
     call_command('populate_es_test_data')
     result = CompanyDocType.get(id='8209948')
     assert result.to_dict() == {
-        'company_type': 'foobar',
+        'type': 'foobar',
         'country_of_origin': 'United Kingdom',
         'company_name': '! LTD',
         'company_number': '8209948',

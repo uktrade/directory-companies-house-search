@@ -1,11 +1,10 @@
-import urllib
-from collections import OrderedDict
 from functools import partial, wraps
 from urllib.parse import urljoin
 
 import requests
 from django.conf import settings
 from elasticsearch import NotFoundError
+from elasticsearch_dsl import Q
 
 from company.doctypes import CompanyDocType
 
@@ -48,7 +47,7 @@ def retrieve_address_from_es(company_number):
 
 def search_in_es(query):
     query = Q(
-        "multi_match",
+        'multi_match',
         query=query,
         fields=['company_name', 'company_number']
     )
@@ -62,6 +61,7 @@ def from_es_results_to_dicts(search_object):
     for hit in hits['hits']['hits']:
         company = hit['_source']
         company['title'] = company['company_name']
+        company['address']['country'] = company['country_of_origin']
         results.append(company)
     return results
 
@@ -114,7 +114,10 @@ class CompaniesHouseClient:
     @classmethod
     def retrieve_profile(cls, company_number):
         url = cls.endpoints['profile'].format(number=company_number)
-        return cls.get(url)
+        company = cls.get(url).json()
+        company['date_of_creation'] = '{date}T00:00:00Z'.format(
+            date=company['date_of_creation'])
+        return company
 
     @classmethod
     def retrieve_address(cls, company_number):
@@ -124,27 +127,11 @@ class CompaniesHouseClient:
     @classmethod
     def search(cls, query):
         url = cls.endpoints['search']
-        return cls.get(url, params={'q': query})
-
-    @classmethod
-    def make_oauth2_url(cls, redirect_uri, company_number):
-        # ordered dict to facilitate testing
-        params = OrderedDict([
-            ('client_id', cls.client_id),
-            ('redirect_uri', redirect_uri),
-            ('response_type', 'code'),
-            ('scope', cls.endpoints['profile'].format(number=company_number)),
-        ])
-        return cls.endpoints['oauth2'] + '?' + urllib.parse.urlencode(params)
-
-    @classmethod
-    def verify_oauth2_code(cls, code, redirect_uri):
-        url = cls.endpoints['oauth2-token']
-        params = OrderedDict([
-            ('grant_type', 'authorization_code'),
-            ('code', code),
-            ('client_id', cls.client_id),
-            ('client_secret', cls.client_secret),
-            ('redirect_uri', redirect_uri),
-        ])
-        return cls.session.post(url=url + '?' + urllib.parse.urlencode(params))
+        response = cls.get(url, params={'q': query})
+        results = []
+        for company in response.json()['items']:
+            company['company_name'] = company['title']
+            company['date_of_creation'] = '{date}T00:00:00Z'.format(
+                date=company['date_of_creation'])
+            results.append(company)
+        return results
