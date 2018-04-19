@@ -268,6 +268,36 @@ def test_company_registered_office_address_local_fallback(
 
 
 @pytest.mark.elasticsearch_test_data
+@mock.patch('company.data.CompaniesHouseClient.get')
+def test_company_registered_office_address(
+        mocked_client_get, api_client, mock_signature_check
+):
+    mocked_return = mock.Mock()
+    mocked_return.json.return_value = {
+        'postal_code': 'WC1X 8HB',
+        'address_line_1': 'C/O Frank Hirth 1st Floor',
+        'address_line_2': '236 Grays Inn Road',
+        'country': 'United Kingdom',
+        'locality': 'London'
+    }
+    mocked_client_get.return_value = mocked_return
+
+    url = reverse(
+        'api:company-registered-office-address',
+        kwargs={'company_number': '11006939'}
+    )
+    response = api_client.get(url)
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {
+        'address_line_1': 'C/O Frank Hirth 1st Floor',
+        'address_line_2': '236 Grays Inn Road',
+        'country': 'United Kingdom',
+        'locality': 'London',
+        'postal_code': 'WC1X 8HB',
+    }
+
+
+@pytest.mark.elasticsearch_test_data
 @mock.patch(
     'company.data.CompaniesHouseClient.get',
     mock.Mock(side_effect=CompaniesHouseException)

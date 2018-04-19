@@ -122,7 +122,7 @@ class CompaniesHouseClient:
     @classmethod
     def retrieve_address(cls, company_number):
         url = cls.endpoints['address'].format(number=company_number)
-        return cls.get(url)
+        return cls.get(url).json()
 
     @classmethod
     def search(cls, query):
