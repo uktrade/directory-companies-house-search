@@ -26,3 +26,27 @@ class CompanyDocType(DocType):
 
     class Meta:
         index = settings.ELASTICSEARCH_COMPANY_INDEX_ALIAS
+
+    def to_dict(self, include_meta=False):
+        meta = super().to_dict(include_meta)
+        if '_source' in meta:
+            company = meta['_source']
+            company['title'] = company['company_name']
+            company['address']['country'] = company['country_of_origin']
+            meta['_source'] = self.reformat_date(company)
+        return meta
+
+    def to_profile_dict(self):
+        company = self.to_dict()
+        company['registered_office_address'] = company['address']
+        return self.reformat_date(company)
+
+    @staticmethod
+    def reformat_date(company):
+        if 'date_of_creation' in company:
+            company['date_of_creation'] = company[
+                'date_of_creation'].strftime('%Y-%m-%d')
+        if 'date_of_cessation' in company:
+            company['date_of_cessation'] = company[
+                'date_of_cessation'].strftime('%Y-%m-%d')
+        return company

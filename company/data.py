@@ -26,18 +26,16 @@ def local_fallback(fallback_function):
     return closure
 
 
-def retrieve_profile_from_es(company_number):
+def retrieve_profile_from_elasticsearch(company_number):
     try:
         company = CompanyDocType.get(id=company_number)
-        company = company.to_dict()
-        # in the profile Ch returns the address in a different key name
-        company['registered_office_address'] = company['address']
+        company = company.to_profile_dict()
         return company
     except NotFoundError:
         return None
 
 
-def retrieve_address_from_es(company_number):
+def retrieve_address_from_elasticsearch(company_number):
     try:
         company = CompanyDocType.get(id=company_number)
         return company.address.to_dict()
@@ -52,18 +50,8 @@ def search_in_es(query):
         fields=['company_name', 'company_number']
     )
     search_object = CompanyDocType.search().query(query)
-    return from_es_results_to_dicts(search_object)
-
-
-def from_es_results_to_dicts(search_object):
-    results = []
     hits = search_object.execute().to_dict()
-    for hit in hits['hits']['hits']:
-        company = hit['_source']
-        company['title'] = company['company_name']
-        company['address']['country'] = company['country_of_origin']
-        results.append(company)
-    return results
+    return [hit['_source'] for hit in hits['hits']['hits']]
 
 
 class DataLoader:
@@ -72,11 +60,11 @@ class DataLoader:
     def __init__(self):
         self.companies_house_source = CompaniesHouseClient()
 
-    @local_fallback(fallback_function=retrieve_profile_from_es)
+    @local_fallback(fallback_function=retrieve_profile_from_elasticsearch)
     def retrieve_profile(self, company_number):
         return self.companies_house_source.retrieve_profile(company_number)
 
-    @local_fallback(fallback_function=retrieve_address_from_es)
+    @local_fallback(fallback_function=retrieve_address_from_elasticsearch)
     def retrieve_address(self, company_number):
         return self.companies_house_source.retrieve_address(company_number)
 
@@ -87,16 +75,11 @@ class DataLoader:
 
 class CompaniesHouseClient:
     api_key = settings.COMPANIES_HOUSE_API_KEY
-    client_id = settings.COMPANIES_HOUSE_CLIENT_ID
-    client_secret = settings.COMPANIES_HOUSE_CLIENT_SECRET
     make_api_url = partial(urljoin, 'https://api.companieshouse.gov.uk')
-    make_oauth2_url = partial(urljoin, 'https://account.companieshouse.gov.uk')
     endpoints = {
         'profile': make_api_url('company/{number}'),
         'address': make_api_url('company/{number}/registered-office-address'),
         'search': make_api_url('search/companies'),
-        'oauth2': make_oauth2_url('oauth2/authorise'),
-        'oauth2-token': make_oauth2_url('oauth2/token'),
     }
     session = requests.Session()
 
@@ -115,8 +98,6 @@ class CompaniesHouseClient:
     def retrieve_profile(cls, company_number):
         url = cls.endpoints['profile'].format(number=company_number)
         company = cls.get(url).json()
-        company['date_of_creation'] = '{date}T00:00:00Z'.format(
-            date=company['date_of_creation'])
         return company
 
     @classmethod
@@ -131,7 +112,5 @@ class CompaniesHouseClient:
         results = []
         for company in response.json()['items']:
             company['company_name'] = company['title']
-            company['date_of_creation'] = '{date}T00:00:00Z'.format(
-                date=company['date_of_creation'])
             results.append(company)
         return results

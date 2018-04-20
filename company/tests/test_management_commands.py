@@ -53,27 +53,28 @@ def test_import_ch_companies_streaming_bulk(
         assert len(data) == 9
         data = sorted(data, key=lambda x: x['_id'])
         assert data[-1] == {
-            '_index': 'ch-companies',
             '_id': 'SC421617',
+            '_index': 'ch-companies',
             '_source': {
-                'date_of_creation': datetime.datetime(2012, 11, 4, 0, 0),
-                'company_status': 'active',
                 'address': {
-                    'postal_code': 'AB11 7SY',
+                    'address_line_1': '26 POLMUIR ROAD',
                     'address_line_2': '',
-                    'po_box': '',
-                    'country': 'UNITED KINGDOM',
-                    'locality': 'ABERDEEN',
-                    'region': '',
                     'care_of': '',
-                    'address_line_1': '26 POLMUIR ROAD'
+                    'country': 'United Kingdom',
+                    'locality': 'ABERDEEN',
+                    'po_box': '',
+                    'postal_code': 'AB11 7SY',
+                    'region': ''
                 },
                 'address_snippet': '26 POLMUIR ROAD, ABERDEEN, '
                                    'UNITED KINGDOM, AB11 7SY',
-                'type': 'ltd',
-                'country_of_origin': 'United Kingdom',
-                'company_number': 'SC421617',
                 'company_name': '!NSPIRED LTD',
+                'company_number': 'SC421617',
+                'company_status': 'active',
+                'country_of_origin': 'United Kingdom',
+                'date_of_creation': '2012-11-04',
+                'title': '!NSPIRED LTD',
+                'type': 'ltd'
             },
             '_type': 'company_doc_type'
         }
@@ -113,30 +114,30 @@ def test_import_ch_companies_parallel_bulk(
         assert len(data) == 9
         data = sorted(data, key=lambda x: x['_id'])
         assert data[-1] == {
-            '_index': 'ch-companies',
             '_id': 'SC421617',
+            '_index': 'ch-companies',
             '_source': {
-                'date_of_creation': datetime.datetime(2012, 11, 4, 0, 0),
-                'company_status': 'active',
                 'address': {
-                    'postal_code': 'AB11 7SY',
+                    'address_line_1': '26 POLMUIR ROAD',
                     'address_line_2': '',
-                    'po_box': '',
-                    'country': 'UNITED KINGDOM',
-                    'locality': 'ABERDEEN',
-                    'region': '',
                     'care_of': '',
-                    'address_line_1': '26 POLMUIR ROAD'
+                    'country': 'United Kingdom',
+                    'locality': 'ABERDEEN',
+                    'po_box': '',
+                    'postal_code': 'AB11 7SY',
+                    'region': ''
                 },
-                'address_snippet': '26 POLMUIR ROAD, ABERDEEN, '
-                                   'UNITED KINGDOM, AB11 7SY',
-                'type': 'ltd',
-                'country_of_origin': 'United Kingdom',
-                'company_number': 'SC421617',
+                'address_snippet': '26 POLMUIR ROAD, ABERDEEN, UNITED KINGDOM, '
+                                    'AB11 7SY',
                 'company_name': '!NSPIRED LTD',
-            },
-            '_type': 'company_doc_type'
-        }
+                'company_number': 'SC421617',
+                'company_status': 'active',
+                'country_of_origin': 'United Kingdom',
+                'date_of_creation': '2012-11-04',
+                'title': '!NSPIRED LTD',
+                'type': 'ltd'
+                },
+            '_type': 'company_doc_type'}
         assert mocked_delete_old_index.called is True
 
 
@@ -185,22 +186,23 @@ def test_populate_es_test_data():
     call_command('populate_es_test_data')
     result = CompanyDocType.get(id='8209948')
     assert result.to_dict() == {
-        'type': 'foobar',
-        'country_of_origin': 'United Kingdom',
-        'company_name': '! LTD',
-        'company_number': '8209948',
-        'date_of_creation': datetime.datetime(2012, 11, 9, 0, 0),
-        'address_snippet':
-            'METROHOUSE 57 PEPPER ROAD, HUNSLET, LEEDS, YORKSHIRE, LS10 2RU',
-        'company_status': 'foobar',
         'address': {
-            'locality': 'LEEDS',
-            'region': 'YORKSHIRE',
+            'address_line_1': 'METROHOUSE 57 PEPPER ROAD',
             'address_line_2': 'HUNSLET',
             'care_of': '',
-            'postal_code': 'LS10 2RU',
+            'country': 'United Kingdom',
+            'locality': 'LEEDS',
             'po_box': '',
-            'country': '',
-            'address_line_1': 'METROHOUSE 57 PEPPER ROAD'
-        }
+            'postal_code': 'LS10 2RU',
+            'region': 'YORKSHIRE'
+        },
+        'address_snippet': 'METROHOUSE 57 PEPPER ROAD, HUNSLET, LEEDS, '
+                           'YORKSHIRE, LS10 2RU',
+        'company_name': '! LTD',
+        'company_number': '8209948',
+        'company_status': 'foobar',
+        'country_of_origin': 'United Kingdom',
+        'date_of_creation': datetime.datetime(2012, 11, 9, 0, 0),
+        'title': '! LTD',
+        'type': 'foobar'
     }

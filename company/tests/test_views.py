@@ -27,7 +27,6 @@ def test_company_search_by_name_local_fallback(
 ):
     url = reverse('api:search-companies')
     response = api_client.get(url + '?q=yozo fass')
-
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == {
         'items': [
@@ -38,7 +37,7 @@ def test_company_search_by_name_local_fallback(
                 'company_number': '2714021',
                 'company_status': 'active',
                 'type': 'ltd',
-                'date_of_creation': '1992-12-05T00:00:00Z',
+                'date_of_creation': '1992-12-05',
                 'title': '!YOZO FASS LIMITED',
                 'address': {
                     'care_of': '',
@@ -122,7 +121,7 @@ def test_company_search_by_name(
             'company_number': '12345678',
             'company_status': 'active',
             'type': 'ltd',
-            'date_of_creation': '2015-04-13T00:00:00Z',
+            'date_of_creation': '2015-04-13',
             'title': 'Acme'
         }]
     }
@@ -149,7 +148,7 @@ def test_company_search_by_number_local_fallback(
                 'company_number': '2714021',
                 'company_status': 'active',
                 'type': 'ltd',
-                'date_of_creation': '1992-12-05T00:00:00Z',
+                'date_of_creation': '1992-12-05',
                 'title': '!YOZO FASS LIMITED',
                 'address': {
                     'care_of': '',
@@ -234,7 +233,7 @@ def test_company_search_by_number(
             'company_number': '12345678',
             'company_status': 'active',
             'type': 'ltd',
-            'date_of_creation': '2015-04-13T00:00:00Z',
+            'date_of_creation': '2015-04-13',
             'title': 'Acme'
         }]
     }
@@ -259,7 +258,7 @@ def test_company_registered_office_address_local_fallback(
         'address_line_1': 'C/O FRANK HIRTH 1ST FLOOR',
         'care_of': '',
         'region': '',
-        'country': 'UNITED KINGDOM',
+        'country': 'United Kingdom',
         'address_line_2': "236 GRAY'S INN ROAD",
         'postal_code': 'WC1X 8HB',
         'po_box': '',
@@ -354,12 +353,12 @@ def test_company_profile_local_fallback(
         'company_number': '11006939',
         'company_status': 'active',
         'type': 'ltd',
-        'date_of_creation': '2017-11-10T00:00:00Z',
+        'date_of_creation': '2017-11-10',
         'registered_office_address': {
             'address_line_1': 'C/O FRANK HIRTH 1ST FLOOR',
             'address_line_2': "236 GRAY'S INN ROAD",
             'care_of': '',
-            'country': 'UNITED KINGDOM',
+            'country': 'United Kingdom',
             'locality': 'LONDON',
             'po_box': '',
             'postal_code': 'WC1X 8HB',
@@ -409,7 +408,7 @@ def test_company_profile(
         'company_number': '11006939',
         'company_status': 'active',
         'type': 'ltd',
-        'date_of_creation': '2017-10-11T00:00:00Z',
+        'date_of_creation': '2017-10-11',
         'registered_office_address': {
             'address_line_1': 'C/O Frank Hirth 1st Floor',
             'address_line_2': '236 Grays Inn Road',
