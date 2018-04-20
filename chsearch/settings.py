@@ -303,3 +303,7 @@ ELASTICSEARCH_USE_PARALLEL_BULK = os.getenv(
     'ELASTICSEARCH_USE_PARALLEL_BULK',
     'false'
 ) == 'true'
+
+
+# Companies House
+COMPANIES_HOUSE_API_KEY = os.environ['COMPANIES_HOUSE_API_KEY']

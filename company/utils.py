@@ -121,7 +121,7 @@ def create_company_document(row):
         'company_status': COMPANY_STATUSES.get(
             row['CompanyStatus'], row['CompanyStatus']
         ),
-        'company_type': COMPANY_TYPES.get(
+        'type': COMPANY_TYPES.get(
             row['CompanyCategory'], row['CompanyCategory']),
         'date_of_cessation': row['DissolutionDate'],
         'date_of_creation': row['IncorporationDate'],
