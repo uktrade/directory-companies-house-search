@@ -89,8 +89,13 @@ class CompaniesHouseClient:
 
     @classmethod
     def get(cls, url, params={}):
-        response = cls.session.get(url=url, params=params, auth=cls.get_auth())
-        if response.status_code != requests.codes.ok:
+        response = cls.session.get(
+            url=url,
+            params=params,
+            auth=cls.get_auth(),
+            timeout=2
+        )
+        if not response.ok:
             raise CompaniesHouseException()
         return response
 

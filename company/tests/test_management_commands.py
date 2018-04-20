@@ -127,8 +127,8 @@ def test_import_ch_companies_parallel_bulk(
                     'postal_code': 'AB11 7SY',
                     'region': ''
                 },
-                'address_snippet': '26 POLMUIR ROAD, ABERDEEN, UNITED KINGDOM, '
-                                    'AB11 7SY',
+                'address_snippet': '26 POLMUIR ROAD, ABERDEEN, '
+                                   'UNITED KINGDOM, AB11 7SY',
                 'company_name': '!NSPIRED LTD',
                 'company_number': 'SC421617',
                 'company_status': 'active',
