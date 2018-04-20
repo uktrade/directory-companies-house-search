@@ -43,7 +43,7 @@ def retrieve_address_from_elasticsearch(company_number):
         return None
 
 
-def search_in_es(query):
+def search_in_elasticsearch(query):
     query = Q(
         'multi_match',
         query=query,
@@ -68,7 +68,7 @@ class DataLoader:
     def retrieve_address(self, company_number):
         return self.companies_house_source.retrieve_address(company_number)
 
-    @local_fallback(fallback_function=search_in_es)
+    @local_fallback(fallback_function=search_in_elasticsearch)
     def search(self, query):
         return self.companies_house_source.search(query=query)
 
