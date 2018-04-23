@@ -36,7 +36,7 @@ def test_company_search_by_name_local_fallback(
                 'company_name': '!YOZO FASS LIMITED',
                 'company_number': '2714021',
                 'company_status': 'active',
-                'type': 'ltd',
+                'company_type': 'ltd',
                 'date_of_creation': '1992-12-05',
                 'title': '!YOZO FASS LIMITED',
                 'address': {
@@ -79,7 +79,7 @@ def test_company_search_by_name(
                     },
                     'kind': 'searchresults#company',
                     'date_of_creation': '2015-04-13',
-                    'type': 'ltd',
+                    'company_type': 'ltd',
                     'snippet': '',
                     'company_number': '12345678',
                     'matches': {
@@ -120,7 +120,7 @@ def test_company_search_by_name(
             'company_name': 'Acme',
             'company_number': '12345678',
             'company_status': 'active',
-            'type': 'ltd',
+            'company_type': 'ltd',
             'date_of_creation': '2015-04-13',
             'title': 'Acme'
         }]
@@ -147,7 +147,7 @@ def test_company_search_by_number_local_fallback(
                 'company_name': '!YOZO FASS LIMITED',
                 'company_number': '2714021',
                 'company_status': 'active',
-                'type': 'ltd',
+                'company_type': 'ltd',
                 'date_of_creation': '1992-12-05',
                 'title': '!YOZO FASS LIMITED',
                 'address': {
@@ -189,7 +189,7 @@ def test_company_search_by_number(
                     },
                     'kind': 'searchresults#company',
                     'date_of_creation': '2015-04-13',
-                    'type': 'ltd',
+                    'company_type': 'ltd',
                     'snippet': '',
                     'company_number': '12345678',
                     'matches': {
@@ -232,7 +232,7 @@ def test_company_search_by_number(
             'company_name': 'Acme',
             'company_number': '12345678',
             'company_status': 'active',
-            'type': 'ltd',
+            'company_type': 'ltd',
             'date_of_creation': '2015-04-13',
             'title': 'Acme'
         }]

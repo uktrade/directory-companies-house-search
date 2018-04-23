@@ -33,6 +33,7 @@ class CompanyDocType(DocType):
             company = meta['_source']
             company['title'] = company['company_name']
             company['address']['country'] = company['country_of_origin']
+            company['company_type'] = company['type']
             meta['_source'] = self.reformat_date(company)
         return meta
 

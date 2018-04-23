@@ -81,7 +81,6 @@ class CompaniesHouseClient:
         'address': make_api_url('company/{number}/registered-office-address'),
         'search': make_api_url('search/companies'),
     }
-    session = requests.Session()
 
     @classmethod
     def get_auth(cls):
@@ -89,7 +88,8 @@ class CompaniesHouseClient:
 
     @classmethod
     def get(cls, url, params={}):
-        response = cls.session.get(
+        session = requests.Session()
+        response = session.get(
             url=url,
             params=params,
             auth=cls.get_auth(),
