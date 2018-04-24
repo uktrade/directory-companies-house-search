@@ -74,6 +74,7 @@ def test_import_ch_companies_streaming_bulk(
                 'country_of_origin': 'United Kingdom',
                 'date_of_creation': '2012-11-04',
                 'title': '!NSPIRED LTD',
+                'company_type': 'ltd',
                 'type': 'ltd'
             },
             '_type': 'company_doc_type'
@@ -135,6 +136,7 @@ def test_import_ch_companies_parallel_bulk(
                 'country_of_origin': 'United Kingdom',
                 'date_of_creation': '2012-11-04',
                 'title': '!NSPIRED LTD',
+                'company_type': 'ltd',
                 'type': 'ltd'
                 },
             '_type': 'company_doc_type'}
@@ -204,5 +206,6 @@ def test_populate_es_test_data():
         'country_of_origin': 'United Kingdom',
         'date_of_creation': datetime.datetime(2012, 11, 9, 0, 0),
         'title': '! LTD',
+        'company_type': 'foobar',
         'type': 'foobar'
     }
