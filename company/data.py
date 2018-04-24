@@ -88,8 +88,7 @@ class CompaniesHouseClient:
 
     @classmethod
     def get(cls, url, params={}):
-        session = requests.Session()
-        response = session.get(
+        response = requests.get(
             url=url,
             params=params,
             auth=cls.get_auth(),
