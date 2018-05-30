@@ -10,7 +10,9 @@ from company.doctypes import CompanyDocType
 
 
 class CompaniesHouseException(Exception):
-    pass
+    def __init__(self, status_code, *args, **kwargs):
+        self.status_code = status_code
+        super().__init__(*args, **kwargs)
 
 
 def local_fallback(fallback_function):
@@ -72,12 +74,18 @@ class DataLoader:
     def search(self, query):
         return self.companies_house_source.search(query=query)
 
+    def list_officers(self, company_number):
+        return self.companies_house_source.list_officers(
+            company_number=company_number
+        )
+
 
 class CompaniesHouseClient:
     api_key = settings.COMPANIES_HOUSE_API_KEY
     make_api_url = partial(urljoin, 'https://api.companieshouse.gov.uk')
     endpoints = {
         'profile': make_api_url('company/{number}'),
+        'officers': make_api_url('company/{number}/officers'),
         'address': make_api_url('company/{number}/registered-office-address'),
         'search': make_api_url('search/companies'),
     }
@@ -95,7 +103,7 @@ class CompaniesHouseClient:
             timeout=2
         )
         if not response.ok:
-            raise CompaniesHouseException()
+            raise CompaniesHouseException(response.status_code)
         return response
 
     @classmethod
@@ -118,3 +126,9 @@ class CompaniesHouseClient:
             company['company_name'] = company['title']
             results.append(company)
         return results
+
+    @classmethod
+    def list_officers(cls, company_number):
+        url = cls.endpoints['officers'].format(number=company_number)
+        response = cls.get(url).json()
+        return response

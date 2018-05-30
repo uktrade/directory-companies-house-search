@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 
 from company.data import CompaniesHouseException
+from core.tests.helpers import create_response
 
 
 def test_company_search_view_missing_querystring(
@@ -20,7 +21,7 @@ def test_company_search_view_missing_querystring(
 @pytest.mark.elasticsearch_test_data
 @mock.patch(
     'company.data.CompaniesHouseClient.get',
-    mock.Mock(side_effect=CompaniesHouseException)
+    mock.Mock(side_effect=CompaniesHouseException(404))
 )
 def test_company_search_by_name_local_fallback(
         api_client, mock_signature_check
@@ -130,7 +131,7 @@ def test_company_search_by_name(
 @pytest.mark.elasticsearch_test_data
 @mock.patch(
     'company.data.CompaniesHouseClient.get',
-    mock.Mock(side_effect=CompaniesHouseException)
+    mock.Mock(side_effect=CompaniesHouseException(404))
 )
 def test_company_search_by_number_local_fallback(
         api_client, mock_signature_check
@@ -242,11 +243,9 @@ def test_company_search_by_number(
 @pytest.mark.elasticsearch_test_data
 @mock.patch(
     'company.data.CompaniesHouseClient.get',
-    mock.Mock(side_effect=CompaniesHouseException)
+    mock.Mock(side_effect=CompaniesHouseException(404))
 )
-def test_company_registered_office_address_local_fallback(
-        api_client, mock_signature_check
-):
+def test_company_registered_office_address_local_fallback(api_client):
     url = reverse(
         'api:company-registered-office-address',
         kwargs={'company_number': '11006939'}
@@ -268,9 +267,7 @@ def test_company_registered_office_address_local_fallback(
 
 @pytest.mark.elasticsearch_test_data
 @mock.patch('company.data.CompaniesHouseClient.get')
-def test_company_registered_office_address(
-        mocked_client_get, api_client, mock_signature_check
-):
+def test_company_registered_office_address(mocked_client_get, api_client):
     mocked_return = mock.Mock()
     mocked_return.json.return_value = {
         'postal_code': 'WC1X 8HB',
@@ -299,10 +296,10 @@ def test_company_registered_office_address(
 @pytest.mark.elasticsearch_test_data
 @mock.patch(
     'company.data.CompaniesHouseClient.get',
-    mock.Mock(side_effect=CompaniesHouseException)
+    mock.Mock(side_effect=CompaniesHouseException(404))
 )
 def test_company_registered_office_address_company_not_found_local_fallback(
-        api_client, mock_signature_check
+    api_client
 ):
     url = reverse(
         'api:company-registered-office-address',
@@ -316,11 +313,9 @@ def test_company_registered_office_address_company_not_found_local_fallback(
 @pytest.mark.elasticsearch_test_data
 @mock.patch(
     'company.data.CompaniesHouseClient.get',
-    mock.Mock(side_effect=CompaniesHouseException)
+    mock.Mock(side_effect=CompaniesHouseException(404))
 )
-def test_company_profile_company_not_found_local_fallback(
-        api_client, mock_signature_check
-):
+def test_company_profile_company_not_found_local_fallback(api_client):
     url = reverse(
         'api:company-profile',
         kwargs={'company_number': 'foobar'}
@@ -333,11 +328,9 @@ def test_company_profile_company_not_found_local_fallback(
 @pytest.mark.elasticsearch_test_data
 @mock.patch(
     'company.data.CompaniesHouseClient.get',
-    mock.Mock(side_effect=CompaniesHouseException)
+    mock.Mock(side_effect=CompaniesHouseException(404))
 )
-def test_company_profile_local_fallback(
-        api_client, mock_signature_check
-):
+def test_company_profile_local_fallback(api_client):
     url = reverse(
         'api:company-profile',
         kwargs={'company_number': '11006939'}
@@ -369,9 +362,7 @@ def test_company_profile_local_fallback(
 
 @pytest.mark.elasticsearch_test_data
 @mock.patch('company.data.CompaniesHouseClient.get')
-def test_company_profile(
-        mocked_client_get, api_client, mock_signature_check
-):
+def test_company_profile(mocked_client_get, api_client):
     mocked_return = mock.Mock()
     mocked_return.json.return_value = {
         'company_name': '!NNOV8 LIMITED',
@@ -417,3 +408,88 @@ def test_company_profile(
             'postal_code': 'WC1X 8HB',
         }
     }
+
+
+@pytest.mark.elasticsearch_test_data
+@mock.patch('company.data.CompaniesHouseClient.get')
+def test_list_officers(mocked_client_get, api_client):
+    expected = {
+       "active_count": "integer",
+       "etag": "string",
+       "inactive_count": "integer",
+       "items": [
+          {
+             "address": {
+                "address_line_1": "string",
+                "address_line_2": "string",
+                "care_of": "string",
+                "country": "string",
+                "locality": "string",
+                "po_box": "string",
+                "postal_code": "string",
+                "premises": "string",
+                "region": "string"
+             },
+             "appointed_on": "date",
+             "country_of_residence": "string",
+             "date_of_birth": {
+                "day": "integer",
+                "month": "integer",
+                "year": "integer"
+             },
+             "former_names": [
+                {
+                   "forenames": "string",
+                   "surname": "string"
+                }
+             ],
+             "identification": {
+                "identification_type": "string",
+                "legal_authority": "string",
+                "legal_form": "string",
+                "place_registered": "string",
+                "registration_number": "string"
+             },
+             "links": {
+                "officer": {
+                   "appointments": "string"
+                }
+             },
+             "name": "string",
+             "nationality": "string",
+             "occupation": "string",
+             "officer_role": "string",
+             "resigned_on": "date"
+          }
+       ],
+       "items_per_page": "integer",
+       "kind": "string",
+       "links": {
+          "self": "string"
+       },
+       "resigned_count": "integer",
+       "start_index": "integer",
+       "total_results": "integer"
+    }
+    mocked_client_get.return_value = create_response(json_body=expected)
+
+    url = reverse(
+        'api:company-officers',
+        kwargs={'company_number': '11006939'}
+    )
+    response = api_client.get(url)
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == expected
+
+
+@pytest.mark.elasticsearch_test_data
+@mock.patch('company.data.CompaniesHouseClient.get')
+def test_list_officers_not_found(mocked_client_get, api_client):
+    mocked_client_get.return_value = create_response(status_code=404)
+
+    url = reverse(
+        'api:company-officers',
+        kwargs={'company_number': '11006939'}
+    )
+    response = api_client.get(url)
+    assert response.status_code == 404
