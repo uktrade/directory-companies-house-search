@@ -4,16 +4,18 @@
 #
 #    pip-compile --output-file requirements_test.txt requirements_test.in
 #
-amqp==2.1.4               # via kombu
-asn1crypto==0.23.0        # via cryptography
+amqp==2.3.2               # via kombu
+asn1crypto==0.24.0        # via cryptography
+atomicwrites==1.1.5       # via pytest
+attrs==18.1.0             # via pytest
 beautifulsoup4==4.6.0
-billiard==3.5.0.2         # via celery
+billiard==3.5.0.3         # via celery
 celery==4.0.2
-cffi==1.11.2              # via cryptography
-codecov==2.0.9
+cffi==1.11.5              # via cryptography
+codecov==2.0.15
 contextlib2==0.5.5        # via raven
-coverage==4.4.1           # via codecov, pytest-cov
-cryptography==2.1.4       # via pyopenssl, requests
+coverage==4.5.1           # via codecov, pytest-cov
+cryptography==2.2.2       # via pyopenssl, requests
 directory-healthcheck==0.4.2
 dj-database-url==0.4.1
 django-celery-beat==1.0.1
@@ -21,46 +23,49 @@ django-filter==1.0.4
 django-health-check==3.0.0  # via directory-healthcheck
 django-pglocks==1.0.2
 django-redis==4.7.0
-django==1.11.5
+django==1.11.13
 django_extensions==1.6.7
 djangorestframework==3.4.7
 elasticsearch-dsl==5.2.0
 elasticsearch==5.3.0
-factory-boy==2.8.1
-faker==0.7.17             # via factory-boy
-flake8==3.0.4
-freezegun==0.3.8
+factory-boy==2.11.1
+faker==0.8.15             # via factory-boy
+flake8==3.5.0
+freezegun==0.3.10
 gevent==1.2.2
 greenlet==0.4.13          # via gevent
 gunicorn==19.5.0
 idna==2.6                 # via cryptography, requests
-kombu==4.0.2              # via celery
-mccabe==0.5.3             # via flake8
+kombu==4.2.1              # via celery
+mccabe==0.6.1             # via flake8
 mohawk==0.3.4             # via sigauth
-olefile==0.44             # via pillow
+more-itertools==4.2.0     # via pytest
+olefile==0.45.1           # via pillow
 pillow==4.2.1
+pluggy==0.6.0             # via pytest
 psycopg2==2.6.1
-py==1.4.34                # via pytest, pytest-catchlog
-pycodestyle==2.0.0        # via flake8
+py==1.5.3                 # via pytest, pytest-catchlog
+pycodestyle==2.3.1        # via flake8
 pycparser==2.18           # via cffi
-pyflakes==1.2.3           # via flake8
-pyopenssl==17.5.0         # via requests
+pyflakes==1.6.0           # via flake8
+pyopenssl==18.0.0         # via requests
 pytest-catchlog==1.2.2
-pytest-cov==2.3.1
-pytest-django==3.0.0
-pytest-sugar==0.8.0
-pytest==3.0.2
-python-dateutil==2.6.0    # via elasticsearch-dsl, faker, freezegun
+pytest-cov==2.5.1
+pytest-django==3.2.1
+pytest-sugar==0.9.1
+pytest==3.6.0
+python-dateutil==2.7.3    # via elasticsearch-dsl, faker, freezegun
 pytz==2017.2              # via celery, directory-healthcheck, django
 raven==5.19.0
-redis==2.10.5             # via django-redis
+redis==2.10.6             # via django-redis
 requests-aws4auth==0.9
+requests-mock==1.5.0
 requests[security]==2.13.0
-requests_mock==1.4.0
 sigauth==2.1.2
-six==1.11.0               # via cryptography, django-extensions, elasticsearch-dsl, faker, freezegun, mohawk, pyopenssl, python-dateutil, requests-mock
+six==1.11.0               # via cryptography, django-extensions, elasticsearch-dsl, faker, freezegun, mohawk, more-itertools, pyopenssl, pytest, python-dateutil, requests-mock
 termcolor==1.1.0          # via pytest-sugar
-urllib3==1.21.1           # via elasticsearch
-vine==1.1.3               # via amqp
-waitress==0.8.9
+text-unidecode==1.2       # via faker
+urllib3==1.22             # via elasticsearch
+vine==1.1.4               # via amqp
+waitress==1.1.0
 whitenoise==3.2.2
