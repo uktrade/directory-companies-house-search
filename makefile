@@ -37,7 +37,7 @@ docker_run:
 	docker-compose up --build
 
 DOCKER_SET_DEBUG_ENV_VARS := \
-	export DIRECTORY_CH_SEARCH_PORT=8000; \
+	export DIRECTORY_CH_SEARCH_PORT=8012; \
 	export DIRECTORY_CH_SEARCH_DEBUG=true; \
 	export DIRECTORY_CH_SEARCH_SECRET_KEY=debug; \
 	export DIRECTORY_CH_SEARCH_SIGNATURE_SECRET=debug; \
@@ -104,7 +104,7 @@ docker_build:
 DEBUG_SET_ENV_VARS := \
 	export SECRET_KEY=debug; \
 	export SIGNATURE_SECRET=debug; \
-	export PORT=8000; \
+	export PORT=8012; \
 	export DEBUG=true; \
 	export DB_NAME=directory_ch_search_debug; \
 	export DB_USER=debug; \
@@ -124,10 +124,10 @@ DEBUG_SET_ENV_VARS := \
 	export ELASTICSEARCH_AWS_ACCESS_KEY_ID=debug; \
 	export ELASTICSEARCH_AWS_SECRET_ACCESS_KEY=debug; \
 	export HEALTH_CHECK_TOKEN=debug; \
-	export COMPANIES_HOUSE_API_KEY=debug
+	export COMPANIES_HOUSE_API_KEY=$$DIRECTORY_CH_SEARCH_COMPANIES_HOUSE_API_KEY
 
 debug_webserver:
-	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER); $(DJANGO_MIGRATE_ELASTICSEARCH);
+	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER); $(DJANGO_MIGRATE_ELASTICSEARCH)
 
 debug_celery_beat_scheduler:
 	$(DEBUG_SET_ENV_VARS); celery -A chsearch beat -l info -S django

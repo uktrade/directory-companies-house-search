@@ -44,6 +44,9 @@ Requires locally running PostgreSQL (e.g. [Postgres.app](http://postgresapp.com/
 
     $ make debug
 
+### Companies House API
+In order to authenticate with the Companies House API set the `DIRECTORY_CH_SEARCH_COMPANIES_HOUSE_API_KEY` env vars on your host machine before you run the webserver.
+
 ### Run debug webserver
 
     $ make debug_webserver

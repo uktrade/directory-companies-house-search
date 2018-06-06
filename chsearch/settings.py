@@ -140,7 +140,6 @@ REST_FRAMEWORK = {
     ),
 }
 
-
 # Sentry
 RAVEN_CONFIG = {
     "dsn": os.getenv("SENTRY_DSN"),
