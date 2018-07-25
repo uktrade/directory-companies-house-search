@@ -15,7 +15,7 @@ cffi==1.11.5              # via cryptography
 codecov==2.0.15
 contextlib2==0.5.5        # via raven
 coverage==4.5.1           # via codecov, pytest-cov
-cryptography==2.2.2       # via pyopenssl, requests
+cryptography==2.3
 directory-healthcheck==0.4.2
 dj-database-url==0.4.1
 django-celery-beat==1.0.1
