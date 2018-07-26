@@ -21,3 +21,4 @@ beautifulsoup4==4.6.0
 gevent==1.2.2
 sigauth
 directory-healthcheck
+cryptography==2.3.0
