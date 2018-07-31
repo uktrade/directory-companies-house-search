@@ -1,9 +1,8 @@
 # directory-companies-house-search
 
-[![code-climate-image]][code-climate]
 [![circle-ci-image]][circle-ci]
 [![codecov-image]][codecov]
-[![gemnasium-image]][gemnasium]
+[![snyk-image]][snyk]
 
 **Export Directory Companies House search service**
 
@@ -62,14 +61,11 @@ Requires Redis (e.g. [Install and config Redis on Mac OS X via Homebrew](https:/
     $ make debug_test
 
 
-[code-climate-image]: https://codeclimate.com/github/uktrade/directory-companies-house-search/badges/issue_count.svg
-[code-climate]: https://codeclimate.com/github/uktrade/directory-companies-house-search
-
 [circle-ci-image]: https://circleci.com/gh/uktrade/directory-companies-house-search/tree/master.svg?style=svg
 [circle-ci]: https://circleci.com/gh/uktrade/directory-companies-house-search/tree/master
 
 [codecov-image]: https://codecov.io/gh/uktrade/directory-companies-house-search/branch/master/graph/badge.svg
 [codecov]: https://codecov.io/gh/uktrade/directory-companies-house-search
 
-[gemnasium-image]: https://gemnasium.com/badges/github.com/uktrade/directory-companies-house-search.svg
-[gemnasium]: https://gemnasium.com/github.com/uktrade/directory-companies-house-search
+[snyk-image]: https://snyk.io/test/github/uktrade/directory-companies-house-search/badge.svg
+[snyk]: https://snyk.io/test/github/uktrade/directory-companies-house-search
