@@ -20,5 +20,5 @@ waitress==1.1.0
 beautifulsoup4==4.6.0
 gevent==1.2.2
 sigauth
-directory-healthcheck
+directory-healthcheck==0.6.0
 cryptography==2.3.0
