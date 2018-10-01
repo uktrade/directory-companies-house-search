@@ -1,3 +1,3 @@
 #!/bin/bash -xe
 
-celery -A chsearch worker -l info
+celery -A conf worker -l info

@@ -1,7 +1,7 @@
 from django.core.cache import cache
 from django.core.management import call_command
 
-from chsearch.celery import app
+from conf.celery import app
 
 
 def lock_acquired(lock_name):

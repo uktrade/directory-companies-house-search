@@ -11,7 +11,7 @@ from rest_framework.test import APIClient
 
 @pytest.fixture(autouse=True)
 def mock_signature_check():
-    stub = patch('chsearch.signature.SignatureCheckPermission.has_permission')
+    stub = patch('conf.signature.SignatureCheckPermission.has_permission')
     stub.start()
     yield stub
     stub.stop()

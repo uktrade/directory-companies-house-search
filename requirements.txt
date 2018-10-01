@@ -12,7 +12,7 @@ celery==4.0.2
 cffi==1.11.5              # via cryptography
 contextlib2==0.5.5        # via raven
 cryptography==2.3
-directory-healthcheck==0.4.2
+directory-healthcheck==0.6.0
 dj-database-url==0.4.1
 django-celery-beat==1.0.1
 django-filter==1.0.4
