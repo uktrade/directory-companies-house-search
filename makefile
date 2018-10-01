@@ -130,10 +130,10 @@ debug_webserver:
 	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER); $(DJANGO_MIGRATE_ELASTICSEARCH)
 
 debug_celery_beat_scheduler:
-	$(DEBUG_SET_ENV_VARS); celery -A chsearch beat -l info -S django
+	$(DEBUG_SET_ENV_VARS); celery -A conf beat -l info -S django
 
 debug_celery_worker:
-	$(DEBUG_SET_ENV_VARS); celery -A chsearch worker -l info
+	$(DEBUG_SET_ENV_VARS); celery -A conf worker -l info
 
 DEBUG_CREATE_DB := \
 	psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = '$$DB_NAME'" | \

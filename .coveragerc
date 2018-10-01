@@ -1,5 +1,5 @@
 [run]
-omit = */admin.py,chsearch/wsgi.py,manage.py,*/migrations/*,*/tests/*,.venv/*,conftest.py,chsearch/settings.py,chsearch/celery.py,company/doctypes.py
+omit = */admin.py,conf/wsgi.py,manage.py,*/migrations/*,*/tests/*,.venv/*,conftest.py,conf/settings.py,conf/celery.py,company/doctypes.py
 
 [report]
 exclude_lines =
