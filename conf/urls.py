@@ -1,3 +1,5 @@
+import directory_healthcheck.views
+
 from django.conf.urls import url, include
 from django.contrib import admin
 
@@ -39,22 +41,27 @@ urlpatterns = [
     url(
         r'^healthcheck/database/$',
         healthcheck.views.DatabaseAPIView.as_view(),
-        name='health-check-database'
+        name='healthcheck-database'
     ),
     url(
         r'^healthcheck/cache/$',
         healthcheck.views.CacheAPIView.as_view(),
-        name='health-check-cache'
+        name='healthcheck-cache'
     ),
     url(
         r'^healthcheck/elasticsearch/$',
         healthcheck.views.ElasticsearchAPIView.as_view(),
-        name='health-check-elastic-search'
+        name='healthcheck-elastic-search'
     ),
     url(
         r'^healthcheck/ping/$',
-        healthcheck.views.PingAPIView.as_view(),
-        name='health-check-ping'
+        directory_healthcheck.views.PingView.as_view(),
+        name='healthcheck-ping'
+    ),
+    url(
+        r'^healthcheck/sentry/$',
+        directory_healthcheck.views.SentryHealthcheckView.as_view(),
+        name='healthcheck-sentry'
     ),
     url(
         r'^api/', include(company_urlpatterns, namespace='api')
