@@ -19,12 +19,14 @@ class RegisteredOfficeAddressSerializer(serializers.Serializer):
 
 
 class CompanySerializer(serializers.Serializer):
-    address_snippet = serializers.CharField(required=False, allow_blank=True)
+    address_snippet = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True
+    )
     company_name = serializers.CharField()
     company_number = serializers.CharField()
     company_status = serializers.CharField()
     date_of_cessation = serializers.DateField(required=False)
-    date_of_creation = serializers.DateField()
+    date_of_creation = serializers.DateField(required=False)
 
 
 class CompanySearchResultSerializer(CompanySerializer):
