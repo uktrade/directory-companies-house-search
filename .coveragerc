@@ -1,5 +1,16 @@
 [run]
-omit = */admin.py,conf/wsgi.py,manage.py,*/migrations/*,*/tests/*,.venv/*,conftest.py,conf/settings.py,conf/celery.py,company/doctypes.py
+omit =
+    */admin.py
+    conf/wsgi.py
+    manage.py
+    */migrations/*
+    */tests/*
+    .venv/*
+    conftest.py
+    conf/settings.py
+    conf/celery.py
+    company/doctypes.py
+    *__init__*
 
 [report]
 exclude_lines =

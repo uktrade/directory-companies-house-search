@@ -93,28 +93,7 @@ def stream_to_file_pointer(url, file_pointer):
 
 
 def create_company_document(row):
-    address = {
-        'care_of': row['RegAddress.CareOf'],
-        'po_box': row['RegAddress.POBox'],
-        'address_line_1': row['RegAddress.AddressLine1'],
-        'address_line_2': row['RegAddress.AddressLine2'],
-        'locality': row['RegAddress.PostTown'],
-        'region': row['RegAddress.County'],
-        'country': row['RegAddress.Country'],
-        'postal_code': row['RegAddress.PostCode']
-    }
-    address_snippet_elements = filter(
-        lambda x: x != '',
-        (
-            address['address_line_1'],
-            address['address_line_2'],
-            address['locality'],
-            address['region'],
-            address['country'],
-            address['postal_code']
-        )
-    )
-    address_snippet = ', '.join(address_snippet_elements)
+    row_formatter = RowFormatter(row)
     company = {
         'company_name': row['CompanyName'],
         'company_number': row['CompanyNumber'],
@@ -126,10 +105,62 @@ def create_company_document(row):
         'date_of_cessation': row['DissolutionDate'],
         'date_of_creation': row['IncorporationDate'],
         'country_of_origin': row['CountryOfOrigin'],
-        'address_snippet': address_snippet,
-        'address': address
+        'sic_codes': row_formatter.sic_codes,
+        'address_snippet': row_formatter.address_snippet,
+        'address': row_formatter.address,
     }
     return CompanyDocType(
         meta={'id': company['company_number']},
         **company
     )
+
+
+class RowFormatter:
+
+    def __init__(self, row):
+        self.row = row
+
+    @property
+    def sic_codes(self):
+        codes = []
+        filtered_codes = self.filter_empty(
+            self.row['SICCode.SicText_1'],
+            self.row['SICCode.SicText_2'],
+            self.row['SICCode.SicText_3'],
+            self.row['SICCode.SicText_4'],
+        )
+        for sic_code in filtered_codes:
+            try:
+                codes.append(sic_code.split(' - ')[0])
+            except IndexError:
+                pass
+        return codes
+
+    @property
+    def address(self):
+        return {
+            'care_of': self.row['RegAddress.CareOf'],
+            'po_box': self.row['RegAddress.POBox'],
+            'address_line_1': self.row['RegAddress.AddressLine1'],
+            'address_line_2': self.row['RegAddress.AddressLine2'],
+            'locality': self.row['RegAddress.PostTown'],
+            'region': self.row['RegAddress.County'],
+            'country': self.row['RegAddress.Country'],
+            'postal_code': self.row['RegAddress.PostCode']
+        }
+
+    @property
+    def address_snippet(self):
+        filtered_address = self.filter_empty(
+            self.address['address_line_1'],
+            self.address['address_line_2'],
+            self.address['locality'],
+            self.address['region'],
+            self.address['country'],
+            self.address['postal_code']
+        )
+        return ', '.join(filtered_address)
+
+    @staticmethod
+    def filter_empty(*values):
+        return filter(lambda x: x != '', values)

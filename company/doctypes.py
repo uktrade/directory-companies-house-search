@@ -23,6 +23,7 @@ class CompanyDocType(DocType):
     type = field.Text()
     date_of_cessation = field.Date()
     date_of_creation = field.Date()
+    sic_codes = field.Text()
 
     class Meta:
         index = settings.ELASTICSEARCH_COMPANY_INDEX_ALIAS
