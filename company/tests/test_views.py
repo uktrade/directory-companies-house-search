@@ -356,7 +356,8 @@ def test_company_profile_local_fallback(api_client):
             'po_box': '',
             'postal_code': 'WC1X 8HB',
             'region': ''
-        }
+        },
+        'sic_codes': ['62090'],
     }
 
 
@@ -406,7 +407,8 @@ def test_company_profile(mocked_client_get, api_client):
             'country': 'United Kingdom',
             'locality': 'London',
             'postal_code': 'WC1X 8HB',
-        }
+        },
+        'sic_codes': ['62090'],
     }
 
 
