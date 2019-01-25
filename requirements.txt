@@ -9,17 +9,20 @@ asn1crypto==0.24.0        # via cryptography
 beautifulsoup4==4.6.0
 billiard==3.5.0.3         # via celery
 celery==4.0.2
+certifi==2018.11.29       # via requests
 cffi==1.11.5              # via cryptography
+chardet==3.0.4            # via requests
 contextlib2==0.5.5        # via raven
 cryptography==2.3
 directory-healthcheck==0.6.0
 dj-database-url==0.4.1
 django-celery-beat==1.0.1
+django-environ==0.4.5
 django-filter==1.0.4
 django-health-check==3.0.0  # via directory-healthcheck
 django-pglocks==1.0.2
 django-redis==4.7.0
-django==1.11.13
+django==1.11.18
 django_extensions==1.6.7
 djangorestframework==3.4.7
 elasticsearch-dsl==5.2.0
@@ -40,10 +43,10 @@ pytz==2017.2              # via celery, directory-healthcheck, django
 raven==5.19.0
 redis==2.10.6             # via django-redis
 requests-aws4auth==0.9
-requests[security]==2.13.0
+requests[security]==2.21.0
 sigauth==2.1.2
 six==1.11.0               # via cryptography, django-extensions, elasticsearch-dsl, mohawk, pyopenssl, python-dateutil
-urllib3==1.22             # via elasticsearch
+urllib3==1.24.1
 vine==1.1.4               # via amqp
 waitress==1.1.0
 whitenoise==3.2.2

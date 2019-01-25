@@ -3,9 +3,12 @@ import os
 import dj_database_url
 
 from elasticsearch import RequestsHttpConnection
+import environ
 from elasticsearch_dsl.connections import connections
 from requests_aws4auth import AWS4Auth
 
+
+env = environ.Env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -261,24 +264,53 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_BROKER_POOL_LIMIT = None
 
-# Initialise default Elasticsearch connection
-ELASTICSEARCH_ENDPOINT = os.getenv("ELASTICSEARCH_ENDPOINT")
-connections.create_connection(
-    alias='default',
-    hosts=[{
-        'host': ELASTICSEARCH_ENDPOINT,
-        'port': int(os.getenv("ELASTICSEARCH_PORT", 443))
-    }],
-    http_auth=AWS4Auth(
-        os.getenv("ELASTICSEARCH_AWS_ACCESS_KEY_ID"),
-        os.getenv("ELASTICSEARCH_AWS_SECRET_ACCESS_KEY"),
-        os.getenv("ELASTICSEARCH_AWS_REGION", 'eu-west-1'),
-        'es'
-    ),
-    use_ssl=os.getenv("ELASTICSEARCH_USE_SSL") != 'false',
-    verify_certs=os.getenv("ELASTICSEARCH_VERIFY_CERTS") != 'false',
-    connection_class=RequestsHttpConnection
-)
+# Elasticsearch
+
+# aws, localhost, or govuk-paas
+ELASTICSEARCH_PROVIDER = env.str('ELASTICSEARCH_PROVIDER', 'aws').lower()
+
+VCAP_SERVICES = env.json('VCAP_SERVICES', {})
+
+if ELASTICSEARCH_PROVIDER == 'govuk-paas':
+    if 'elasticsearch' in VCAP_SERVICES:
+        ELASTICSEARCH_URL = (
+            VCAP_SERVICES['elasticsearch'][0]['credentials']['uri']
+        )
+    else:
+        ELASTICSEARCH_URL = env.str('ELASTICSEARCH_URL')
+    connections.create_connection(
+        alias='default',
+        hosts=[ELASTICSEARCH_URL],
+        connection_class=RequestsHttpConnection,
+    )
+elif ELASTICSEARCH_PROVIDER == 'aws':
+    connections.create_connection(
+        alias='default',
+        hosts=[{
+            'host': env.str('ELASTICSEARCH_ENDPOINT'),
+            'port': env.int('ELASTICSEARCH_PORT', 443)
+        }],
+        http_auth=AWS4Auth(
+            env.str('ELASTICSEARCH_AWS_ACCESS_KEY_ID', ''),
+            env.str('ELASTICSEARCH_AWS_SECRET_ACCESS_KEY', ''),
+            env.str('ELASTICSEARCH_AWS_REGION', 'eu-west-2'),
+            'es'
+        ),
+        use_ssl=env.bool('ELASTICSEARCH_USE_SSL', True),
+        verify_certs=env.bool('ELASTICSEARCH_VERIFY_CERTS', True),
+        connection_class=RequestsHttpConnection
+    )
+elif ELASTICSEARCH_PROVIDER == 'localhost':
+    connections.create_connection(
+        alias='default',
+        hosts=['localhost:9200'],
+        use_ssl=False,
+        verify_certs=False,
+        connection_class=RequestsHttpConnection
+    )
+else:
+    raise NotImplementedError()
+
 ELASTICSEARCH_COMPANY_INDEX_ALIAS = os.getenv(
     'ELASTICSEARCH_COMPANY_INDEX_ALIAS', 'ch-companies'
 )

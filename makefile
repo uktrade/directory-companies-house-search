@@ -124,7 +124,8 @@ DEBUG_SET_ENV_VARS := \
 	export ELASTICSEARCH_AWS_ACCESS_KEY_ID=debug; \
 	export ELASTICSEARCH_AWS_SECRET_ACCESS_KEY=debug; \
 	export HEALTH_CHECK_TOKEN=debug; \
-	export COMPANIES_HOUSE_API_KEY=$$DIRECTORY_CH_SEARCH_COMPANIES_HOUSE_API_KEY
+	export COMPANIES_HOUSE_API_KEY=$$DIRECTORY_CH_SEARCH_COMPANIES_HOUSE_API_KEY; \
+	export ELASTICSEARCH_PROVIDER=localhost
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER); $(DJANGO_MIGRATE_ELASTICSEARCH)
@@ -173,19 +174,13 @@ integration_tests:
 	cd directory-tests && \
 	make docker_integration_tests
 
-compile_requirements:
-	pip-compile requirements.in
-
 upgrade_requirements:
 	pip-compile --upgrade requirements.in
-
-compile_test_requirements:
-	pip-compile requirements_test.in
 
 upgrade_test_requirements:
 	pip-compile --upgrade requirements_test.in
 
-compile_all_requirements: compile_requirements compile_test_requirements
+compile_requirements: pip-compile requirements.in && pip-compile requirements_test.in
 
 upgrade_all_requirements: upgrade_requirements upgrade_test_requirements
 
