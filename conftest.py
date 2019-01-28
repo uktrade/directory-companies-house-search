@@ -4,7 +4,6 @@ from unittest.mock import patch
 import pytest
 import requests_mock
 
-from django.conf import settings
 from django.core.management import call_command
 from rest_framework.test import APIClient
 
@@ -32,10 +31,7 @@ def api_client():
 
 @pytest.fixture
 def requests_mocker():
-    elasticsearch_url = 'http://{address}:9200/.*'.format(
-        address=settings.ELASTICSEARCH_ENDPOINT
-    )
-    elasticsearch_url_compiled = re.compile(elasticsearch_url)
+    elasticsearch_url_compiled = re.compile('http://localhost:9200/.*')
     mocker = requests_mock.mock()
     mocker.register_uri('GET', elasticsearch_url_compiled)
     mocker.register_uri('POST', elasticsearch_url_compiled)
