@@ -18,12 +18,12 @@ codecov==2.0.15
 contextlib2==0.5.5        # via raven
 coverage==4.5.1           # via codecov, pytest-cov
 cryptography==2.3
-directory-healthcheck==0.6.0
+directory-healthcheck==1.0.1
 dj-database-url==0.4.1
 django-celery-beat==1.0.1
 django-environ==0.4.5
 django-filter==1.0.4
-django-health-check==3.0.0  # via directory-healthcheck
+django-health-check==3.8.0  # via directory-healthcheck
 django-pglocks==1.0.2
 django-redis==4.7.0
 django==1.11.18
@@ -58,7 +58,7 @@ pytest-django==3.2.1
 pytest-sugar==0.9.1
 pytest==3.6.0
 python-dateutil==2.7.3    # via elasticsearch-dsl, faker, freezegun
-pytz==2017.2              # via celery, directory-healthcheck, django
+pytz==2017.2              # via celery, django
 raven==5.19.0
 redis==2.10.6             # via celery, django-redis
 requests-aws4auth==0.9

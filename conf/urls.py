@@ -4,7 +4,6 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 import company.views
-import healthcheck.views
 
 
 admin.autodiscover()
@@ -39,29 +38,14 @@ urlpatterns = [
         include(admin.site.urls)
     ),
     url(
-        r'^healthcheck/database/$',
-        healthcheck.views.DatabaseAPIView.as_view(),
-        name='healthcheck-database'
-    ),
-    url(
-        r'^healthcheck/cache/$',
-        healthcheck.views.CacheAPIView.as_view(),
-        name='healthcheck-cache'
-    ),
-    url(
-        r'^healthcheck/elasticsearch/$',
-        healthcheck.views.ElasticsearchAPIView.as_view(),
-        name='healthcheck-elastic-search'
+        r'^healthcheck/$',
+        directory_healthcheck.views.HealthcheckView.as_view(),
+        name='healthcheck'
     ),
     url(
         r'^healthcheck/ping/$',
         directory_healthcheck.views.PingView.as_view(),
-        name='healthcheck-ping'
-    ),
-    url(
-        r'^healthcheck/sentry/$',
-        directory_healthcheck.views.SentryHealthcheckView.as_view(),
-        name='healthcheck-sentry'
+        name='ping'
     ),
     url(
         r'^api/', include(company_urlpatterns, namespace='api')

@@ -14,12 +14,12 @@ cffi==1.11.5              # via cryptography
 chardet==3.0.4            # via requests
 contextlib2==0.5.5        # via raven
 cryptography==2.3
-directory-healthcheck==0.6.0
+directory-healthcheck==1.0.1
 dj-database-url==0.4.1
 django-celery-beat==1.0.1
 django-environ==0.4.5
 django-filter==1.0.4
-django-health-check==3.0.0  # via directory-healthcheck
+django-health-check==3.8.0  # via directory-healthcheck
 django-pglocks==1.0.2
 django-redis==4.7.0
 django==1.11.18
@@ -39,7 +39,7 @@ psycopg2==2.6.1
 pycparser==2.18           # via cffi
 pyopenssl==18.0.0         # via requests
 python-dateutil==2.7.3    # via elasticsearch-dsl
-pytz==2017.2              # via celery, directory-healthcheck, django
+pytz==2017.2              # via celery, django
 raven==5.19.0
 redis==2.10.6             # via celery, django-redis
 requests-aws4auth==0.9
