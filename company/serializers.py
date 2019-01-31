@@ -24,16 +24,18 @@ class CompanySerializer(serializers.Serializer):
     )
     company_name = serializers.CharField()
     company_number = serializers.CharField()
-    company_status = serializers.CharField(required=False)
+    company_status = serializers.CharField(required=False, allow_null=True)
     date_of_cessation = serializers.DateField(required=False)
-    date_of_creation = serializers.DateField(required=False)
+    date_of_creation = serializers.DateField(required=False, allow_null=True)
 
 
 class CompanySearchResultSerializer(CompanySerializer):
     title = serializers.CharField()
     company_type = serializers.CharField()
     address = serializers.DictField(
-        child=serializers.CharField(allow_blank=True)
+        child=serializers.CharField(allow_blank=True),
+        allow_null=True,
+        required=False
     )
 
 
