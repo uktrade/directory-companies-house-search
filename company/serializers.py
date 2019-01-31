@@ -28,6 +28,11 @@ class CompanySerializer(serializers.Serializer):
     date_of_cessation = serializers.DateField(required=False)
     date_of_creation = serializers.DateField(required=False, allow_null=True)
 
+    def to_internal_value(self, data):
+        if data.get('date_of_cessation', '').lower() == 'unknown':
+            del data['date_of_cessation']
+        return super().to_internal_value(data)
+
 
 class CompanySearchResultSerializer(CompanySerializer):
     title = serializers.CharField()
