@@ -20,7 +20,7 @@ waitress==1.1.0
 beautifulsoup4==4.6.0
 gevent==1.2.2
 sigauth
-directory-healthcheck==0.6.0
+directory-healthcheck==1.0.1
 cryptography==2.3.0
 urllib3>=1.23.0<2.0.0
 django-environ==0.4.5

@@ -114,7 +114,8 @@ DEBUG_SET_ENV_VARS := \
 	export CSRF_COOKIE_SECURE=false; \
 	export SESSION_COOKIE_SECURE=false; \
 	export GECKO_API_KEY=gecko; \
-	export REDIS_URL=redis://127.0.0.1:6379; \
+	export REDIS_CELERY_URL=redis://127.0.0.1:6379; \
+	export REDIS_REDIS_URL=redis://127.0.0.1:6379; \
 	export CELERY_BROKER_URL=debug; \
 	export CELERY_RESULT_BACKEND=debug; \
 	export ELASTICSEARCH_ENDPOINT=localhost; \
@@ -180,7 +181,9 @@ upgrade_requirements:
 upgrade_test_requirements:
 	pip-compile --upgrade requirements_test.in
 
-compile_requirements: pip-compile requirements.in && pip-compile requirements_test.in
+compile_requirements:
+	pip-compile requirements.in
+	pip-compile requirements_test.in
 
 upgrade_all_requirements: upgrade_requirements upgrade_test_requirements
 
