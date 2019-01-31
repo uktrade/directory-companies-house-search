@@ -150,15 +150,14 @@ def test_import_ch_companies_parallel_bulk(
 @mock.patch('company.management.commands.import_ch_companies.'
             'Command.populate_new_index', mock.Mock())
 def test_import_ch_companies_delete_indices(
-        mocked_indices_client,
-        requests_mocker
+    mocked_indices_client, requests_mocker
 ):
-        mocked_indices_client().get_alias.return_value = {'foo': 'bar'}
-        call_command('import_ch_companies')
+    mocked_indices_client().get_alias.return_value = {'foo': 'bar'}
+    call_command('import_ch_companies')
 
-        mocked_indices_client().get_alias.assert_called_once_with(
-            name=settings.ELASTICSEARCH_COMPANY_INDEX_ALIAS
-        )
+    mocked_indices_client().get_alias.assert_called_once_with(
+        name=settings.ELASTICSEARCH_COMPANY_INDEX_ALIAS
+    )
 
 
 class FalseAdvisoryMock:
@@ -179,11 +178,9 @@ class FalseAdvisoryMock:
     'company.management.commands.import_ch_companies.advisory_lock',
     FalseAdvisoryMock
 )
-def test_import_ch_companies_pass_if_locked(
-        mocked_create_new_index,
-):
-        call_command('import_ch_companies')
-        assert mocked_create_new_index.called is False
+def test_import_ch_companies_pass_if_locked(mocked_create_new_index):
+    call_command('import_ch_companies')
+    assert mocked_create_new_index.called is False
 
 
 def test_populate_es_test_data():
