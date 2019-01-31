@@ -42,7 +42,7 @@ DEBUG_SET_ENV_VARS := \
 	export SESSION_COOKIE_SECURE=false; \
 	export GECKO_API_KEY=gecko; \
 	export REDIS_CELERY_URL=redis://127.0.0.1:6379; \
-	export REDIS_REDIS_URL=redis://127.0.0.1:6379; \
+	export REDIS_CACHE_URL=redis://127.0.0.1:6379; \
 	export CELERY_BROKER_URL=debug; \
 	export CELERY_RESULT_BACKEND=debug; \
 	export ELASTICSEARCH_ENDPOINT=localhost; \
@@ -53,6 +53,9 @@ DEBUG_SET_ENV_VARS := \
 	export ELASTICSEARCH_AWS_SECRET_ACCESS_KEY=debug; \
 	export HEALTH_CHECK_TOKEN=debug; \
 	export ELASTICSEARCH_PROVIDER=localhost
+
+TEST_SET_ENV_VARS := \
+	export COMPANIES_HOUSE_API_KEY=debug
 
 debug_webserver:
 	 $(DEBUG_SET_ENV_VARS); $(DJANGO_WEBSERVER); $(DJANGO_MIGRATE_ELASTICSEARCH)
@@ -73,10 +76,10 @@ debug_db:
 	$(DEBUG_SET_ENV_VARS) && $(DEBUG_CREATE_DB)
 
 debug_pytest:
-	$(DEBUG_SET_ENV_VARS) && $(DJANGO_MIGRATE) && $(COLLECT_STATIC) && $(PYTEST)
+	$(DEBUG_SET_ENV_VARS) && $(TEST_SET_ENV_VARS) && $(DJANGO_MIGRATE) && $(COLLECT_STATIC) && $(PYTEST)
 
 debug_test:
-	$(DEBUG_SET_ENV_VARS) && $(DJANGO_MIGRATE) && $(COLLECT_STATIC) && $(FLAKE8) && $(PYTEST)
+	$(DEBUG_SET_ENV_VARS) && $(TEST_SET_ENV_VARS) && $(DJANGO_MIGRATE) && $(COLLECT_STATIC) && $(FLAKE8) && $(PYTEST)
 
 debug_manage:
 	$(DEBUG_SET_ENV_VARS) && ./manage.py $(cmd)

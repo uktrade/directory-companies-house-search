@@ -84,8 +84,8 @@ if 'redis' in VCAP_SERVICES:
     REDIS_CACHE_URL = VCAP_SERVICES['redis'][0]['credentials']['uri']
     REDIS_CELERY_URL = REDIS_CACHE_URL.replace('rediss://', 'redis://')
 else:
-    REDIS_CACHE_URL = env.str('REDIS_CACHE_URL', '')
-    REDIS_CELERY_URL = env.str('REDIS_CELERY_URL', '')
+    REDIS_CACHE_URL = env.str('REDIS_CACHE_URL')
+    REDIS_CELERY_URL = env.str('REDIS_CELERY_URL')
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
