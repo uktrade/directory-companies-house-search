@@ -10,7 +10,7 @@ atomicwrites==1.1.5       # via pytest
 attrs==18.1.0             # via pytest
 beautifulsoup4==4.6.0
 billiard==3.5.0.3         # via celery
-celery==4.0.2
+celery[redis]==4.2.1
 certifi==2018.11.29       # via requests
 cffi==1.11.5              # via cryptography
 chardet==3.0.4            # via requests
@@ -60,7 +60,7 @@ pytest==3.6.0
 python-dateutil==2.7.3    # via elasticsearch-dsl, faker, freezegun
 pytz==2017.2              # via celery, directory-healthcheck, django
 raven==5.19.0
-redis==2.10.6             # via django-redis
+redis==2.10.6             # via celery, django-redis
 requests-aws4auth==0.9
 requests-mock==1.5.0
 requests[security]==2.21.0

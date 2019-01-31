@@ -8,7 +8,7 @@ amqp==2.3.2               # via kombu
 asn1crypto==0.24.0        # via cryptography
 beautifulsoup4==4.6.0
 billiard==3.5.0.3         # via celery
-celery==4.0.2
+celery[redis]==4.2.1
 certifi==2018.11.29       # via requests
 cffi==1.11.5              # via cryptography
 chardet==3.0.4            # via requests
@@ -41,7 +41,7 @@ pyopenssl==18.0.0         # via requests
 python-dateutil==2.7.3    # via elasticsearch-dsl
 pytz==2017.2              # via celery, directory-healthcheck, django
 raven==5.19.0
-redis==2.10.6             # via django-redis
+redis==2.10.6             # via celery, django-redis
 requests-aws4auth==0.9
 requests[security]==2.21.0
 sigauth==2.1.2
