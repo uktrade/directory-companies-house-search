@@ -18,7 +18,7 @@ BASE_DIR = os.path.dirname(PROJECT_ROOT)
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True if (os.getenv('DEBUG') == 'true') else False
+DEBUG = env.bool('DEBUG', False)
 
 # As app is running behind a host-based router supplied by Heroku or other
 # PaaS, we can open ALLOWED_HOSTS
@@ -76,6 +76,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'conf.wsgi.application'
 
+VCAP_SERVICES = env.json('VCAP_SERVICES', {})
+
+if 'redis' in VCAP_SERVICES:
+    REDIS_CACHE_URL = VCAP_SERVICES['redis'][0]['credentials']['uri']
+    REDIS_CELERY_URL = REDIS_CACHE_URL.replace('rediss://', 'redis://')
+else:
+    REDIS_CACHE_URL = env.str('REDIS_CACHE_URL', '')
+    REDIS_CELERY_URL = env.str('REDIS_CELERY_URL', '')
+
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 DATABASES = {
@@ -86,7 +95,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": os.getenv('REDIS_URL'),
+        "LOCATION": REDIS_CACHE_URL,
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -114,7 +123,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 if not os.path.exists(STATIC_ROOT):
     os.makedirs(STATIC_ROOT)
-STATIC_HOST = os.environ.get('STATIC_HOST', '')
+STATIC_HOST = env.str('STATIC_HOST', '')
 STATIC_URL = STATIC_HOST + '/api-static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -128,10 +137,10 @@ for static_dir in STATICFILES_DIRS:
         os.makedirs(static_dir)
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = env.str("SECRET_KEY")
 
 # Application authorisation
-SIGNATURE_SECRET = os.getenv("SIGNATURE_SECRET")
+SIGNATURE_SECRET = env.str("SIGNATURE_SECRET")
 
 # DRF
 REST_FRAMEWORK = {
@@ -145,7 +154,7 @@ REST_FRAMEWORK = {
 
 # Sentry
 RAVEN_CONFIG = {
-    "dsn": os.getenv("SENTRY_DSN"),
+    "dsn": env.str("SENTRY_DSN", ""),
 }
 
 # Logging for development
@@ -244,20 +253,20 @@ else:
 # Admin proxy
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SESSION_COOKIE_DOMAIN = os.getenv('SESSION_COOKIE_DOMAIN')
+SESSION_COOKIE_DOMAIN = env.str('SESSION_COOKIE_DOMAIN', '')
 SESSION_COOKIE_NAME = 'chsearch_session_id'
-SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE') != 'false'
+SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', True)
 SESSION_COOKIE_HTTPONLY = True
-CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE') != 'false'
+CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', True)
 
 
-GECKO_API_KEY = os.getenv('GECKO_API_KEY')
+GECKO_API_KEY = env.str('GECKO_API_KEY', '')
 # At present geckoboard's api assumes the password will always be X
-GECKO_API_PASS = os.getenv('GECKO_API_PASS', 'X')
+GECKO_API_PASS = env.str('GECKO_API_PASS', 'X')
 
 # Celery
-CELERY_BROKER_URL = os.getenv('REDIS_URL')
-CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+CELERY_BROKER_URL = REDIS_CELERY_URL
+CELERY_RESULT_BACKEND = REDIS_CELERY_URL
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -269,7 +278,6 @@ CELERY_BROKER_POOL_LIMIT = None
 # aws, localhost, or govuk-paas
 ELASTICSEARCH_PROVIDER = env.str('ELASTICSEARCH_PROVIDER', 'aws').lower()
 
-VCAP_SERVICES = env.json('VCAP_SERVICES', {})
 
 if ELASTICSEARCH_PROVIDER == 'govuk-paas':
     if 'elasticsearch' in VCAP_SERVICES:
@@ -311,30 +319,30 @@ elif ELASTICSEARCH_PROVIDER == 'localhost':
 else:
     raise NotImplementedError()
 
-ELASTICSEARCH_COMPANY_INDEX_ALIAS = os.getenv(
+ELASTICSEARCH_COMPANY_INDEX_ALIAS = env.str(
     'ELASTICSEARCH_COMPANY_INDEX_ALIAS', 'ch-companies'
 )
 
 # health check
-HEALTH_CHECK_TOKEN = os.environ['HEALTH_CHECK_TOKEN']
+HEALTH_CHECK_TOKEN = env.str('HEALTH_CHECK_TOKEN')
 
 CH_DOWNLOAD_URL = 'http://download.companieshouse.gov.uk/en_output.html'
-ELASTICSEARCH_CHUNK_SIZE = os.getenv(
+ELASTICSEARCH_CHUNK_SIZE = env.int(
     'ELASTICSEARCH_CHUNK_SIZE', 10000
 )
-ELASTICSEARCH_TIMEOUT_SECONDS = os.getenv(
+ELASTICSEARCH_TIMEOUT_SECONDS = env.int(
     'ELASTICSEARCH_TIMEOUT_SECONDS',
     30
 )
-ELASTICSEARCH_THREAD_COUNT = os.getenv(
+ELASTICSEARCH_THREAD_COUNT = env.int(
     'ELASTICSEARCH_THREAD_COUNT',
     4
 )
-ELASTICSEARCH_USE_PARALLEL_BULK = os.getenv(
+ELASTICSEARCH_USE_PARALLEL_BULK = env.bool(
     'ELASTICSEARCH_USE_PARALLEL_BULK',
-    'false'
-) == 'true'
+    False
+)
 
 
 # Companies House
-COMPANIES_HOUSE_API_KEY = os.environ['COMPANIES_HOUSE_API_KEY']
+COMPANIES_HOUSE_API_KEY = env.str('COMPANIES_HOUSE_API_KEY')
