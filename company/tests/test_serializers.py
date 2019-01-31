@@ -33,3 +33,13 @@ def test_company_serializer_null_date_of_creation():
     serializer.is_valid()
 
     assert 'date_of_creation' not in serializer.errors
+
+
+def test_company_serializer_unknown_date_of_cessation():
+    serializer = serializers.CompanySerializer(
+        data={'date_of_cessation': 'Unknown'}
+    )
+
+    serializer.is_valid()
+
+    assert 'date_of_cessation' not in serializer.errors
