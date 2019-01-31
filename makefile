@@ -180,7 +180,9 @@ upgrade_requirements:
 upgrade_test_requirements:
 	pip-compile --upgrade requirements_test.in
 
-compile_requirements: pip-compile requirements.in && pip-compile requirements_test.in
+compile_requirements:
+	pip-compile requirements.in
+	pip-compile requirements_test.in
 
 upgrade_all_requirements: upgrade_requirements upgrade_test_requirements
 
