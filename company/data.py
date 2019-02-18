@@ -1,10 +1,12 @@
 from functools import partial, wraps
 from urllib.parse import urljoin
 
-import requests
-from django.conf import settings
 from elasticsearch import NotFoundError
 from elasticsearch_dsl import Q
+import requests
+from requests.exceptions import RequestException
+
+from django.conf import settings
 
 from company.doctypes import CompanyDocType
 
@@ -21,7 +23,7 @@ def local_fallback(fallback_function):
         def wrapper(class_instance, *args, **kwargs):
             try:
                 return func(class_instance, *args, **kwargs)
-            except CompaniesHouseException:
+            except (CompaniesHouseException, RequestException):
                 return fallback_function(*args, **kwargs)
         return wrapper
 
