@@ -1,5 +1,6 @@
 from unittest import mock
 
+from requests import exceptions
 import pytest
 from rest_framework import status
 from rest_framework.reverse import reverse
@@ -8,9 +9,27 @@ from company.data import CompaniesHouseException
 from core.tests.helpers import create_response
 
 
-def test_company_search_view_missing_querystring(
-        api_client, mock_signature_check
-):
+expected_exceptions = (
+    exceptions.RequestException(),
+    exceptions.HTTPError(),
+    exceptions.ConnectionError(),
+    exceptions.ProxyError(),
+    exceptions.SSLError(),
+    exceptions.Timeout(),
+    exceptions.ConnectTimeout(),
+    exceptions.ReadTimeout(),
+    CompaniesHouseException(404),
+)
+
+
+@pytest.fixture(autouse=True)
+def mock_client_get():
+    stub = mock.patch('company.data.CompaniesHouseClient.get')
+    yield stub.start()
+    stub.stop
+
+
+def test_company_search_view_missing_querystring(api_client):
     url = reverse('api:search-companies')
     response = api_client.get(url)
 
@@ -18,14 +37,12 @@ def test_company_search_view_missing_querystring(
     assert response.json() == {'q': ['This field is required.']}
 
 
+@pytest.mark.parametrize('exception', expected_exceptions)
 @pytest.mark.elasticsearch_test_data
-@mock.patch(
-    'company.data.CompaniesHouseClient.get',
-    mock.Mock(side_effect=CompaniesHouseException(404))
-)
 def test_company_search_by_name_local_fallback(
-        api_client, mock_signature_check
+    mock_client_get, api_client, exception
 ):
+    mock_client_get.side_effect = exception
     url = reverse('api:search-companies')
     response = api_client.get(url + '?q=yozo fass')
     assert response.status_code == status.HTTP_200_OK
@@ -55,54 +72,51 @@ def test_company_search_by_name_local_fallback(
 
 
 @pytest.mark.elasticsearch_test_data
-@mock.patch('company.data.CompaniesHouseClient.get')
-def test_company_search_by_name(
-        mocked_client_get, api_client, mock_signature_check
-):
+def test_company_search_by_name(mock_client_get, api_client):
     mocked_return = mock.Mock()
     mocked_return.json.return_value = {
-            'items_per_page': 20,
-            'page_number': 1,
-            'kind': 'search#companies',
-            'items': [
-                {
-                    'description_identifier': [
-                        'incorporated-on'
+        'items_per_page': 20,
+        'page_number': 1,
+        'kind': 'search#companies',
+        'items': [
+            {
+                'description_identifier': [
+                    'incorporated-on'
+                ],
+                'address': {
+                    'postal_code': 'FOO BAR',
+                    'address_line_1': '3 Whitehall place',
+                    'address_line_2': 'London',
+                    'country': 'United Kingdom',
+                    'region': 'London',
+                    'locality': 'London',
+                    'premises': 'bar'
+                },
+                'kind': 'searchresults#company',
+                'date_of_creation': '2015-04-13',
+                'company_type': 'ltd',
+                'snippet': '',
+                'company_number': '12345678',
+                'matches': {
+                    'title': [
+                        1,
+                        5
                     ],
-                    'address': {
-                        'postal_code': 'FOO BAR',
-                        'address_line_1': '3 Whitehall place',
-                        'address_line_2': 'London',
-                        'country': 'United Kingdom',
-                        'region': 'London',
-                        'locality': 'London',
-                        'premises': 'bar'
-                    },
-                    'kind': 'searchresults#company',
-                    'date_of_creation': '2015-04-13',
-                    'company_type': 'ltd',
-                    'snippet': '',
-                    'company_number': '12345678',
-                    'matches': {
-                        'title': [
-                            1,
-                            5
-                        ],
-                        'snippet': []
-                    },
-                    'title': 'Acme',
-                    'company_status': 'active',
-                    'links': {
-                        'self': '/company/12345678'
-                    },
-                    'description': 'foo',
-                    'address_snippet': 'foo'
-                }
-            ],
-            'start_index': 0,
-            'total_results': 1
-        }
-    mocked_client_get.return_value = mocked_return
+                    'snippet': []
+                },
+                'title': 'Acme',
+                'company_status': 'active',
+                'links': {
+                    'self': '/company/12345678'
+                },
+                'description': 'foo',
+                'address_snippet': 'foo'
+            }
+        ],
+        'start_index': 0,
+        'total_results': 1
+    }
+    mock_client_get.return_value = mocked_return
     url = reverse('api:search-companies')
     response = api_client.get(url + '?q=acme')
     assert response.status_code == status.HTTP_200_OK
@@ -129,13 +143,11 @@ def test_company_search_by_name(
 
 
 @pytest.mark.elasticsearch_test_data
-@mock.patch(
-    'company.data.CompaniesHouseClient.get',
-    mock.Mock(side_effect=CompaniesHouseException(404))
-)
+@pytest.mark.parametrize('exception', expected_exceptions)
 def test_company_search_by_number_local_fallback(
-        api_client, mock_signature_check
+    mock_client_get, api_client, exception
 ):
+    mock_client_get.side_effect = exception
     url = reverse('api:search-companies')
     response = api_client.get(url + '?q=2714021')
 
@@ -165,54 +177,51 @@ def test_company_search_by_number_local_fallback(
 
 
 @pytest.mark.elasticsearch_test_data
-@mock.patch('company.data.CompaniesHouseClient.get')
-def test_company_search_by_number(
-        mocked_client_get, api_client, mock_signature_check
-):
+def test_company_search_by_number(mock_client_get, api_client):
     mocked_return = mock.Mock()
     mocked_return.json.return_value = {
-            'items_per_page': 20,
-            'page_number': 1,
-            'kind': 'search#companies',
-            'items': [
-                {
-                    'description_identifier': [
-                        'incorporated-on'
+        'items_per_page': 20,
+        'page_number': 1,
+        'kind': 'search#companies',
+        'items': [
+            {
+                'description_identifier': [
+                    'incorporated-on'
+                ],
+                'address': {
+                    'postal_code': 'FOO BAR',
+                    'address_line_1': '3 Whitehall place',
+                    'address_line_2': 'London',
+                    'country': 'United Kingdom',
+                    'region': 'London',
+                    'locality': 'London',
+                    'premises': 'bar'
+                },
+                'kind': 'searchresults#company',
+                'date_of_creation': '2015-04-13',
+                'company_type': 'ltd',
+                'snippet': '',
+                'company_number': '12345678',
+                'matches': {
+                    'title': [
+                        1,
+                        5
                     ],
-                    'address': {
-                        'postal_code': 'FOO BAR',
-                        'address_line_1': '3 Whitehall place',
-                        'address_line_2': 'London',
-                        'country': 'United Kingdom',
-                        'region': 'London',
-                        'locality': 'London',
-                        'premises': 'bar'
-                    },
-                    'kind': 'searchresults#company',
-                    'date_of_creation': '2015-04-13',
-                    'company_type': 'ltd',
-                    'snippet': '',
-                    'company_number': '12345678',
-                    'matches': {
-                        'title': [
-                            1,
-                            5
-                        ],
-                        'snippet': []
-                    },
-                    'title': 'Acme',
-                    'company_status': 'active',
-                    'links': {
-                        'self': '/company/12345678'
-                    },
-                    'description': 'foo',
-                    'address_snippet': 'foo'
-                }
-            ],
-            'start_index': 0,
-            'total_results': 1
+                    'snippet': []
+                },
+                'title': 'Acme',
+                'company_status': 'active',
+                'links': {
+                    'self': '/company/12345678'
+                },
+                'description': 'foo',
+                'address_snippet': 'foo'
+            }
+        ],
+        'start_index': 0,
+        'total_results': 1
     }
-    mocked_client_get.return_value = mocked_return
+    mock_client_get.return_value = mocked_return
 
     url = reverse('api:search-companies')
     response = api_client.get(url + '?q=12345678')
@@ -241,11 +250,11 @@ def test_company_search_by_number(
 
 
 @pytest.mark.elasticsearch_test_data
-@mock.patch(
-    'company.data.CompaniesHouseClient.get',
-    mock.Mock(side_effect=CompaniesHouseException(404))
-)
-def test_company_registered_office_address_local_fallback(api_client):
+@pytest.mark.parametrize('exception', expected_exceptions)
+def test_company_registered_office_address_local_fallback(
+    mock_client_get, api_client, exception
+):
+    mock_client_get.side_effect = exception
     url = reverse(
         'api:company-registered-office-address',
         kwargs={'company_number': '11006939'}
@@ -266,8 +275,7 @@ def test_company_registered_office_address_local_fallback(api_client):
 
 
 @pytest.mark.elasticsearch_test_data
-@mock.patch('company.data.CompaniesHouseClient.get')
-def test_company_registered_office_address(mocked_client_get, api_client):
+def test_company_registered_office_address(mock_client_get, api_client):
     mocked_return = mock.Mock()
     mocked_return.json.return_value = {
         'postal_code': 'WC1X 8HB',
@@ -276,7 +284,7 @@ def test_company_registered_office_address(mocked_client_get, api_client):
         'country': 'United Kingdom',
         'locality': 'London'
     }
-    mocked_client_get.return_value = mocked_return
+    mock_client_get.return_value = mocked_return
 
     url = reverse(
         'api:company-registered-office-address',
@@ -294,13 +302,11 @@ def test_company_registered_office_address(mocked_client_get, api_client):
 
 
 @pytest.mark.elasticsearch_test_data
-@mock.patch(
-    'company.data.CompaniesHouseClient.get',
-    mock.Mock(side_effect=CompaniesHouseException(404))
-)
+@pytest.mark.parametrize('exception', expected_exceptions)
 def test_company_registered_office_address_company_not_found_local_fallback(
-    api_client
+    mock_client_get, api_client, exception
 ):
+    mock_client_get.side_effect = exception
     url = reverse(
         'api:company-registered-office-address',
         kwargs={'company_number': 'foobar'}
@@ -311,11 +317,11 @@ def test_company_registered_office_address_company_not_found_local_fallback(
 
 
 @pytest.mark.elasticsearch_test_data
-@mock.patch(
-    'company.data.CompaniesHouseClient.get',
-    mock.Mock(side_effect=CompaniesHouseException(404))
-)
-def test_company_profile_company_not_found_local_fallback(api_client):
+@pytest.mark.parametrize('exception', expected_exceptions)
+def test_company_profile_company_not_found_local_fallback(
+    mock_client_get, api_client, exception
+):
+    mock_client_get.side_effect = exception
     url = reverse(
         'api:company-profile',
         kwargs={'company_number': 'foobar'}
@@ -326,11 +332,11 @@ def test_company_profile_company_not_found_local_fallback(api_client):
 
 
 @pytest.mark.elasticsearch_test_data
-@mock.patch(
-    'company.data.CompaniesHouseClient.get',
-    mock.Mock(side_effect=CompaniesHouseException(404))
-)
-def test_company_profile_local_fallback(api_client):
+@pytest.mark.parametrize('exception', expected_exceptions)
+def test_company_profile_local_fallback(
+    mock_client_get, api_client, exception
+):
+    mock_client_get.side_effect = exception
     url = reverse(
         'api:company-profile',
         kwargs={'company_number': '11006939'}
@@ -362,8 +368,7 @@ def test_company_profile_local_fallback(api_client):
 
 
 @pytest.mark.elasticsearch_test_data
-@mock.patch('company.data.CompaniesHouseClient.get')
-def test_company_profile(mocked_client_get, api_client):
+def test_company_profile(mock_client_get, api_client):
     mocked_return = mock.Mock()
     mocked_return.json.return_value = {
         'company_name': '!NNOV8 LIMITED',
@@ -387,7 +392,7 @@ def test_company_profile(mocked_client_get, api_client):
         ],
         'can_file': True
     }
-    mocked_client_get.return_value = mocked_return
+    mock_client_get.return_value = mocked_return
 
     url = reverse(
         'api:company-profile',
@@ -413,8 +418,7 @@ def test_company_profile(mocked_client_get, api_client):
 
 
 @pytest.mark.elasticsearch_test_data
-@mock.patch('company.data.CompaniesHouseClient.get')
-def test_list_officers(mocked_client_get, api_client):
+def test_list_officers(mock_client_get, api_client):
     expected = {
        "active_count": "integer",
        "etag": "string",
@@ -473,7 +477,7 @@ def test_list_officers(mocked_client_get, api_client):
        "start_index": "integer",
        "total_results": "integer"
     }
-    mocked_client_get.return_value = create_response(json_body=expected)
+    mock_client_get.return_value = create_response(json_body=expected)
 
     url = reverse(
         'api:company-officers',
@@ -485,9 +489,8 @@ def test_list_officers(mocked_client_get, api_client):
 
 
 @pytest.mark.elasticsearch_test_data
-@mock.patch('company.data.CompaniesHouseClient.get')
-def test_list_officers_not_found(mocked_client_get, api_client):
-    mocked_client_get.return_value = create_response(status_code=404)
+def test_list_officers_not_found(mock_client_get, api_client):
+    mock_client_get.return_value = create_response(status_code=404)
 
     url = reverse(
         'api:company-officers',
