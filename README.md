@@ -2,7 +2,6 @@
 
 [![circle-ci-image]][circle-ci]
 [![codecov-image]][codecov]
-[![snyk-image]][snyk]
 
 **Export Directory Companies House search service**
 
@@ -10,31 +9,16 @@ For more information on installation please check the [Developers Onboarding Che
 
 ## Requirements
 
-[Docker >= 1.10](https://docs.docker.com/engine/installation/)  
-[Docker Compose >= 1.8](https://docs.docker.com/compose/install/)
+[Python 3.6](https://www.python.org/downloads/release/python-366/)
+
+[redis](https://redis.io/)
+
 
 ## Local installation
 
     $ git clone https://github.com/uktrade/directory-companies-house-search
     $ cd directory-companies-house-search
     $ make
-
-## Running with Docker
-Requires all host environment variables to be set.
-
-    $ make docker_run
-
-### Run debug webserver in Docker
-Provides defaults for all env vars but ``AWS_ACCESS_KEY_ID`` and ``AWS_SECRET_ACCESS_KEY``
-
-    $ make docker_debug
-
-### Run tests in Docker
-
-    $ make docker_test
-
-### Host environment variables for docker-compose
-``.env`` files will be automatically created (with ``env_writer.py`` based on ``env.json`` and ``env-postgres.json``) by ``make docker_test``, based on host environment variables with ``DIRECTORY_API_`` prefix.
 
 ## Debugging
 
@@ -66,6 +50,3 @@ Requires Redis (e.g. [Install and config Redis on Mac OS X via Homebrew](https:/
 
 [codecov-image]: https://codecov.io/gh/uktrade/directory-companies-house-search/branch/master/graph/badge.svg
 [codecov]: https://codecov.io/gh/uktrade/directory-companies-house-search
-
-[snyk-image]: https://snyk.io/test/github/uktrade/directory-companies-house-search/badge.svg
-[snyk]: https://snyk.io/test/github/uktrade/directory-companies-house-search
