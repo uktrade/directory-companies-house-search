@@ -75,6 +75,12 @@ DEBUG_CREATE_DB := \
 debug_db:
 	$(DEBUG_SET_ENV_VARS) && $(DEBUG_CREATE_DB)
 
+debug_migrate:
+	$(DEBUG_SET_ENV_VARS) && ./manage.py migrate
+
+debug_createsuperuser:
+	$(DEBUG_SET_ENV_VARS) && ./manage.py createsuperuser
+
 debug_pytest:
 	$(DEBUG_SET_ENV_VARS) && $(TEST_SET_ENV_VARS) && $(DJANGO_MIGRATE) && $(COLLECT_STATIC) && $(PYTEST)
 
