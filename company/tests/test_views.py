@@ -18,7 +18,9 @@ expected_exceptions = (
     exceptions.Timeout(),
     exceptions.ConnectTimeout(),
     exceptions.ReadTimeout(),
+    exceptions.HTTPError(401),
     CompaniesHouseException(404),
+
 )
 
 
