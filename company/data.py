@@ -105,6 +105,8 @@ class CompaniesHouseClient:
             timeout=2
         )
         if not response.ok:
+            if response.status_code == 401:
+                response.raise_for_status()
             raise CompaniesHouseException(response.status_code)
         return response
 
