@@ -12,13 +12,13 @@ from core.tests.helpers import create_response
 expected_exceptions = (
     exceptions.RequestException(),
     exceptions.HTTPError(),
+    exceptions.HTTPError(401),
     exceptions.ConnectionError(),
     exceptions.ProxyError(),
     exceptions.SSLError(),
     exceptions.Timeout(),
     exceptions.ConnectTimeout(),
     exceptions.ReadTimeout(),
-    exceptions.HTTPError(401),
     CompaniesHouseException(404),
 
 )
