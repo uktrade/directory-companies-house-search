@@ -109,7 +109,9 @@ class CompaniesHouseClient:
         )
         if not response.ok:
             if response.status_code == 401:
-                logger.error('CH auth error')
+                logger.error(
+                    'Companies House authentication error, check API Keys'
+                )
             raise CompaniesHouseException(response.status_code)
         return response
 
