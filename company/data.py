@@ -1,5 +1,6 @@
 from functools import partial, wraps
 from urllib.parse import urljoin
+import logging
 
 from elasticsearch import NotFoundError
 from elasticsearch_dsl import Q
@@ -9,6 +10,8 @@ from requests.exceptions import RequestException
 from django.conf import settings
 
 from company.doctypes import CompanyDocType
+
+logger = logging.getLogger(__name__)
 
 
 class CompaniesHouseException(Exception):
@@ -106,7 +109,7 @@ class CompaniesHouseClient:
         )
         if not response.ok:
             if response.status_code == 401:
-                response.raise_for_status()
+                logger.error('CH auth error')
             raise CompaniesHouseException(response.status_code)
         return response
 
