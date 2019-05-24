@@ -1,7 +1,7 @@
 Django==1.11.20
 dj-database-url==0.4.1
 django_extensions==1.6.7
-djangorestframework==3.4.7
+djangorestframework==3.9.1
 django-filter==1.0.4
 django-celery-beat==1.0.1
 django-redis==4.7.0
@@ -13,9 +13,7 @@ psycopg2==2.7.3.2
 raven==5.19.0
 celery[redis]==4.2.1
 requests[security]==2.21.0
-requests-aws4auth==0.9
-elasticsearch==5.3.0
-elasticsearch-dsl==5.2.0
+elasticsearch-dsl==6.4.0
 waitress==1.1.0
 beautifulsoup4==4.6.0
 gevent==1.2.2

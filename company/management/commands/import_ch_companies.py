@@ -4,8 +4,6 @@ from urllib.parse import urlparse
 
 import requests
 from bs4 import BeautifulSoup
-from django.core.management import BaseCommand
-from django.utils.timezone import now
 from django_pglocks import advisory_lock
 from elasticsearch.client.indices import IndicesClient
 from elasticsearch.helpers import parallel_bulk, streaming_bulk
@@ -13,70 +11,12 @@ from elasticsearch_dsl import Index, analyzer
 from elasticsearch_dsl.index import connections
 from elasticsearch.exceptions import NotFoundError
 
-from django.utils.crypto import get_random_string
 from django.conf import settings
+from django.core.management import BaseCommand
+from django.utils.crypto import get_random_string
+from django.utils.timezone import now
 
-from company.doctypes import CompanyDocType
-from company.utils import stream_to_file_pointer, open_zipped_csv, \
-    create_company_document
-
-CH_CSV_FIELDNAMES = (
-    'CompanyName',
-    'CompanyNumber',
-    'RegAddress.CareOf',
-    'RegAddress.POBox',
-    'RegAddress.AddressLine1',
-    'RegAddress.AddressLine2',
-    'RegAddress.PostTown',
-    'RegAddress.County',
-    'RegAddress.Country',
-    'RegAddress.PostCode',
-    'CompanyCategory',
-    'CompanyStatus',
-    'CountryOfOrigin',
-    'DissolutionDate',
-    'IncorporationDate',
-    'Accounts.AccountRefDay',
-    'Accounts.AccountRefMonth',
-    'Accounts.NextDueDate',
-    'Accounts.LastMadeUpDate',
-    'Accounts.AccountCategory',
-    'Returns.NextDueDate',
-    'Returns.LastMadeUpDate',
-    'Mortgages.NumMortCharges',
-    'Mortgages.NumMortOutstanding',
-    'Mortgages.NumMortPartSatisfied',
-    'Mortgages.NumMortSatisfied',
-    'SICCode.SicText_1',
-    'SICCode.SicText_2',
-    'SICCode.SicText_3',
-    'SICCode.SicText_4',
-    'LimitedPartnerships.NumGenPartners',
-    'LimitedPartnerships.NumLimPartners',
-    'URI',
-    'PreviousName_1.CONDATE',
-    'PreviousName_1.CompanyName',
-    'PreviousName_2.CONDATE',
-    'PreviousName_2.CompanyName',
-    'PreviousName_3.CONDATE',
-    'PreviousName_3.CompanyName',
-    'PreviousName_4.CONDATE',
-    'PreviousName_4.CompanyName',
-    'PreviousName_5.CONDATE',
-    'PreviousName_5.CompanyName',
-    'PreviousName_6.CONDATE',
-    'PreviousName_6.CompanyName',
-    'PreviousName_7.CONDATE',
-    'PreviousName_7.CompanyName',
-    'PreviousName_8.CONDATE',
-    'PreviousName_8.CompanyName',
-    'PreviousName_9.CONDATE',
-    'PreviousName_9.CompanyName',
-    'PreviousName_10.CONDATE',
-    'PreviousName_10.CompanyName',
-    'ConfStmtNextDueDate',
-    'ConfStmtLastMadeUpDate'
-)
+from company import constants, documents, helpers
 
 
 class Command(BaseCommand):
@@ -90,14 +30,15 @@ class Command(BaseCommand):
         self.client = connections.get_connection()
         super().__init__(*args, **kwargs)
 
-    def create_index(self, name, doc_type, alias):
+    def create_index(self, name, document, alias):
         index = Index(name)
-        index.doc_type(doc_type)
+        index.document(document)
         index.analyzer(analyzer('english'))
         # give the index an alias (e.g, `company_alias`), so the index is used
         # when the application searches from or inserts into `campaign_alias`.
         index.aliases(**{alias: {}})  # same  as .aliases(company-alias: {})
         index.create()
+        document._index = index
         self.stdout.write(
             self.style.SUCCESS('New index created')
         )
@@ -113,7 +54,7 @@ class Command(BaseCommand):
     def create_new_index(self):
         self.create_index(
             name=self.new_company_index,
-            doc_type=CompanyDocType,
+            document=documents.CompanyDocument,
             alias=self.company_index_alias,
         )
 
@@ -143,15 +84,15 @@ class Command(BaseCommand):
     def companies_from_csv(url, tmp_file_creator):
         """Fetch & cache zipped CSV, and then iterate though contents."""
         with tmp_file_creator() as tf:
-            stream_to_file_pointer(url, tf)
+            helpers.stream_to_file_pointer(url, tf)
             tf.seek(0, 0)
 
-            with open_zipped_csv(
-                    tf, fieldnames=CH_CSV_FIELDNAMES
+            with helpers.open_zipped_csv(
+                tf, fieldnames=constants.CH_CSV_FIELDNAMES
             ) as csv_reader:
                 next(csv_reader)  # skip the csv header
                 for row in csv_reader:
-                    yield create_company_document(row)
+                    yield helpers.create_company_document(row)
 
     def populate_new_index(self):
         for csv_url in self.ch_dump_file_list:
