@@ -55,7 +55,7 @@ def test_company_search_by_name_local_fallback(
                 'company_number': '2714021',
                 'company_status': 'active',
                 'company_type': 'ltd',
-                'date_of_creation': '1992-12-05',
+                'date_of_creation': '1992-05-12',
                 'title': '!YOZO FASS LIMITED',
                 'address': {
                     'care_of': '',
@@ -161,7 +161,7 @@ def test_company_search_by_number_local_fallback(
                 'company_number': '2714021',
                 'company_status': 'active',
                 'company_type': 'ltd',
-                'date_of_creation': '1992-12-05',
+                'date_of_creation': '1992-05-12',
                 'title': '!YOZO FASS LIMITED',
                 'address': {
                     'care_of': '',
@@ -352,7 +352,7 @@ def test_company_profile_local_fallback(
         'company_number': '11006939',
         'company_status': 'active',
         'type': 'ltd',
-        'date_of_creation': '2017-11-10',
+        'date_of_creation': '2017-10-11',
         'registered_office_address': {
             'address_line_1': 'C/O FRANK HIRTH 1ST FLOOR',
             'address_line_2': "236 GRAY'S INN ROAD",
@@ -368,7 +368,7 @@ def test_company_profile_local_fallback(
 
 
 @pytest.mark.elasticsearch_test_data
-def test_company_profile(mock_client_get, api_client):
+def test_company_profile_retrieve(mock_client_get, api_client):
     mocked_return = mock.Mock()
     mocked_return.json.return_value = {
         'company_name': '!NNOV8 LIMITED',
