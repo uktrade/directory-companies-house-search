@@ -1,11 +1,10 @@
-from django.core.management import BaseCommand
 from elasticsearch.helpers import bulk
-from elasticsearch_dsl.index import connections, Index
+from elasticsearch_dsl.index import connections
 
+from django.core.management import BaseCommand
 from django.conf import settings
 
-from company.utils import create_company_document, open_zipped_csv
-from .import_ch_companies import CH_CSV_FIELDNAMES
+from company import constants, documents, helpers
 
 
 class Command(BaseCommand):
@@ -14,10 +13,12 @@ class Command(BaseCommand):
 
     def companies_from_csv(self, file_object):
         """Fetch & cache zipped CSV, and then iterate though contents."""
-        with open_zipped_csv(file_object, CH_CSV_FIELDNAMES) as csv_reader:
+        with helpers.open_zipped_csv(
+            file_object, constants.CH_CSV_FIELDNAMES
+        ) as csv_reader:
             next(csv_reader)  # skip the csv header
             for row in csv_reader:
-                yield create_company_document(row)
+                yield helpers.create_company_document(row)
 
     def populate_new_index(self):
         client = connections.get_connection()
@@ -30,10 +31,10 @@ class Command(BaseCommand):
                 companies_dicts,
                 chunk_size=100,
                 raise_on_exception=True
-                )
+            )
 
     def refresh_index(self):
-        Index(self.company_index_alias).refresh()
+        documents.CompanyDocument._index.refresh()
 
     def handle(self, *args, **options):
         self.populate_new_index()

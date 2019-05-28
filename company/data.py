@@ -9,7 +9,7 @@ from requests.exceptions import RequestException
 
 from django.conf import settings
 
-from company.doctypes import CompanyDocType
+from company import documents
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ def local_fallback(fallback_function):
 
 def retrieve_profile_from_elasticsearch(company_number):
     try:
-        company = CompanyDocType.get(id=company_number)
+        company = documents.CompanyDocument.get(id=company_number)
         company = company.to_profile_dict()
         return company
     except NotFoundError:
@@ -44,7 +44,7 @@ def retrieve_profile_from_elasticsearch(company_number):
 
 def retrieve_address_from_elasticsearch(company_number):
     try:
-        company = CompanyDocType.get(id=company_number)
+        company = documents.CompanyDocument.get(id=company_number)
         return company.address.to_dict()
     except NotFoundError:
         return None
@@ -56,7 +56,7 @@ def search_in_elasticsearch(query):
         query=query,
         fields=['company_name', 'company_number']
     )
-    search_object = CompanyDocType.search().query(query)
+    search_object = documents.CompanyDocument.search().query(query)
     hits = search_object.execute().to_dict()
     return [hit['_source'] for hit in hits['hits']['hits']]
 

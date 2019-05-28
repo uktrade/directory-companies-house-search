@@ -1,3 +1,4 @@
+from datetime import datetime
 import csv
 import io
 import zipfile
@@ -5,7 +6,8 @@ from contextlib import contextmanager
 
 import requests
 
-from company.doctypes import CompanyDocType
+from company import documents
+
 
 COMPANY_STATUSES = {
     'Active': 'active',
@@ -93,25 +95,19 @@ def stream_to_file_pointer(url, file_pointer):
 
 
 def create_company_document(row):
-    row_formatter = RowFormatter(row)
-    company = {
-        'company_name': row['CompanyName'],
-        'company_number': row['CompanyNumber'],
-        'company_status': COMPANY_STATUSES.get(
-            row['CompanyStatus'], row['CompanyStatus']
-        ),
-        'type': COMPANY_TYPES.get(
-            row['CompanyCategory'], row['CompanyCategory']),
-        'date_of_cessation': row['DissolutionDate'],
-        'date_of_creation': row['IncorporationDate'],
-        'country_of_origin': row['CountryOfOrigin'],
-        'sic_codes': row_formatter.sic_codes,
-        'address_snippet': row_formatter.address_snippet,
-        'address': row_formatter.address,
-    }
-    return CompanyDocType(
-        meta={'id': company['company_number']},
-        **company
+    formatter = RowFormatter(row)
+    return documents.CompanyDocument(
+        meta={'id': row['CompanyNumber']},
+        company_name=row['CompanyName'],
+        company_number=row['CompanyNumber'],
+        company_status=formatter.status,
+        type=formatter.category,
+        date_of_cessation=formatter.date_of_cessation,
+        date_of_creation=formatter.date_of_creation,
+        country_of_origin=row['CountryOfOrigin'],
+        sic_codes=formatter.sic_codes,
+        address_snippet=formatter.address_snippet,
+        address=formatter.address
     )
 
 
@@ -164,3 +160,23 @@ class RowFormatter:
     @staticmethod
     def filter_empty(*values):
         return filter(lambda x: x != '', values)
+
+    @property
+    def date_of_cessation(self):
+        if self.row['DissolutionDate']:
+            return datetime.strptime(self.row['DissolutionDate'], '%d/%m/%Y')
+
+    @property
+    def date_of_creation(self):
+        if self.row['IncorporationDate']:
+            return datetime.strptime(self.row['IncorporationDate'], '%d/%m/%Y')
+
+    @property
+    def status(self):
+        raw_value = self.row['CompanyStatus']
+        return COMPANY_STATUSES.get(raw_value, raw_value)
+
+    @property
+    def category(self):
+        raw_value = self.row['CompanyCategory']
+        return COMPANY_TYPES.get(raw_value, raw_value)
