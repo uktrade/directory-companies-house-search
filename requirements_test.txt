@@ -26,7 +26,7 @@ django-filter==1.0.4
 django-health-check==3.8.0  # via directory-healthcheck
 django-pglocks==1.0.2
 django-redis==4.7.0
-django==1.11.20
+django==1.11.22
 django_extensions==1.6.7
 djangorestframework==3.9.1
 elasticsearch-dsl==6.4.0
