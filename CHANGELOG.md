@@ -4,6 +4,11 @@
 
 ### Fixed bugs:
 
+## [2019.07.09] (https://github.com/uktrade/directory-companies-house-search/releases/tag/2019.07.09)
+[Full Changelog](https://github.com/uktrade/directory-companies-house-search/compare/2019.05.28...2019.07.09)
+
+### Fixed bugs:
+
 - No ticket - Upgrade vulnerable django version to django 1.11.22
 
 ## [2019.05.28] (https://github.com/uktrade/directory-companies-house-search/releases/tag/2019.05.28)
