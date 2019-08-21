@@ -3,6 +3,12 @@
 ## Pre-release
 
 ### Fixed bugs:
+- No ticket - Upgrade django to 1.11.23 to fix vulnerability
+
+## [2019.07.09] (https://github.com/uktrade/directory-companies-house-search/releases/tag/2019.07.09)
+[Full Changelog](https://github.com/uktrade/directory-companies-house-search/compare/2019.05.28...2019.07.09)
+
+### Fixed bugs:
 
 - No ticket - Upgrade vulnerable django version to django 1.11.22
 
