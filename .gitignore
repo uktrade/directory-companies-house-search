@@ -101,3 +101,5 @@ Temporary Items
 # Dynamically created
 .venv
 staticfiles
+conf/.env
+conf/env/secrets-do-not-commit

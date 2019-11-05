@@ -33,8 +33,7 @@ gunicorn==19.5.0
 idna==2.6                 # via cryptography, requests
 kombu==4.2.1              # via celery
 mohawk==0.3.4             # via sigauth
-olefile==0.45.1           # via pillow
-pillow==4.2.1
+pillow==6.2.0
 psycopg2==2.7.3.2
 pycparser==2.18           # via cffi
 pyopenssl==18.0.0         # via requests
