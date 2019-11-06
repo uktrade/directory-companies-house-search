@@ -27,6 +27,14 @@ def test_company_serializer_no_date_of_creation():
     assert 'date_of_creation' not in serializer.errors
 
 
+def test_company_serializer_empty_date_of_creation():
+    serializer = serializers.CompanySerializer(data={'date_of_creation': ''})
+
+    serializer.is_valid()
+
+    assert 'date_of_creation' not in serializer.errors
+
+
 def test_company_serializer_null_date_of_creation():
     serializer = serializers.CompanySerializer(data={'date_of_creation': None})
 

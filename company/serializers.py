@@ -31,6 +31,8 @@ class CompanySerializer(serializers.Serializer):
     def to_internal_value(self, data):
         if data.get('date_of_cessation', '').lower() == 'unknown':
             del data['date_of_cessation']
+        if data.get('date_of_creation') == '':
+            del data['date_of_creation']
         return super().to_internal_value(data)
 
 
