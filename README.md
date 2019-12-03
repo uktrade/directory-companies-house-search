@@ -14,17 +14,57 @@ For more information on installation please check the [Developers Onboarding Che
 
 ## Development
 
+Read the [Developers Onboarding Checklist](https://uktrade.atlassian.net/wiki/spaces/ED/pages/32243946/Developers+onboarding+checklist)
+
+The back-end framework is Django 1.9. The front-end uses minimal Javascript. The motivation for this is for accessibility reasons, to reduce technical complexity, and reduce cross-browser compatibility issues. Therefore most front-end work will be HTML and SASS/CSS development.
+
+We aim to follow [GDS service standards](https://www.gov.uk/service-manual/service-standard) and [GDS design principles](https://www.gov.uk/design-principles).
+
+## Requirements
+[Python 3.6](https://www.python.org/downloads/release/python-366/)
+
+[Redis]( https://redis.io/)
+
+### SASS
+We use SASS CSS pre-compiler. If you're doing front-end work your local machine will also need the following dependencies:
+
+[node](https://nodejs.org/en/download/)
+
+[SASS](http://sass-lang.com/)
+
+## Running locally
+
 ### Installing
     $ git clone https://github.com/uktrade/directory-companies-house-search
     $ cd directory-companies-house-search
     $ virtualenv .venv -p python3.6
     $ source .venv/bin/activate
-    $ pip install -r requirements_test.txt
-    # Start postgres now before proceeding.
-    $ make debug_db
-    $ make debug_migrate
-    $ make debug_createsuperuser
-    $ make debug_manage cmd='import_ch_companies'
+    $ make install_requirements
+    $ make manage migrate
+    $ make manage createsuperuser
+    $ make manage import_ch_companies
+
+### Configuration
+
+Secrets such as API keys and environment specific configurations are placed in `conf/env/secrets-do-not-commit` - a file that is not added to version control. To create a template secrets file with dummy values run `make secrets`.
+
+### Commands
+
+| Command                       | Description |
+| ----------------------------- | ------------|
+| make clean                    | Delete pyc files |
+| make pytest                   | Run all tests |
+| make pytest test_foo.py       | Run all tests in file called test_foo.py |
+| make pytest -- --last-failed` | Run the last tests to fail |
+| make pytest -- -k foo         | Run the test called foo |
+| make pytest -- <foo>          | Run arbitrary pytest command |
+| make flake8                   | Run linting |
+| make manage <foo>             | Run arbitrary management command |
+| make webserver                | Run the development web server |
+| make requirements             | Compile the requirements file |
+| make install_requirements     | Installed the compile requirements file |
+| make css                      | Compile scss to css |
+| make secrets                  | Create your secret env var file |
 
 ### Requirements
 
@@ -39,12 +79,7 @@ In order to authenticate with the Companies House API set the `DIRECTORY_CH_SEAR
 ## Running the webserver
 
     $ source .venv/bin/activate
-    $ make debug_webserver
-
-    $ make debug_webserver
-
-## Run debug celery beat scheduler
-    $ make debug_celery_beat_scheduler
+    $ make webserver
 
 
 ## Helpful links
