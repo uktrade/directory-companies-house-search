@@ -3,6 +3,16 @@
 ## Pre-release
 
 ### Fixed bugs:
+- No ticket - Upgrade django to 1.11.23 to fix vulnerability
+- TT-1855 - Handle companies with empty date_of_creation
+
+### Implemented enhancements
+- no ticket - Refactor Makefile
+
+## [2019.07.09] (https://github.com/uktrade/directory-companies-house-search/releases/tag/2019.07.09)
+[Full Changelog](https://github.com/uktrade/directory-companies-house-search/compare/2019.05.28...2019.07.09)
+
+### Fixed bugs:
 
 - No ticket - Upgrade vulnerable django version to django 1.11.22
 
