@@ -5,6 +5,8 @@
 ### Implemented enhancements
 
 ### Fixed bugs:
+- No ticket - Upgrade waitress to fix security vulnerability
+
 
 ## [2019.12.04] (https://github.com/uktrade/directory-companies-house-search/releases/tag/2019.12.04)
 [Full Changelog](https://github.com/uktrade/directory-companies-house-search/compare/2019.07.09..2019.12.04)
