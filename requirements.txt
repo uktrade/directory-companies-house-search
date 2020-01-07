@@ -46,5 +46,5 @@ sigauth==2.1.2
 six==1.11.0               # via cryptography, django-extensions, elasticsearch-dsl, mohawk, pyopenssl, python-dateutil
 urllib3==1.24.2
 vine==1.1.4               # via amqp
-waitress==1.4.1
+waitress==1.4.2
 whitenoise==3.2.2
