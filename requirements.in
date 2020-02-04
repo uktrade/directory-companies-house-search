@@ -1,4 +1,4 @@
-Django==1.11.23
+Django==1.11.28
 dj-database-url==0.4.1
 django_extensions==1.6.7
 djangorestframework==3.9.1
