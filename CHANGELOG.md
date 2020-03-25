@@ -2,6 +2,9 @@
 
 ## Pre-release
 
+## Hotfix
+- No ticket - v3-cipipeline manifest.yml file fix
+
 ### Implemented enhancements
 
 ### Fixed bugs:
