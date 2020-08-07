@@ -14,6 +14,7 @@
 
 ### Hotfix
 
+- No ticket - No ticket - Update django and pillow dependencies to fix security vulnerabilities
 - No ticket - Upgrade Django to fix security vulnerability
 
 
