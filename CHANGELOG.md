@@ -4,6 +4,7 @@
 
 ## Hotfix
 - No ticket - v3-cipipeline manifest.yml file fix
+- No ticket - Update django and pillow dependencies to fix security vulnerabilities
 
 ### Implemented enhancements
 
