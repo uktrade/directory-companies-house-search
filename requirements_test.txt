@@ -5,7 +5,6 @@
 #    pip-compile requirements_test.in
 #
 amqp==2.3.2               # via kombu
-asn1crypto==0.24.0        # via cryptography
 atomicwrites==1.1.5       # via pytest
 attrs==18.1.0             # via pytest
 beautifulsoup4==4.6.0     # via -r requirements.in
@@ -17,7 +16,7 @@ chardet==3.0.4            # via requests
 codecov==2.0.15           # via -r requirements_test.in
 contextlib2==0.5.5        # via raven
 coverage==4.5.1           # via codecov, pytest-cov
-cryptography==2.3         # via -r requirements.in, pyopenssl, requests
+cryptography==3.2         # via -r requirements.in, pyopenssl, requests
 directory-healthcheck==1.0.1  # via -r requirements.in
 dj-database-url==0.4.1    # via -r requirements.in
 django-celery-beat==1.0.1  # via -r requirements.in
@@ -38,7 +37,7 @@ freezegun==0.3.10         # via -r requirements_test.in
 gevent==1.2.2             # via -r requirements.in
 greenlet==0.4.13          # via gevent
 gunicorn==19.5.0          # via -r requirements.in
-idna==2.6                 # via cryptography, requests
+idna==2.6                 # via requests
 kombu==4.2.1              # via celery
 mccabe==0.6.1             # via flake8
 mohawk==0.3.4             # via sigauth
