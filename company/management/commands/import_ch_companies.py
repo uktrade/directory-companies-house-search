@@ -8,7 +8,7 @@ from django_pglocks import advisory_lock
 from elasticsearch.client.indices import IndicesClient
 from elasticsearch.helpers import parallel_bulk, streaming_bulk
 from elasticsearch_dsl import Index, analyzer
-from elasticsearch_dsl.index import connections
+from elasticsearch_dsl.connections import connections
 from elasticsearch.exceptions import NotFoundError
 
 from django.conf import settings

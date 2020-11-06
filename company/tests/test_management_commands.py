@@ -52,6 +52,7 @@ def test_import_ch_companies_streaming_bulk(
         assert mocked_streaming_bulk.called is True
         assert len(data) == 9
         data = sorted(data, key=lambda x: x['_id'])
+
         assert data[-1] == {
             '_id': 'SC421617',
             '_index': mock.ANY,
@@ -77,8 +78,7 @@ def test_import_ch_companies_streaming_bulk(
                 'company_type': 'ltd',
                 'sic_codes': ['70229'],
                 'type': 'ltd'
-            },
-            '_type': 'doc'
+            }
         }
         assert mocked_delete_old_index.called is True
 
@@ -140,8 +140,8 @@ def test_import_ch_companies_parallel_bulk(
                 'company_type': 'ltd',
                 'sic_codes': ['70229'],
                 'type': 'ltd'
-                },
-            '_type': 'doc'}
+                }
+        }
         assert mocked_delete_old_index.called is True
 
 
