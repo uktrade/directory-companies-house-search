@@ -7,6 +7,7 @@
 - No ticket - Update django and pillow dependencies to fix security vulnerabilities
 
 ### Implemented enhancements
+- No ticket -  Upgrade to es-7
 
 ### Fixed bugs:
 - No ticket - Upgrade waitress to fix security vulnerability

@@ -1,5 +1,5 @@
 from elasticsearch.helpers import bulk
-from elasticsearch_dsl.index import connections
+from elasticsearch_dsl.connections import connections
 
 from django.core.management import BaseCommand
 from django.conf import settings
