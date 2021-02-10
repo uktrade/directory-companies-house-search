@@ -4,71 +4,181 @@
 #
 #    pip-compile requirements_test.in
 #
-amqp==2.3.2               # via kombu
-atomicwrites==1.1.5       # via pytest
-attrs==18.1.0             # via pytest
-beautifulsoup4==4.6.0     # via -r requirements.in
-billiard==3.5.0.3         # via celery
-celery[redis]==4.2.1      # via -r requirements.in, django-celery-beat
-certifi==2018.11.29       # via elasticsearch, requests
-cffi==1.11.5              # via cryptography
-chardet==3.0.4            # via requests
-codecov==2.0.15           # via -r requirements_test.in
-contextlib2==0.5.5        # via raven
-coverage==4.5.1           # via codecov, pytest-cov
-cryptography==3.2         # via -r requirements.in, pyopenssl, requests
-directory-healthcheck==1.0.1  # via -r requirements.in
-dj-database-url==0.4.1    # via -r requirements.in
-django-celery-beat==1.0.1  # via -r requirements.in
-django-environ==0.4.5     # via -r requirements.in
-django-filter==1.0.4      # via -r requirements.in
-django-health-check==3.8.0  # via directory-healthcheck
-django-pglocks==1.0.2     # via -r requirements.in
-django-redis==4.7.0       # via -r requirements.in
-django==1.11.29           # via -r requirements.in, directory-healthcheck, sigauth
-django_extensions==1.6.7  # via -r requirements.in
-djangorestframework==3.9.1  # via -r requirements.in, sigauth
-elasticsearch-dsl==7.3.0  # via -r requirements.in
-elasticsearch==7.9.1      # via elasticsearch-dsl
-factory-boy==2.11.1       # via -r requirements_test.in
-faker==0.8.15             # via factory-boy
-flake8==3.5.0             # via -r requirements_test.in
-freezegun==0.3.10         # via -r requirements_test.in
-gevent==1.2.2             # via -r requirements.in
-greenlet==0.4.13          # via gevent
-gunicorn==19.5.0          # via -r requirements.in
-idna==2.6                 # via requests
-kombu==4.2.1              # via celery
-mccabe==0.6.1             # via flake8
-mohawk==0.3.4             # via sigauth
-more-itertools==4.2.0     # via pytest
-pillow==7.1.0             # via -r requirements.in
-pluggy==0.6.0             # via pytest
-psycopg2==2.7.3.2         # via -r requirements.in
-py==1.5.3                 # via pytest, pytest-catchlog
-pycodestyle==2.3.1        # via flake8
-pycparser==2.18           # via cffi
-pyflakes==1.6.0           # via flake8
-pyopenssl==18.0.0         # via requests
-pytest-catchlog==1.2.2    # via -r requirements_test.in
-pytest-cov==2.5.1         # via -r requirements_test.in
-pytest-django==3.2.1      # via -r requirements_test.in
-pytest-sugar==0.9.1       # via -r requirements_test.in
-pytest==3.6.0             # via -r requirements_test.in, pytest-catchlog, pytest-cov, pytest-django, pytest-sugar
-python-dateutil==2.7.3    # via elasticsearch-dsl, faker, freezegun
-pytz==2017.2              # via celery, django
-raven==5.19.0             # via -r requirements.in
-redis==2.10.6             # via celery, django-redis
-requests-mock==1.5.0      # via -r requirements_test.in
-requests[security]==2.21.0  # via -r requirements.in, codecov, requests-mock
-sigauth==2.1.2            # via -r requirements.in
-six==1.11.0               # via cryptography, django-extensions, elasticsearch-dsl, faker, freezegun, mohawk, more-itertools, pyopenssl, pytest, python-dateutil, requests-mock
-termcolor==1.1.0          # via pytest-sugar
-text-unidecode==1.2       # via faker
-urllib3==1.24.2           # via -r requirements.in, elasticsearch, requests
-vine==1.1.4               # via amqp
-waitress==1.4.3           # via -r requirements.in
-whitenoise==3.2.2         # via -r requirements.in
+amqp==2.3.2
+    # via kombu
+atomicwrites==1.1.5
+    # via pytest
+attrs==18.1.0
+    # via pytest
+beautifulsoup4==4.6.0
+    # via -r requirements.in
+billiard==3.5.0.3
+    # via celery
+celery[redis]==4.2.1
+    # via
+    #   -r requirements.in
+    #   django-celery-beat
+certifi==2018.11.29
+    # via
+    #   elasticsearch
+    #   requests
+cffi==1.14.4
+    # via cryptography
+chardet==3.0.4
+    # via requests
+codecov==2.0.15
+    # via -r requirements_test.in
+contextlib2==0.5.5
+    # via raven
+coverage==4.5.1
+    # via
+    #   codecov
+    #   pytest-cov
+cryptography==3.3.2
+    # via
+    #   -r requirements.in
+    #   pyopenssl
+    #   requests
+directory-healthcheck==1.0.1
+    # via -r requirements.in
+dj-database-url==0.4.1
+    # via -r requirements.in
+django-celery-beat==1.0.1
+    # via -r requirements.in
+django-environ==0.4.5
+    # via -r requirements.in
+django-filter==1.0.4
+    # via -r requirements.in
+django-health-check==3.8.0
+    # via directory-healthcheck
+django-pglocks==1.0.2
+    # via -r requirements.in
+django-redis==4.7.0
+    # via -r requirements.in
+django==1.11.29
+    # via
+    #   -r requirements.in
+    #   directory-healthcheck
+    #   sigauth
+django_extensions==1.6.7
+    # via -r requirements.in
+djangorestframework==3.9.1
+    # via
+    #   -r requirements.in
+    #   sigauth
+elasticsearch-dsl==7.3.0
+    # via -r requirements.in
+elasticsearch==7.9.1
+    # via elasticsearch-dsl
+factory-boy==2.11.1
+    # via -r requirements_test.in
+faker==0.8.15
+    # via factory-boy
+flake8==3.5.0
+    # via -r requirements_test.in
+freezegun==0.3.10
+    # via -r requirements_test.in
+gevent==1.2.2
+    # via -r requirements.in
+greenlet==0.4.13
+    # via gevent
+gunicorn==19.5.0
+    # via -r requirements.in
+idna==2.6
+    # via requests
+kombu==4.2.1
+    # via celery
+mccabe==0.6.1
+    # via flake8
+mohawk==0.3.4
+    # via sigauth
+more-itertools==4.2.0
+    # via pytest
+pillow==7.1.0
+    # via -r requirements.in
+pluggy==0.6.0
+    # via pytest
+psycopg2==2.7.3.2
+    # via -r requirements.in
+py==1.5.3
+    # via
+    #   pytest
+    #   pytest-catchlog
+pycodestyle==2.3.1
+    # via flake8
+pycparser==2.18
+    # via cffi
+pyflakes==1.6.0
+    # via flake8
+pyopenssl==18.0.0
+    # via requests
+pytest-catchlog==1.2.2
+    # via -r requirements_test.in
+pytest-cov==2.5.1
+    # via -r requirements_test.in
+pytest-django==3.2.1
+    # via -r requirements_test.in
+pytest-sugar==0.9.1
+    # via -r requirements_test.in
+pytest==3.6.0
+    # via
+    #   -r requirements_test.in
+    #   pytest-catchlog
+    #   pytest-cov
+    #   pytest-django
+    #   pytest-sugar
+python-dateutil==2.7.3
+    # via
+    #   elasticsearch-dsl
+    #   faker
+    #   freezegun
+pytz==2017.2
+    # via
+    #   celery
+    #   django
+raven==5.19.0
+    # via -r requirements.in
+redis==2.10.6
+    # via
+    #   celery
+    #   django-redis
+requests-mock==1.5.0
+    # via -r requirements_test.in
+requests[security]==2.21.0
+    # via
+    #   -r requirements.in
+    #   codecov
+    #   requests-mock
+sigauth==2.1.2
+    # via -r requirements.in
+six==1.11.0
+    # via
+    #   cryptography
+    #   django-extensions
+    #   elasticsearch-dsl
+    #   faker
+    #   freezegun
+    #   mohawk
+    #   more-itertools
+    #   pyopenssl
+    #   pytest
+    #   python-dateutil
+    #   requests-mock
+termcolor==1.1.0
+    # via pytest-sugar
+text-unidecode==1.2
+    # via faker
+urllib3==1.24.2
+    # via
+    #   -r requirements.in
+    #   elasticsearch
+    #   requests
+vine==1.1.4
+    # via amqp
+waitress==1.4.3
+    # via -r requirements.in
+whitenoise==3.2.2
+    # via -r requirements.in
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
