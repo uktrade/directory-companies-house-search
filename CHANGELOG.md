@@ -3,6 +3,7 @@
 ## Pre-release
 ## Hotfix
 ### Implemented enhancements
+-No Ticket fix vulnerabilities
 ### Fixed bugs:
 
 ## [1.0.0](https://github.com/uktrade/directory-companies-house-search/releases/tag/1.0.0)

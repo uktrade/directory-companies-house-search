@@ -72,7 +72,7 @@ kombu==4.2.1
     # via celery
 mohawk==0.3.4
     # via sigauth
-pillow==7.1.0
+pillow==8.1.1
     # via -r requirements.in
 psycopg2==2.7.3.2
     # via -r requirements.in
