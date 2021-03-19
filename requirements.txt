@@ -49,10 +49,11 @@ django==1.11.29
     # via
     #   -r requirements.in
     #   directory-healthcheck
+    #   djangorestframework
     #   sigauth
 django_extensions==1.6.7
     # via -r requirements.in
-djangorestframework==3.9.1
+djangorestframework==3.11.2
     # via
     #   -r requirements.in
     #   sigauth
