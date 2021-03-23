@@ -1,6 +1,13 @@
 # Changelog
 
 ## Pre-release
+## Hotfix
+### Implemented enhancements
+-No Ticket fix vulnerabilities
+### Fixed bugs:
+
+## [1.0.0](https://github.com/uktrade/directory-companies-house-search/releases/tag/1.0.0)
+[Full Changelog](https://github.com/uktrade/directory-companies-house-search/compare/2020.02.04...1.0.0)
 
 ## Hotfix
 - No ticket - v3-cipipeline manifest.yml file fix
@@ -12,8 +19,8 @@
 ### Fixed bugs:
 - No ticket - Upgrade waitress to fix security vulnerability
 
-## [2020.02.04](https://github.com/uktrade/directory-cms/releases/tag/2020.02.04)
-[Full Changelog](https://github.com/uktrade/directory-cms/compare/2019.07.09...2020.02.04)
+## [2020.02.04](https://github.com/uktrade/directory-companies-house-searchreleases/tag/2020.02.04)
+[Full Changelog](https://github.com/uktrade/directory-companies-house-search/compare/2019.07.09...2020.02.04)
 
 ### Hotfix
 
