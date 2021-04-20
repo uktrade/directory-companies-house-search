@@ -101,7 +101,7 @@ pluggy==0.6.0
     # via pytest
 psycopg2==2.7.3.2
     # via -r requirements.in
-py==1.5.3
+py==1.10.0
     # via
     #   pytest
     #   pytest-catchlog
