@@ -4,6 +4,7 @@
 ## Hotfix
 ### Fixed bugs
 ### Implemented enhancements
+GBAU-976 - fix-vulnerabilities-28-jun-2021
 
 ## [1.1.0](https://github.com/uktrade/directory-companies-house-search/releases/tag/1.1.0)
 [Full Changelog](https://github.com/uktrade/directory-companies-house-search/compare/1.1.0...1.0.0)

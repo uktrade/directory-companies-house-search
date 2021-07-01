@@ -39,7 +39,7 @@ cryptography==3.3.2
     #   -r requirements.in
     #   pyopenssl
     #   requests
-directory-healthcheck==1.0.1
+directory-healthcheck==2.0.0
     # via -r requirements.in
 dj-database-url==0.4.1
     # via -r requirements.in
@@ -55,7 +55,7 @@ django-pglocks==1.0.2
     # via -r requirements.in
 django-redis==4.7.0
     # via -r requirements.in
-django==1.11.29
+django==2.2.24
     # via
     #   -r requirements.in
     #   directory-healthcheck
@@ -145,12 +145,12 @@ redis==2.10.6
     #   django-redis
 requests-mock==1.5.0
     # via -r requirements_test.in
-requests[security]==2.21.0
+requests[security]==2.25.1
     # via
     #   -r requirements.in
     #   codecov
     #   requests-mock
-sigauth==2.1.2
+sigauth==4.3.0
     # via -r requirements.in
 six==1.11.0
     # via
@@ -165,11 +165,13 @@ six==1.11.0
     #   pytest
     #   python-dateutil
     #   requests-mock
+sqlparse==0.4.1
+    # via django
 termcolor==1.1.0
     # via pytest-sugar
 text-unidecode==1.2
     # via faker
-urllib3==1.24.2
+urllib3==1.26.6
     # via
     #   -r requirements.in
     #   elasticsearch
