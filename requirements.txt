@@ -93,7 +93,7 @@ redis==2.10.6
     # via
     #   celery
     #   django-redis
-requests[security]==2.21.0
+requests[security]==2.25.1
     # via -r requirements.in
 sigauth==2.1.2
     # via -r requirements.in
@@ -105,7 +105,7 @@ six==1.11.0
     #   mohawk
     #   pyopenssl
     #   python-dateutil
-urllib3==1.24.2
+urllib3==1.26.6
     # via
     #   -r requirements.in
     #   elasticsearch

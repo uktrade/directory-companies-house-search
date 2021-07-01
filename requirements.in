@@ -12,7 +12,7 @@ gunicorn==19.5.0
 psycopg2==2.7.3.2
 raven==5.19.0
 celery[redis]==4.2.1
-requests[security]==2.21.0
+requests[security]==2.25.1
 elasticsearch-dsl==7.3.0
 waitress==1.4.3
 beautifulsoup4==4.6.0
@@ -20,5 +20,5 @@ gevent==1.2.2
 sigauth
 directory-healthcheck==1.0.1
 cryptography==3.3.2
-urllib3>=1.24.2<2.0.0
+urllib3>=1.26.5
 django-environ==0.4.5
