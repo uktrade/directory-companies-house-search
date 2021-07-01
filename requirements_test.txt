@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements_test.in
 #
-amqp==2.3.2
+amqp==5.0.6
     # via kombu
 atomicwrites==1.1.5
     # via pytest
@@ -12,9 +12,11 @@ attrs==18.1.0
     # via pytest
 beautifulsoup4==4.6.0
     # via -r requirements.in
-billiard==3.5.0.3
+billiard==3.6.4.0
     # via celery
-celery[redis]==4.2.1
+cached-property==1.5.2
+    # via kombu
+celery[redis]==5.1.2
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -26,6 +28,18 @@ cffi==1.14.4
     # via cryptography
 chardet==3.0.4
     # via requests
+click-didyoumean==0.0.3
+    # via celery
+click-plugins==1.1.1
+    # via celery
+click-repl==0.2.0
+    # via celery
+click==7.1.2
+    # via
+    #   celery
+    #   click-didyoumean
+    #   click-plugins
+    #   click-repl
 codecov==2.0.15
     # via -r requirements_test.in
 contextlib2==0.5.5
@@ -43,7 +57,7 @@ directory-healthcheck==2.0.0
     # via -r requirements.in
 dj-database-url==0.4.1
     # via -r requirements.in
-django-celery-beat==1.0.1
+django-celery-beat==2.2.0
     # via -r requirements.in
 django-environ==0.4.5
     # via -r requirements.in
@@ -55,10 +69,14 @@ django-pglocks==1.0.2
     # via -r requirements.in
 django-redis==4.7.0
     # via -r requirements.in
+django-timezone-field==4.1.2
+    # via django-celery-beat
 django==2.2.24
     # via
     #   -r requirements.in
     #   directory-healthcheck
+    #   django-celery-beat
+    #   django-timezone-field
     #   djangorestframework
     #   sigauth
 django_extensions==1.6.7
@@ -87,7 +105,9 @@ gunicorn==19.5.0
     # via -r requirements.in
 idna==2.6
     # via requests
-kombu==4.2.1
+importlib-metadata==4.6.0
+    # via kombu
+kombu==5.1.0
     # via celery
 mccabe==0.6.1
     # via flake8
@@ -99,6 +119,8 @@ pillow==8.2.0
     # via -r requirements.in
 pluggy==0.6.0
     # via pytest
+prompt-toolkit==3.0.19
+    # via click-repl
 psycopg2==2.7.3.2
     # via -r requirements.in
 py==1.10.0
@@ -128,18 +150,22 @@ pytest==3.6.0
     #   pytest-cov
     #   pytest-django
     #   pytest-sugar
+python-crontab==2.5.1
+    # via django-celery-beat
 python-dateutil==2.7.3
     # via
     #   elasticsearch-dsl
     #   faker
     #   freezegun
+    #   python-crontab
 pytz==2017.2
     # via
     #   celery
     #   django
+    #   django-timezone-field
 raven==5.19.0
     # via -r requirements.in
-redis==2.10.6
+redis==3.5.3
     # via
     #   celery
     #   django-redis
@@ -154,6 +180,7 @@ sigauth==4.3.0
     # via -r requirements.in
 six==1.11.0
     # via
+    #   click-repl
     #   cryptography
     #   django-extensions
     #   elasticsearch-dsl
@@ -171,17 +198,26 @@ termcolor==1.1.0
     # via pytest-sugar
 text-unidecode==1.2
     # via faker
+typing-extensions==3.10.0.0
+    # via importlib-metadata
 urllib3==1.26.6
     # via
     #   -r requirements.in
     #   elasticsearch
     #   requests
-vine==1.1.4
-    # via amqp
+vine==5.0.0
+    # via
+    #   amqp
+    #   celery
+    #   kombu
 waitress==1.4.3
     # via -r requirements.in
+wcwidth==0.2.5
+    # via prompt-toolkit
 whitenoise==3.2.2
     # via -r requirements.in
+zipp==3.4.1
+    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
