@@ -1,12 +1,8 @@
 import directory_healthcheck.views
 
 from django.conf.urls import url, include
-from django.contrib import admin
 
 import company.views
-
-
-admin.autodiscover()
 
 
 company_urlpatterns = [
@@ -34,7 +30,6 @@ company_urlpatterns = [
 ]
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
     url(
         r'^healthcheck/$',
         directory_healthcheck.views.HealthcheckView.as_view(),
