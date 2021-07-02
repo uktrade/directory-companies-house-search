@@ -13,7 +13,7 @@ company_urlpatterns = [
     url(
         r'^search/companies/$',
         company.views.CompanySearchView.as_view(),
-        name='search-companies'
+        name='search-companies',
     ),
     url(
         r'^company/(?P<company_number>\w+)/registered-office-address/$',
@@ -28,15 +28,13 @@ company_urlpatterns = [
     url(
         r'^company/(?P<company_number>\w+)/officers/$',
         company.views.CompanyOfficers.as_view(),
-        name='company-officers'
+        name='company-officers',
+
     ),
 ]
 
 urlpatterns = [
-    url(
-        r'^admin/',
-        include(admin.site.urls)
-    ),
+    url(r'^admin/', admin.site.urls),
     url(
         r'^healthcheck/$',
         directory_healthcheck.views.HealthcheckView.as_view(),
@@ -48,6 +46,6 @@ urlpatterns = [
         name='ping'
     ),
     url(
-        r'^api/', include(company_urlpatterns, namespace='api')
+        r'^api/', include((company_urlpatterns, 'api'), namespace='api')
     )
 ]
