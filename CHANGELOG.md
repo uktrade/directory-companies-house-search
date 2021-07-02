@@ -2,9 +2,18 @@
 
 ## Pre-release
 ## Hotfix
+### Fixed bugs
+### Implemented enhancements
+
+## [1.2.0](https://github.com/uktrade/directory-companies-house-search/releases/tag/1.2.0)
+[Full Changelog](https://github.com/uktrade/directory-companies-house-search/compare/1.2.0...1.1.0)
+GBAU-980 - Upgrade-libe for security-vuls
+ 
+## [1.1.0](https://github.com/uktrade/directory-companies-house-search/releases/tag/1.1.0)
+[Full Changelog](https://github.com/uktrade/directory-companies-house-search/compare/1.1.0...1.0.0)
+
 ### Implemented enhancements
 -No Ticket fix vulnerabilities
-### Fixed bugs:
 
 ## [1.0.0](https://github.com/uktrade/directory-companies-house-search/releases/tag/1.0.0)
 [Full Changelog](https://github.com/uktrade/directory-companies-house-search/compare/2020.02.04...1.0.0)
