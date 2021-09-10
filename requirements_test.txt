@@ -192,7 +192,7 @@ six==1.11.0
     #   pytest
     #   python-dateutil
     #   requests-mock
-sqlparse==0.4.1
+sqlparse==0.4.2
     # via django
 termcolor==1.1.0
     # via pytest-sugar
