@@ -3,7 +3,7 @@ dj-database-url==0.4.1
 django_extensions==1.6.7
 djangorestframework==3.12.4
 django-filter==1.0.4
-django-celery-beat==2.2.0
+django-celery-beat==2.2.3
 django-redis==4.7.0
 django-pglocks
 Pillow==8.3.2
@@ -11,7 +11,7 @@ whitenoise==3.2.2
 gunicorn==19.5.0
 psycopg2==2.7.3.2
 raven==5.19.0
-celery[redis]==5.1.2
+celery[redis]>=5.2.2
 requests[security]==2.25.1
 elasticsearch-dsl==7.3.0
 waitress==1.4.3
