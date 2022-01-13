@@ -60,6 +60,7 @@ django==2.2.26
     #   -r requirements.in
     #   directory-healthcheck
     #   django-celery-beat
+    #   django-filter
     #   django-timezone-field
     #   djangorestframework
     #   sigauth
@@ -69,7 +70,7 @@ django-environ==0.4.5
     # via -r requirements.in
 django_extensions==1.6.7
     # via -r requirements.in
-django-filter==1.0.4
+django-filter==2.4.0
     # via -r requirements.in
 django-health-check==3.8.0
     # via directory-healthcheck
