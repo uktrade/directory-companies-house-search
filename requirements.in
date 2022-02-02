@@ -1,4 +1,4 @@
-Django==2.2.26
+Django==2.2.27
 dj-database-url==0.4.1
 django_extensions==1.6.7
 djangorestframework==3.12.4
@@ -13,7 +13,8 @@ psycopg2==2.8.* --no-binary psycopg2
 raven==6.10.0
 celery[redis]>=5.2.2
 requests[security]==2.25.1
-elasticsearch-dsl==7.3.0
+elasticsearch>=7.0.0,<7.14.0
+elasticsearch-dsl>=7.0.0,<8.0.0
 waitress==1.4.3
 beautifulsoup4==4.6.0
 sigauth==4.3.0
