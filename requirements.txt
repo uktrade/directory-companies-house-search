@@ -45,7 +45,7 @@ directory-healthcheck==2.0.0
     # via -r requirements.in
 dj-database-url==0.4.1
     # via -r requirements.in
-django==2.2.26
+django==2.2.27
     # via
     #   -r requirements.in
     #   directory-healthcheck
@@ -75,7 +75,9 @@ djangorestframework==3.12.4
     #   -r requirements.in
     #   sigauth
 elasticsearch==7.9.1
-    # via elasticsearch-dsl
+    # via
+    #   -r requirements.in
+    #   elasticsearch-dsl
 elasticsearch-dsl==7.3.0
     # via -r requirements.in
 gunicorn==19.5.0
