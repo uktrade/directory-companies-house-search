@@ -3,25 +3,21 @@ version: 2
 # Machines configs
 machine_python3_postgres: &machine_python3_postgres_redis
   docker:
-    - image: circleci/python:3.6.6
-    - image: circleci/postgres:9.5-alpine-ram
+    - image: circleci/python:3.9
+    - image: circleci/postgres:10.11-alpine
       environment:
         POSTGRES_USER: debug
         POSTGRES_PASSWORD: debug
         POSTGRES_DB: directory_ch_search_debug
     - image: circleci/redis:3.2-alpine
-    - image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
+    - image: opensearchproject/opensearch:1.2.2
       ports: ["9200:9200"]
       environment:
-        # Set memory
-        ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-        # Disable security
-        xpack.security.enabled: "false"
-        xpack.monitoring.enabled: "false"
-        xpack.graph.enabled: "false"
-        xpack.watcher.enabled: "false"
         # Run in development mode to ignore bootstrap checks
         transport.host: "localhost"
+        # opensearch configuration
+        discovery.type: "single-node"
+        plugins.security.disabled: "true"
 
 
 # Individual (shared) steps.
@@ -61,7 +57,7 @@ jobs:
           name: Install psql
           command: |
             sudo apt-get update
-            sudo apt-get install postgresql-client-9.6
+            sudo apt-get install postgresql-client
       - run:
           name: Run tests
           command: |
@@ -70,7 +66,7 @@ jobs:
             codecov
   flake8:
     docker:
-      - image: circleci/python:3.6.6
+      - image: circleci/python:3.9
     steps:
       - *step_checkout_repo
       - setup_remote_docker:
