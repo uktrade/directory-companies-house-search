@@ -61,6 +61,7 @@ django==2.2.27
     #   directory-healthcheck
     #   django-celery-beat
     #   django-filter
+    #   django-redis
     #   django-timezone-field
     #   djangorestframework
     #   sigauth
@@ -76,7 +77,7 @@ django-health-check==3.8.0
     # via directory-healthcheck
 django-pglocks==1.0.2
     # via -r requirements.in
-django-redis==4.7.0
+django-redis==4.10.0
     # via -r requirements.in
 django-timezone-field==4.1.2
     # via django-celery-beat
