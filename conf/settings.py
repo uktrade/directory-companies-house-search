@@ -82,11 +82,9 @@ WSGI_APPLICATION = 'conf.wsgi.application'
 VCAP_SERVICES = env.json('VCAP_SERVICES', {})
 
 if 'redis' in VCAP_SERVICES:
-    REDIS_CACHE_URL = VCAP_SERVICES['redis'][0]['credentials']['uri']
-    REDIS_CELERY_URL = REDIS_CACHE_URL.replace('rediss://', 'redis://')
+    REDIS_URL = VCAP_SERVICES['redis'][0]['credentials']['uri']
 else:
-    REDIS_CACHE_URL = env.str('REDIS_CACHE_URL')
-    REDIS_CELERY_URL = env.str('REDIS_CELERY_URL')
+    REDIS_URL = env.str('REDIS_URL', '')
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -98,7 +96,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": REDIS_CACHE_URL,
+        "LOCATION": REDIS_URL,
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -270,8 +268,8 @@ GECKO_API_KEY = env.str('GECKO_API_KEY', '')
 GECKO_API_PASS = env.str('GECKO_API_PASS', 'X')
 
 # Celery
-CELERY_BROKER_URL = REDIS_CELERY_URL
-CELERY_RESULT_BACKEND = REDIS_CELERY_URL
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -285,11 +283,11 @@ ELASTICSEARCH_PROVIDER = env.str('ELASTICSEARCH_PROVIDER', 'aws').lower()
 
 if ELASTICSEARCH_PROVIDER == 'govuk-paas':
     services = {
-        item['instance_name']: item for item in VCAP_SERVICES['elasticsearch']
+        item['instance_name']: item for item in VCAP_SERVICES['opensearch']
     }
     ELASTICSEARCH_INSTANCE_NAME = env.str(
         'ELASTICSEARCH_INSTANCE_NAME',
-        VCAP_SERVICES['elasticsearch'][0]['instance_name']
+        VCAP_SERVICES['opensearch'][0]['instance_name']
     )
     connections.create_connection(
         alias='default',
