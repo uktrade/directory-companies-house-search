@@ -89,7 +89,7 @@ kombu==5.2.3
     # via celery
 mohawk==0.3.4
     # via sigauth
-pillow==9.0.0
+pillow==9.0.1
     # via -r requirements.in
 prompt-toolkit==3.0.19
     # via click-repl
