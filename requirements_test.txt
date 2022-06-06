@@ -69,7 +69,7 @@ django-celery-beat==2.2.1
     # via -r requirements.in
 django-environ==0.4.5
     # via -r requirements.in
-django-extensions==1.6.7
+django_extensions==1.6.7
     # via -r requirements.in
 django-filter==21.1
     # via -r requirements.in
@@ -204,7 +204,7 @@ vine==5.0.0
     #   amqp
     #   celery
     #   kombu
-waitress==2.1.1
+waitress==2.1.2
     # via -r requirements.in
 wcwidth==0.2.5
     # via prompt-toolkit
