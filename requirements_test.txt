@@ -40,7 +40,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.2.0
     # via celery
-codecov==2.0.15
+codecov==2.0.16
     # via -r requirements_test.in
 coverage==4.5.1
     # via
@@ -69,7 +69,7 @@ django-celery-beat==2.2.1
     # via -r requirements.in
 django-environ==0.4.5
     # via -r requirements.in
-django_extensions==1.6.7
+django-extensions==1.6.7
     # via -r requirements.in
 django-filter==21.1
     # via -r requirements.in
