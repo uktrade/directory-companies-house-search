@@ -40,7 +40,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.2.0
     # via celery
-codecov==2.0.15
+codecov==2.1.12
     # via -r requirements_test.in
 coverage==4.5.1
     # via
