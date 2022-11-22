@@ -59,7 +59,7 @@ django-celery-beat==2.2.1
     # via -r requirements.in
 django-environ==0.4.5
     # via -r requirements.in
-django_extensions==1.6.7
+django-extensions==1.6.7
     # via -r requirements.in
 django-filter==21.1
     # via -r requirements.in
@@ -89,7 +89,7 @@ kombu==5.2.3
     # via celery
 mohawk==0.3.4
     # via sigauth
-pillow==9.0.1
+pillow==9.3.0
     # via -r requirements.in
 prompt-toolkit==3.0.19
     # via click-repl
