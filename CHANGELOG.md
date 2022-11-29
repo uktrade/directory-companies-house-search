@@ -3,6 +3,10 @@
 ## Pre-release
 ## Hotfix
 ### Fixed bugs
+
+### Implemented enhancements
+KLS-235 Patch pillow library to v9.3.0
+
 ### Implemented enhancements
 GLS-83 - Migration to OpenSearch
 
