@@ -9,4 +9,4 @@ flake8
 requests_mock
 freezegun
 factory-boy
-codecov
+codecov>=2.0.16
