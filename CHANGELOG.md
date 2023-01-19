@@ -6,6 +6,7 @@
 
 ### Implemented enhancements
 KLS-235 Patch pillow library to v9.3.0
+KLS-331 Patch certifi to version 2022.12.7
 
 ### Implemented enhancements
 GLS-83 - Migration to OpenSearch
