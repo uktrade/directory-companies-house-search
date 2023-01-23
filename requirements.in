@@ -22,3 +22,4 @@ directory-healthcheck==2.0.0
 cryptography==3.3.2
 urllib3>=1.26.5
 django-environ==0.4.5
+certifi==2022.12.7
