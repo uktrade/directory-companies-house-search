@@ -47,7 +47,7 @@ coverage==4.5.1
     # via
     #   codecov
     #   pytest-cov
-cryptography==3.3.2
+cryptography==39.0.1
     # via
     #   -r requirements.in
     #   pyopenssl
@@ -178,7 +178,6 @@ sigauth==4.3.0
 six==1.11.0
     # via
     #   click-repl
-    #   cryptography
     #   django-extensions
     #   elasticsearch-dsl
     #   faker
