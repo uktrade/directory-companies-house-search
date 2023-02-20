@@ -20,6 +20,10 @@ requirements:
 install_requirements:
 	pip install -r requirements_test.txt
 
+database:
+	PGPASSWORD=debug dropdb --if-exists -h localhost -U debug directory_ch_search_debug
+	PGPASSWORD=debug createdb -h localhost -U debug directory_ch_search_debug
+
 init_secrets:
 	cp conf/env/secrets-template conf/env/secrets-do-not-commit
 	sed -i -e 's/#DO NOT ADD SECRETS TO THIS FILE//g' conf/env/secrets-do-not-commit

@@ -1,6 +1,7 @@
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_spectacular.utils import extend_schema
 
 from .data import CompaniesHouseException, DataLoader
 from .serializers import CompanyProfileSerializer, \
@@ -10,6 +11,10 @@ from .serializers import CompanyProfileSerializer, \
 
 class CompanySearchView(APIView):
 
+    @extend_schema(
+        request=CompanySearchQuerySerializer,
+        responses={200: CompanySearchResultSerializer},
+    )
     def get(self, request, format=None):
         request_serializer = CompanySearchQuerySerializer(
             data=request.query_params

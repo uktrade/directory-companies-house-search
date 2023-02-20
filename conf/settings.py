@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'directory_healthcheck',
     'health_check.db',
     'health_check.cache',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -153,6 +154,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'conf.signature.SignatureCheckPermission',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 # Sentry
