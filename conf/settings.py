@@ -72,7 +72,7 @@ TEMPLATES = [
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
                 'django.template.loaders.app_directories.Loader',
-                'django.template.loaders.eggs.Loader',
+                # 'django.template.loaders.eggs.Loader',
             ],
         },
     },
@@ -151,9 +151,10 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'conf.signature.SignatureCheckPermission',
-    ),
+    'DEFAULT_PERMISSION_CLASSES': tuple(),
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'conf.signature.SignatureCheckPermission',
+    # ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 

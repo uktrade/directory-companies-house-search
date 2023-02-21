@@ -1,12 +1,12 @@
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 from .data import CompaniesHouseException, DataLoader
 from .serializers import CompanyProfileSerializer, \
     CompanySearchResultSerializer, CompanySearchQuerySerializer, \
-    RegisteredOfficeAddressSerializer
+    RegisteredOfficeAddressSerializer, CompanySerializer
 
 
 class CompanySearchView(APIView):
@@ -14,6 +14,8 @@ class CompanySearchView(APIView):
     @extend_schema(
         request=CompanySearchQuerySerializer,
         responses={200: CompanySearchResultSerializer},
+        parameters=[
+            OpenApiParameter(name='q', description='Query Filter', required=True, type=str),]
     )
     def get(self, request, format=None):
         request_serializer = CompanySearchQuerySerializer(
@@ -50,6 +52,12 @@ class BaseCompanyView(APIView):
 class CompanyProfile(BaseCompanyView):
     serializer_class = CompanyProfileSerializer
 
+    @extend_schema(
+        request=CompanyProfileSerializer,
+        responses={200: CompanyProfileSerializer},
+        parameters=[
+            OpenApiParameter('company_number', description='Company Number', required=True, type=str, location=OpenApiParameter.PATH),]
+    )
     def get_data(self, company_number):
         return DataLoader().retrieve_profile(company_number=company_number)
 
