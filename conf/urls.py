@@ -36,11 +36,12 @@ company_urlpatterns = [
 ]
 
 urlpatterns = [
-    # YOUR PATTERNS
+    # YOUR PATTERNS generates the schema
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    # Optional UI:
+    # Optional openapi UIs:
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+
     url(r'^admin/', admin.site.urls),
     url(
         r'^healthcheck/$',

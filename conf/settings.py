@@ -151,11 +151,16 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
-    'DEFAULT_PERMISSION_CLASSES': tuple(),
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'conf.signature.SignatureCheckPermission',
-    # ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'conf.signature.SignatureCheckPermission',
+    ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Companies House Search API',
+    'DESCRIPTION': 'Companies House search service - the Department for Business and Trade (DBT)',
+    'VERSION': env.str("DIRECTORY_CH_API_VERSION"),
 }
 
 # Sentry
