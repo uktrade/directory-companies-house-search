@@ -8,6 +8,8 @@
 
 amqp==5.0.9
     # via kombu
+async-timeout==4.0.2
+    # via redis
 atomicwrites==1.1.5
     # via pytest
 attrs==18.1.0
@@ -162,7 +164,7 @@ pytz==2021.3
     #   django-timezone-field
 raven==6.10.0
     # via -r requirements.in
-redis==3.5.3
+redis==4.5.3
     # via
     #   celery
     #   django-redis
