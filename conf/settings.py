@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'directory_healthcheck',
     'health_check.db',
     'health_check.cache',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -71,7 +72,6 @@ TEMPLATES = [
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
                 'django.template.loaders.app_directories.Loader',
-                'django.template.loaders.eggs.Loader',
             ],
         },
     },
@@ -153,6 +153,13 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'conf.signature.SignatureCheckPermission',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Companies House Search API',
+    'DESCRIPTION': 'Companies House search service - the Department for Business and Trade (DBT)',
+    'VERSION': '2023.03.1',
 }
 
 # Sentry

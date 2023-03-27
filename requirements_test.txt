@@ -11,7 +11,9 @@ amqp==5.0.9
 atomicwrites==1.1.5
     # via pytest
 attrs==18.1.0
-    # via pytest
+    # via
+    #   jsonschema
+    #   pytest
 beautifulsoup4==4.6.0
     # via -r requirements.in
 billiard==3.6.4.0
@@ -65,6 +67,7 @@ django==2.2.28
     #   django-redis
     #   django-timezone-field
     #   djangorestframework
+    #   drf-spectacular
     #   sigauth
 django-celery-beat==2.2.1
     # via -r requirements.in
@@ -85,7 +88,10 @@ django-timezone-field==4.1.2
 djangorestframework==3.12.4
     # via
     #   -r requirements.in
+    #   drf-spectacular
     #   sigauth
+drf-spectacular==0.26.1
+    # via -r requirements.in
 elasticsearch==7.9.1
     # via
     #   -r requirements.in
@@ -104,6 +110,10 @@ gunicorn==19.5.0
     # via -r requirements.in
 idna==2.6
     # via requests
+inflection==0.5.1
+    # via drf-spectacular
+jsonschema==4.17.3
+    # via drf-spectacular
 kombu==5.2.3
     # via celery
 mccabe==0.6.1
@@ -121,9 +131,7 @@ prompt-toolkit==3.0.19
 psycopg2==2.8.6
     # via -r requirements.in
 py==1.10.0
-    # via
-    #   pytest
-    #   pytest-catchlog
+    # via pytest
 pycodestyle==2.3.1
     # via flake8
 pycparser==2.18
@@ -132,15 +140,14 @@ pyflakes==1.6.0
     # via flake8
 pyopenssl==18.0.0
     # via requests
+pyrsistent==0.19.3
+    # via jsonschema
 pytest==3.6.0
     # via
     #   -r requirements_test.in
-    #   pytest-catchlog
     #   pytest-cov
     #   pytest-django
     #   pytest-sugar
-pytest-catchlog==1.2.2
-    # via -r requirements_test.in
 pytest-cov==2.5.1
     # via -r requirements_test.in
 pytest-django==3.2.1
@@ -160,6 +167,8 @@ pytz==2021.3
     #   celery
     #   django
     #   django-timezone-field
+pyyaml==6.0
+    # via drf-spectacular
 raven==6.10.0
     # via -r requirements.in
 redis==3.5.3
@@ -194,6 +203,8 @@ termcolor==1.1.0
     # via pytest-sugar
 text-unidecode==1.2
     # via faker
+uritemplate==4.1.1
+    # via drf-spectacular
 urllib3==1.26.6
     # via
     #   -r requirements.in

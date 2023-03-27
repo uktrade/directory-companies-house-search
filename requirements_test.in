@@ -3,7 +3,6 @@
 pytest
 pytest-cov
 pytest-django
-pytest-catchlog
 pytest-sugar
 flake8
 requests_mock

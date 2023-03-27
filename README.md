@@ -6,7 +6,7 @@
 [![gitflow-image]][gitflow]
 [![calver-image]][calver]
 
-**Companies House search service - the Department for International Trade (DIT)**
+**Companies House search service - the Department for Business and Trade (DBT)**
 
 For more information on installation please check the [Developers Onboarding Checklist](https://uktrade.atlassian.net/wiki/spaces/ED/pages/32243946/Developers+onboarding+checklist)
 
@@ -16,20 +16,17 @@ For more information on installation please check the [Developers Onboarding Che
 
 Read the [Developers Onboarding Checklist](https://uktrade.atlassian.net/wiki/spaces/ED/pages/32243946/Developers+onboarding+checklist)
 
-The back-end framework is Django 1.9. The front-end uses minimal Javascript. The motivation for this is for accessibility reasons, to reduce technical complexity, and reduce cross-browser compatibility issues. Therefore most front-end work will be HTML and SASS/CSS development.
+The back-end framework is Django. The front-end uses minimal Javascript. The motivation for this is for accessibility reasons, to reduce technical complexity, and reduce cross-browser compatibility issues. Therefore most front-end work will be HTML and SASS/CSS development.
 
 We aim to follow [GDS service standards](https://www.gov.uk/service-manual/service-standard) and [GDS design principles](https://www.gov.uk/design-principles).
 
 ## Requirements
-[Python 3.6](https://www.python.org/downloads/release/python-366/)
-
+[Python 3.9.13](https://www.python.org/downloads/release/python-3913/)  
 [Redis]( https://redis.io/)
 
 ### SASS
-We use SASS CSS pre-compiler. If you're doing front-end work your local machine will also need the following dependencies:
-
-[node](https://nodejs.org/en/download/)
-
+We use SASS CSS pre-compiler. If you're doing front-end work your local machine will also need the following dependencies:  
+[node](https://nodejs.org/en/download/)  
 [SASS](http://sass-lang.com/)
 
 ## Running locally
@@ -37,7 +34,7 @@ We use SASS CSS pre-compiler. If you're doing front-end work your local machine 
 ### Installing
     $ git clone https://github.com/uktrade/directory-companies-house-search
     $ cd directory-companies-house-search
-    $ virtualenv .venv -p python3.6
+    $ python -m venv .venv
     $ source .venv/bin/activate
     $ make install_requirements
     $ make manage migrate
@@ -66,21 +63,19 @@ Secrets such as API keys and environment specific configurations are placed in `
 | make css                      | Compile scss to css |
 | make secrets                  | Create your secret env var file |
 
-### Requirements
-
-[Python 3.6](https://www.python.org/downloads/release/python-368/)
-[redis](https://redis.io/)
-
-
 ### Configuration
 Secrets such as API keys and environment specific configurations are placed in `conf/.env` - a file that is not added to version control. You will need to create that file locally in order for the project to run.
 In order to authenticate with the Companies House API set the `DIRECTORY_CH_SEARCH_COMPANIES_HOUSE_API_KEY` before you run the webserver
 
 ## Running the webserver
-
     $ source .venv/bin/activate
     $ make webserver
 
+## API Schema
+API schema is available at paths:  
+Direct download (yaml) - openapi/  
+Swagger UI - openapi/ui/  
+Redoc - openapi/ui/redoc/  
 
 ## Helpful links
 * [Developers Onboarding Checklist](https://uktrade.atlassian.net/wiki/spaces/ED/pages/32243946/Developers+onboarding+checklist)
