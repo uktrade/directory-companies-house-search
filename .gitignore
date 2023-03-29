@@ -64,10 +64,10 @@ target/
 # No need to track the dev db
 db.sqlite3
 
-# IDE
+# PyCharm
 .idea
+
 .direnv/
-.vscode
 
 # OSX
 

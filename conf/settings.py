@@ -159,7 +159,7 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Companies House Search API',
     'DESCRIPTION': 'Companies House search service - the Department for Business and Trade (DBT)',
-    'VERSION': '2023.03.1',
+    'VERSION': os.environ.get('GIT_TAG', 'dev'),
 }
 
 # Sentry

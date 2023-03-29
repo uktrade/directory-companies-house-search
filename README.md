@@ -16,7 +16,7 @@ For more information on installation please check the [Developers Onboarding Che
 
 Read the [Developers Onboarding Checklist](https://uktrade.atlassian.net/wiki/spaces/ED/pages/32243946/Developers+onboarding+checklist)
 
-The back-end framework is Django. The front-end uses minimal Javascript. The motivation for this is for accessibility reasons, to reduce technical complexity, and reduce cross-browser compatibility issues. Therefore most front-end work will be HTML and SASS/CSS development.
+The back-end framework is Django. To provide accessibility, reduce technical complexity, and minimise cross-browser compatibility issues the front-end uses minimal JavaScript. Therefore most front-end work will be HTML and SASS/CSS development.
 
 We aim to follow [GDS service standards](https://www.gov.uk/service-manual/service-standard) and [GDS design principles](https://www.gov.uk/design-principles).
 
@@ -34,7 +34,7 @@ We use SASS CSS pre-compiler. If you're doing front-end work your local machine 
 ### Installing
     $ git clone https://github.com/uktrade/directory-companies-house-search
     $ cd directory-companies-house-search
-    $ python -m venv .venv
+    $ python3.9 -m venv .venv
     $ source .venv/bin/activate
     $ make install_requirements
     $ make manage migrate
