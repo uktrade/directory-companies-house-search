@@ -62,7 +62,7 @@ jobs:
           name: Run tests
           command: |
             . venv/bin/activate
-            make pytest_codecov -- --codecov-token=${CODECOV_TOKEN}
+            make pytest
   flake8:
     docker:
       - image: circleci/python:3.9
