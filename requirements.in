@@ -4,14 +4,14 @@ django_extensions==1.6.7
 djangorestframework==3.12.4
 django-filter>=2.4.0
 django-celery-beat==2.2.1
-django-redis==4.10.0
+django-redis
 django-pglocks
 Pillow==9.3.0
 whitenoise==3.2.2
 gunicorn==19.5.0
 psycopg2==2.8.* --no-binary psycopg2
 raven==6.10.0
-celery[redis]>=5.2.2
+celery[redis]
 requests[security]==2.25.1
 elasticsearch>=7.0.0,<7.14.0
 elasticsearch-dsl>=7.0.0,<8.0.0

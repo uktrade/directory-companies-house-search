@@ -8,4 +8,5 @@ flake8
 requests_mock
 freezegun
 factory-boy
-codecov>=2.0.16
+pytest-codecov
+GitPython
