@@ -10,4 +10,5 @@ freezegun
 factory-boy
 pytest-codecov
 pytest-django==4.5.*
+py
 
