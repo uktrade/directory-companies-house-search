@@ -43,7 +43,7 @@ We use SASS CSS pre-compiler. If you're doing front-end work your local machine 
 
 ### Configuration
 
-Secrets such as API keys and environment specific configurations are placed in `conf/env/secrets-do-not-commit` - a file that is not added to version control. To create a template secrets file with dummy values run `make secrets`.
+Secrets such as API keys and environment specific configurations are placed in `conf/env/secrets-do-not-commit` - a file that is not added to version control. To create a template secrets file with dummy values run `make init_secrets`.
 
 ### Commands
 
@@ -61,7 +61,7 @@ Secrets such as API keys and environment specific configurations are placed in `
 | make requirements             | Compile the requirements file |
 | make install_requirements     | Installed the compile requirements file |
 | make css                      | Compile scss to css |
-| make secrets                  | Create your secret env var file |
+| make init_secrets             | Create your secret env var file |
 
 ### Configuration
 Secrets such as API keys and environment specific configurations are placed in `conf/.env` - a file that is not added to version control. You will need to create that file locally in order for the project to run.
