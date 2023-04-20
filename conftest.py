@@ -44,6 +44,6 @@ def requests_mocker():
 
 @pytest.fixture(autouse=True)
 def elasticsearch_test_data(request):
-    if request.node.get_marker('elasticsearch_test_data'):
+    if request.node.get_closest_marker('elasticsearch_test_data'):
         # load companies before each test that uses it
         call_command('populate_es_test_data')

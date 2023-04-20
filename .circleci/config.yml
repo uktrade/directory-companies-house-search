@@ -63,7 +63,7 @@ jobs:
           command: |
             . venv/bin/activate
             make pytest
-            codecov
+            make pytest_codecov
   flake8:
     docker:
       - image: circleci/python:3.9
