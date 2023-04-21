@@ -200,7 +200,7 @@ six==1.11.0
     #   pyopenssl
     #   python-dateutil
     #   requests-mock
-sqlparse==0.4.2
+sqlparse==0.4.4
     # via django
 termcolor==1.1.0
     # via pytest-sugar
