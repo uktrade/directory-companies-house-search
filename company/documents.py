@@ -25,7 +25,9 @@ class CompanyDocument(Document):
     date_of_cessation = field.Date(index=False, format='yyyy-MM-dd')
     date_of_creation = field.Date(index=False, format='yyyy-MM-dd')
     sic_codes = field.Keyword(index=False, store=True)
-
+    
+    class Index:
+        name = settings.ELASTICSEARCH_COMPANY_INDEX_ALIAS
     class Meta:
         index = settings.ELASTICSEARCH_COMPANY_INDEX_ALIAS
 
