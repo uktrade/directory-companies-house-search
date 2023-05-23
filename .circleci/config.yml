@@ -3,7 +3,7 @@ version: 2
 # Machines configs
 machine_python3_postgres: &machine_python3_postgres_redis
   docker:
-    - image: cimg/python:3.9.5
+    - image: circleci/python:3.9
     - image: cimg/postgres:12.8
       environment:
         POSTGRES_USER: debug
