@@ -8,6 +8,8 @@
 
 amqp==5.0.9
     # via kombu
+asgiref==3.6.0
+    # via django
 async-timeout==4.0.2
     # via redis
 attrs==22.2.0
@@ -41,41 +43,43 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.2.0
     # via celery
+cron-descriptor==1.4.0
+    # via django-celery-beat
 cryptography==39.0.1
     # via
     #   -r requirements.in
     #   pyopenssl
     #   requests
-directory-healthcheck==2.0.0
+directory-healthcheck==3.1.0
     # via -r requirements.in
 dj-database-url==0.4.1
     # via -r requirements.in
-django==2.2.28
+django==4.1.9
     # via
     #   -r requirements.in
     #   directory-healthcheck
     #   django-celery-beat
     #   django-filter
+    #   django-health-check
     #   django-redis
-    #   django-timezone-field
     #   djangorestframework
     #   drf-spectacular
     #   sigauth
-django-celery-beat==2.2.1
+django-celery-beat==2.5.0
     # via -r requirements.in
 django-environ==0.4.5
     # via -r requirements.in
 django-extensions==1.6.7
     # via -r requirements.in
-django-filter==21.1
+django-filter==23.2
     # via -r requirements.in
-django-health-check==3.8.0
+django-health-check==3.17.0
     # via directory-healthcheck
-django-pglocks==1.0.2
+django-pglocks==1.0.4
     # via -r requirements.in
-django-redis==4.10.0
+django-redis==5.2.0
     # via -r requirements.in
-django-timezone-field==4.1.2
+django-timezone-field==5.0
     # via django-celery-beat
 djangorestframework==3.12.4
     # via
@@ -84,11 +88,11 @@ djangorestframework==3.12.4
     #   sigauth
 drf-spectacular==0.26.1
     # via -r requirements.in
-elasticsearch==7.9.1
+elasticsearch==7.13.4
     # via
     #   -r requirements.in
     #   elasticsearch-dsl
-elasticsearch-dsl==7.3.0
+elasticsearch-dsl==7.4.1
     # via -r requirements.in
 gunicorn==19.5.0
     # via -r requirements.in
@@ -123,7 +127,6 @@ python-dateutil==2.7.3
 pytz==2021.3
     # via
     #   celery
-    #   django
     #   django-timezone-field
 pyyaml==6.0
     # via drf-spectacular
@@ -135,12 +138,13 @@ redis==4.5.4
     #   django-redis
 requests[security]==2.25.1
     # via -r requirements.in
-sigauth==4.3.0
+sigauth==5.2.0
     # via -r requirements.in
 six==1.11.0
     # via
     #   click-repl
     #   django-extensions
+    #   django-pglocks
     #   elasticsearch-dsl
     #   mohawk
     #   pyopenssl
@@ -149,6 +153,8 @@ sqlparse==0.4.4
     # via
     #   -r requirements.in
     #   django
+tzdata==2023.3
+    # via django-celery-beat
 uritemplate==4.1.1
     # via drf-spectacular
 urllib3==1.26.6
@@ -165,7 +171,7 @@ waitress==2.1.2
     # via -r requirements.in
 wcwidth==0.2.5
     # via prompt-toolkit
-whitenoise==3.2.2
+whitenoise==6.4.0
     # via -r requirements.in
 
 # The following packages are considered to be unsafe in a requirements file:
