@@ -2,6 +2,9 @@ import directory_healthcheck.views
 
 from django.contrib import admin
 from django.urls import path, re_path, include
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
+
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 import company.views
@@ -35,9 +38,6 @@ company_urlpatterns = [
 ]
 
 urlpatterns = [
-    path('openapi/', SpectacularAPIView.as_view(), name='schema'),
-    path('openapi/ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('openapi/ui/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     re_path(r'^admin/', admin.site.urls),
     re_path(
         r'^healthcheck/$',
@@ -53,3 +53,18 @@ urlpatterns = [
         r'^api/', include((company_urlpatterns, 'api'), namespace='api')
     )
 ]
+
+if settings.FEATURE_OPENAPI_ENABLED:
+    urlpatterns += [
+        path('openapi/', SpectacularAPIView.as_view(), name='schema'),
+        path(
+            'openapi/ui/',
+            login_required(SpectacularSwaggerView.as_view(url_name='schema'), login_url='admin:login'),
+            name='swagger-ui'
+        ),
+        path(
+            'openapi/ui/redoc/',
+            login_required(SpectacularRedocView.as_view(url_name='schema'), login_url='admin:login'),
+            name='redoc'
+        ),
+    ]
