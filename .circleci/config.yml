@@ -3,13 +3,13 @@ version: 2
 # Machines configs
 machine_python3_postgres: &machine_python3_postgres_redis
   docker:
-    - image: circleci/python:3.9
-    - image: circleci/postgres:10.11-alpine
+    - image: cimg/python:3.9.5
+    - image: cimg/postgres:12.8
       environment:
         POSTGRES_USER: debug
         POSTGRES_PASSWORD: debug
         POSTGRES_DB: directory_ch_search_debug
-    - image: circleci/redis:3.2-alpine
+    - image: cimg/redis:5.0
     - image: opensearchproject/opensearch:1.2.2
       ports: ["9200:9200"]
       environment:
@@ -33,16 +33,16 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - restore_cache:
-          key: v1-deps-{{ checksum "requirements_test.txt" }}
+          key: v2-deps-{{ checksum "requirements_test.txt" }}
       - run:
           name: Create virtualenv and install dependencies
           command: |
-            python3 -m venv venv
+            rm -rf venv && python3 -m venv venv
             . venv/bin/activate
             pip install --upgrade pip
             pip install -r requirements_test.txt
       - save_cache:
-          key: v1-deps-{{ checksum "requirements_test.txt" }}
+          key: v2-deps-{{ checksum "requirements_test.txt" }}
           paths:
             - "venv"
       - run:

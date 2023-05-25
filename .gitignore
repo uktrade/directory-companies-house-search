@@ -68,6 +68,9 @@ db.sqlite3
 # PyCharm
 .idea
 
+# vscode
+.vscode/
+
 .direnv/
 
 # OSX

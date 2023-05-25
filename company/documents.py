@@ -3,6 +3,7 @@ from elasticsearch_dsl import field, Document
 
 
 class CompanyDocument(Document):
+
     address = field.Nested(
         properties={
             'care_of': field.Keyword(index=False, store=True),
