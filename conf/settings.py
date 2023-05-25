@@ -156,6 +156,7 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
+FEATURE_OPENAPI_ENABLED = env.bool("FEATURE_OPENAPI_ENABLED", False)
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Companies House Search API',
     'DESCRIPTION': 'Companies House search service - the Department for Business and Trade (DBT)',
