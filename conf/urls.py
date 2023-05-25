@@ -38,13 +38,15 @@ company_urlpatterns = [
 
 urlpatterns = [
     path('openapi/', SpectacularAPIView.as_view(), name='schema'),
-    path('openapi/ui/', 
-         login_required(SpectacularSwaggerView.as_view(url_name='schema'), login_url='admin:login'), 
-         name='swagger-ui'
+    path(
+        'openapi/ui/',
+        login_required(SpectacularSwaggerView.as_view(url_name='schema'), login_url='admin:login'),
+        name='swagger-ui'
     ),
-    path('openapi/ui/redoc/', 
-         login_required(SpectacularRedocView.as_view(url_name='schema'), login_url='admin:login'), 
-         name='redoc'
+    path(
+        'openapi/ui/redoc/',
+        login_required(SpectacularRedocView.as_view(url_name='schema'), login_url='admin:login'),
+        name='redoc'
     ),
     re_path(r'^admin/', admin.site.urls),
     re_path(
