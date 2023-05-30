@@ -5,6 +5,9 @@
 ### Fixed bugs
 
 ### Implemented enhancements
+KLS-714 upgrade requests to 2.31.0
+
+### Implemented enhancements
 KLS-235 Patch pillow library to v9.3.0
 KLS-331 Patch certifi to version 2022.12.7
 
