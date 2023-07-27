@@ -1,4 +1,4 @@
-Django==4.1.9
+Django==4.1.10
 dj-database-url==0.4.1
 django_extensions==1.6.7
 djangorestframework==3.14.0
@@ -18,7 +18,7 @@ elasticsearch-dsl>=7.0.0,<8.0.0
 waitress==2.1.2
 beautifulsoup4==4.6.0
 sigauth==5.2.*
-directory-healthcheck==3.1.*
+directory-healthcheck==3.1.2
 cryptography==39.0.1
 urllib3>=1.26.5
 django-environ==0.4.5
