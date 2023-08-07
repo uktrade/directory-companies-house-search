@@ -217,6 +217,7 @@ uritemplate==4.1.1
     # via drf-spectacular
 urllib3==1.26.6
     # via
+    #   -r requirements.in
     #   elasticsearch
     #   requests
 vine==5.0.0
