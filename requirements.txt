@@ -45,7 +45,7 @@ click-repl==0.2.0
     # via celery
 cron-descriptor==1.4.0
     # via django-celery-beat
-cryptography==39.0.1
+cryptography==41.0.3
     # via -r requirements.in
 directory-healthcheck==3.1.2
     # via -r requirements.in
@@ -154,7 +154,6 @@ uritemplate==4.1.1
     # via drf-spectacular
 urllib3==1.26.6
     # via
-    #   -r requirements.in
     #   elasticsearch
     #   requests
 vine==5.0.0
