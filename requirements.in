@@ -6,7 +6,7 @@ django-filter>=23.2.*
 django-celery-beat==2.5.*
 django-redis==5.2.*
 django-pglocks==1.0.4
-Pillow==9.3.0
+Pillow==10.1.0
 whitenoise==6.4.*
 gunicorn==19.5.0
 psycopg2==2.8.* --no-binary psycopg2
@@ -20,7 +20,7 @@ beautifulsoup4==4.6.0
 sigauth==5.2.*
 directory-healthcheck==3.1.2
 cryptography==41.0.3
-urllib3>=1.26.5
+urllib3==1.26.18
 django-environ==0.4.5
 certifi==2023.7.22
 drf-spectacular==0.26.1
