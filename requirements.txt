@@ -103,7 +103,7 @@ kombu==5.2.3
     # via celery
 mohawk==0.3.4
     # via sigauth
-pillow==9.3.0
+pillow==10.1.0
     # via -r requirements.in
 prompt-toolkit==3.0.19
     # via click-repl
@@ -152,7 +152,7 @@ tzdata==2023.3
     # via django-celery-beat
 uritemplate==4.1.1
     # via drf-spectacular
-urllib3==1.26.6
+urllib3==1.26.18
     # via
     #   -r requirements.in
     #   elasticsearch
