@@ -48,7 +48,7 @@ cron-descriptor==1.4.0
     # via django-celery-beat
 cryptography==41.0.7
     # via -r requirements.in
-directory-healthcheck==3.2
+directory-healthcheck==3.3
     # via -r requirements.in
 dj-database-url==2.1.0
     # via -r requirements.in
