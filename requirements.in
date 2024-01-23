@@ -17,7 +17,7 @@ elasticsearch>=7.0.0,<7.14.0
 elasticsearch-dsl>=7.0.0,<8.0.0
 waitress==2.1.2
 beautifulsoup4==4.6.0
-sigauth==5.2.3
+sigauth==5.2.4
 directory-healthcheck==3.2
 cryptography==41.0.7
 urllib3==1.26.18
