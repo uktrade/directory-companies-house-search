@@ -52,7 +52,7 @@ directory-healthcheck==3.2
     # via -r requirements.in
 dj-database-url==2.1.0
     # via -r requirements.in
-django==4.2.3
+django==4.2.7
     # via
     #   -r requirements.in
     #   directory-healthcheck
@@ -138,7 +138,7 @@ requests[security]==2.31.0
     # via
     #   -r requirements.in
     #   requests
-sigauth==5.2.2
+sigauth==5.2.3
     # via -r requirements.in
 six==1.11.0
     # via
