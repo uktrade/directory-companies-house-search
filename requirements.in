@@ -1,4 +1,4 @@
-Django==4.2.3
+Django==4.2.7
 dj-database-url==2.*
 django_extensions==1.6.7
 djangorestframework==3.14.*
@@ -6,7 +6,7 @@ django-filter>=23.2.*
 django-celery-beat==2.5.*
 django-redis==5.2.*
 django-pglocks==1.0.4
-Pillow==10.1.0
+Pillow==10.2.0
 whitenoise==6.4.*
 gunicorn==19.5.0
 psycopg2==2.8.* --no-binary psycopg2
@@ -17,8 +17,8 @@ elasticsearch>=7.0.0,<7.14.0
 elasticsearch-dsl>=7.0.0,<8.0.0
 waitress==2.1.2
 beautifulsoup4==4.6.0
-sigauth==5.2.2
-directory-healthcheck==3.2
+sigauth==5.2.4
+directory-healthcheck==3.3
 cryptography==41.0.7
 urllib3==1.26.18
 django-environ==0.4.5

@@ -48,11 +48,11 @@ cron-descriptor==1.4.0
     # via django-celery-beat
 cryptography==41.0.7
     # via -r requirements.in
-directory-healthcheck==3.2
+directory-healthcheck==3.3
     # via -r requirements.in
 dj-database-url==2.1.0
     # via -r requirements.in
-django==4.2.3
+django==4.2.7
     # via
     #   -r requirements.in
     #   directory-healthcheck
@@ -105,7 +105,7 @@ kombu==5.2.3
     # via celery
 mohawk==0.3.4
     # via sigauth
-pillow==10.1.0
+pillow==10.2.0
     # via -r requirements.in
 prompt-toolkit==3.0.19
     # via click-repl
@@ -138,7 +138,7 @@ requests[security]==2.31.0
     # via
     #   -r requirements.in
     #   requests
-sigauth==5.2.2
+sigauth==5.2.4
     # via -r requirements.in
 six==1.11.0
     # via
