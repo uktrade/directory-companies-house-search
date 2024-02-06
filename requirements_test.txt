@@ -51,9 +51,9 @@ coverage[toml]==7.2.3
     #   pytest-cov
 cron-descriptor==1.4.0
     # via django-celery-beat
-cryptography==41.0.7
+cryptography==42.0.0
     # via -r requirements.in
-directory-healthcheck==3.2
+directory-healthcheck==3.3
     # via -r requirements.in
 dj-database-url==2.1.0
     # via -r requirements.in
@@ -190,7 +190,7 @@ requests[security]==2.31.0
     #   requests-mock
 requests-mock==1.5.0
     # via -r requirements_test.in
-sigauth==5.2.3
+sigauth==5.2.4
     # via -r requirements.in
 six==1.11.0
     # via
