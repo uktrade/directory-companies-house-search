@@ -51,11 +51,11 @@ cron-descriptor==1.4.0
     # via django-celery-beat
 cryptography==42.0.4
     # via -r requirements.in
-directory-healthcheck==3.3
+directory-healthcheck==3.4
     # via -r requirements.in
 dj-database-url==2.1.0
     # via -r requirements.in
-django==4.2.7
+django==4.2.10
     # via
     #   -r requirements.in
     #   directory-healthcheck
@@ -75,11 +75,11 @@ django-extensions==1.6.7
     # via -r requirements.in
 django-filter==23.2
     # via -r requirements.in
-django-health-check==3.17.0
+django-health-check==3.18.1
     # via directory-healthcheck
 django-pglocks==1.0.4
     # via -r requirements.in
-django-redis==5.2.0
+django-redis==5.4.0
     # via -r requirements.in
 django-timezone-field==5.0
     # via django-celery-beat
@@ -187,7 +187,7 @@ requests[security]==2.31.0
     #   requests-mock
 requests-mock==1.5.0
     # via -r requirements_test.in
-sigauth==5.2.4
+sigauth==5.2.6
     # via -r requirements.in
 six==1.11.0
     # via
