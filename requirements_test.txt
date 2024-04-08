@@ -124,7 +124,7 @@ mohawk==0.3.4
     # via sigauth
 packaging==23.1
     # via pytest
-pillow==10.2.0
+pillow==10.3.0
     # via -r requirements.in
 pluggy==1.0.0
     # via pytest
