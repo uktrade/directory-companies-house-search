@@ -94,7 +94,7 @@ elasticsearch-dsl==7.4.1
     # via -r requirements.in
 gunicorn==19.5.0
     # via -r requirements.in
-idna==2.6
+idna==3.7
     # via requests
 inflection==0.5.1
     # via drf-spectacular
