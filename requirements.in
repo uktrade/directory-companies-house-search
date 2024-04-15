@@ -17,8 +17,8 @@ elasticsearch>=7.0.0,<7.14.0
 elasticsearch-dsl>=7.0.0,<8.0.0
 waitress==2.1.2
 beautifulsoup4==4.6.0
-sigauth==5.2.6
-directory-healthcheck==3.4
+sigauth==5.2.7
+directory-healthcheck==3.5
 cryptography==42.0.4
 urllib3==1.26.18
 django-environ==0.4.5
