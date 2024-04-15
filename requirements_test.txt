@@ -21,7 +21,6 @@ billiard==3.6.4.0
 celery[redis]==5.2.3
     # via
     #   -r requirements.in
-    #   celery
     #   django-celery-beat
 certifi==2023.7.22
     # via
@@ -46,7 +45,6 @@ click-repl==0.2.0
     # via celery
 coverage[toml]==7.2.3
     # via
-    #   coverage
     #   pytest-codecov
     #   pytest-cov
 cron-descriptor==1.4.0
@@ -188,7 +186,6 @@ requests[security]==2.31.0
     # via
     #   -r requirements.in
     #   pytest-codecov
-    #   requests
     #   requests-mock
 requests-mock==1.5.0
     # via -r requirements_test.in
@@ -205,7 +202,7 @@ six==1.11.0
     #   mohawk
     #   python-dateutil
     #   requests-mock
-sqlparse==0.4.4
+sqlparse==0.5.0
     # via
     #   -r requirements.in
     #   django
