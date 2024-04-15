@@ -21,6 +21,7 @@ billiard==3.6.4.0
 celery[redis]==5.2.3
     # via
     #   -r requirements.in
+    #   celery
     #   django-celery-beat
 certifi==2023.7.22
     # via
@@ -94,8 +95,10 @@ elasticsearch-dsl==7.4.1
     # via -r requirements.in
 gunicorn==19.5.0
     # via -r requirements.in
-idna==2.6
-    # via requests
+idna==3.7
+    # via
+    #   -r requirements.in
+    #   requests
 inflection==0.5.1
     # via drf-spectacular
 jsonschema==4.17.3
@@ -134,7 +137,9 @@ redis==4.5.4
     #   celery
     #   django-redis
 requests[security]==2.31.0
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   requests
 sigauth==5.2.6
     # via -r requirements.in
 six==1.11.0
