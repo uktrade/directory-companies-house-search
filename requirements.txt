@@ -21,7 +21,6 @@ billiard==3.6.4.0
 celery[redis]==5.2.3
     # via
     #   -r requirements.in
-    #   celery
     #   django-celery-beat
 certifi==2023.7.22
     # via
@@ -93,7 +92,7 @@ elasticsearch==7.13.4
     #   elasticsearch-dsl
 elasticsearch-dsl==7.4.1
     # via -r requirements.in
-gunicorn==19.5.0
+gunicorn==22.0.0
     # via -r requirements.in
 idna==3.7
     # via
@@ -107,6 +106,8 @@ kombu==5.2.3
     # via celery
 mohawk==0.3.4
     # via sigauth
+packaging==24.0
+    # via gunicorn
 pillow==10.3.0
     # via -r requirements.in
 prompt-toolkit==3.0.19
@@ -137,9 +138,7 @@ redis==4.5.4
     #   celery
     #   django-redis
 requests[security]==2.31.0
-    # via
-    #   -r requirements.in
-    #   requests
+    # via -r requirements.in
 sigauth==5.2.7
     # via -r requirements.in
 six==1.11.0
