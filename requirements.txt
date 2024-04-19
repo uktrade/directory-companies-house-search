@@ -93,7 +93,7 @@ elasticsearch==7.13.4
     #   elasticsearch-dsl
 elasticsearch-dsl==7.4.1
     # via -r requirements.in
-gunicorn==19.5.0
+gunicorn==22.0.0
     # via -r requirements.in
 idna==3.7
     # via
@@ -107,6 +107,8 @@ kombu==5.2.3
     # via celery
 mohawk==0.3.4
     # via sigauth
+packaging==24.0
+    # via gunicorn
 pillow==10.3.0
     # via -r requirements.in
 prompt-toolkit==3.0.19
@@ -150,7 +152,7 @@ six==1.11.0
     #   elasticsearch-dsl
     #   mohawk
     #   python-dateutil
-sqlparse==0.4.4
+sqlparse==0.5.0
     # via
     #   -r requirements.in
     #   django

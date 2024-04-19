@@ -108,7 +108,7 @@ flake8==6.0.0
     # via -r requirements_test.in
 freezegun==0.3.10
     # via -r requirements_test.in
-gunicorn==19.5.0
+gunicorn==22.0.0
     # via -r requirements.in
 idna==3.7
     # via
@@ -127,7 +127,9 @@ mccabe==0.7.0
 mohawk==0.3.4
     # via sigauth
 packaging==23.1
-    # via pytest
+    # via
+    #   gunicorn
+    #   pytest
 pillow==10.3.0
     # via -r requirements.in
 pluggy==1.0.0
@@ -205,7 +207,7 @@ six==1.11.0
     #   mohawk
     #   python-dateutil
     #   requests-mock
-sqlparse==0.4.4
+sqlparse==0.5.0
     # via
     #   -r requirements.in
     #   django
