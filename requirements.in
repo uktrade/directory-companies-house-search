@@ -8,7 +8,7 @@ django-redis==5.4.*
 django-pglocks==1.0.4
 Pillow==10.3.0
 whitenoise==6.4.*
-gunicorn==19.5.0
+gunicorn==22.0.0
 psycopg2==2.8.* --no-binary psycopg2
 raven==6.10.0
 celery[redis]>=5.2.2
@@ -24,5 +24,5 @@ urllib3==1.26.18
 django-environ==0.4.5
 certifi==2023.7.22
 drf-spectacular==0.26.1
-sqlparse==0.4.4
+sqlparse==0.5.0
 idna==3.7
