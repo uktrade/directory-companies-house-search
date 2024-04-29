@@ -4,7 +4,7 @@ version: 2
 machine_python3_postgres: &machine_python3_postgres_redis
   docker:
     - image: cimg/python:3.9.5
-    - image: cimg/postgres:12.8
+    - image: cimg/postgres:16.2
       environment:
         POSTGRES_USER: debug
         POSTGRES_PASSWORD: debug
