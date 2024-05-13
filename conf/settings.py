@@ -252,7 +252,7 @@ else:
             },
             'sentry_sdk': {
                 'handlers': ['asim'],
-                'level': 'ERROR', 
+                'level': 'ERROR',
                 'propagate': False,
             },
         },
