@@ -1,6 +1,10 @@
 import os
 
+from typing import Any, Dict
 import dj_database_url
+
+from django_log_formatter_asim import ASIMFormatter
+
 
 from elasticsearch import RequestsHttpConnection
 import environ
@@ -170,7 +174,7 @@ RAVEN_CONFIG = {
 
 # Logging for development
 if DEBUG:
-    LOGGING = {
+    LOGGING: Dict[str, Any] = {
         'version': 1,
         'disable_existing_loggers': False,
         'filters': {
@@ -214,47 +218,41 @@ if DEBUG:
     }
 else:
     # Sentry logging
-    LOGGING = {
+    LOGGING: Dict[str, Any] = {
         'version': 1,
-        'disable_existing_loggers': False,
-        'root': {
-            'level': 'WARNING',
-            'handlers': ['sentry'],
-        },
+        'disable_existing_loggers': True,
         'formatters': {
-            'verbose': {
-                'format': '%(levelname)s %(asctime)s %(module)s '
-                          '%(process)d %(thread)d %(message)s'
+            'asim_formatter': {
+                '()': ASIMFormatter,
+            },
+            'simple': {
+                'style': '{',
+                'format': '{asctime} {levelname} {message}',
             },
         },
         'handlers': {
-            'sentry': {
-                'level': 'ERROR',
-                'class': (
-                    'raven.contrib.django.raven_compat.handlers.SentryHandler'
-                ),
-                'tags': {'custom-tag': 'x'},
+            'asim': {
+                'class': 'logging.StreamHandler',
+                'formatter': 'asim_formatter',
             },
             'console': {
-                'level': 'DEBUG',
                 'class': 'logging.StreamHandler',
-                'formatter': 'verbose'
-            }
+                'formatter': 'simple',
+            },
+        },
+        'root': {
+            'handlers': ['console'],
+            'level': 'INFO',
         },
         'loggers': {
-            'django.db.backends': {
-                'level': 'ERROR',
-                'handlers': ['console'],
+            'django': {
+                'handlers': ['asim'],
+                'level': 'INFO',
                 'propagate': False,
             },
-            'raven': {
-                'level': 'DEBUG',
-                'handlers': ['console'],
-                'propagate': False,
-            },
-            'sentry.errors': {
-                'level': 'DEBUG',
-                'handlers': ['console'],
+            'sentry_sdk': {
+                'handlers': ['asim'],
+                'level': 'ERROR', 
                 'propagate': False,
             },
         },
