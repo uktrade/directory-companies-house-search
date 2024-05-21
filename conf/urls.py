@@ -8,6 +8,7 @@ from django.conf import settings
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 import company.views
+import healthcheck.pingdom.views
 
 
 admin.autodiscover()
@@ -48,6 +49,11 @@ urlpatterns = [
         r'^healthcheck/ping/$',
         directory_healthcheck.views.PingView.as_view(),
         name='ping'
+    ),
+    path(
+        r'pingdom/ping.xml',
+        healthcheck.pingdom.views.PingDomView.as_view(),
+        name='pingdom',
     ),
     re_path(
         r'^api/', include((company_urlpatterns, 'api'), namespace='api')
