@@ -7,6 +7,16 @@ clean:
 pytest:
 	ENV_FILES='test,dev' pytest $(ARGUMENTS)
 
+# Usage: make pytest_single <path_to_file>::<method_name>
+pytest_single:
+	ENV_FILES='test,dev' \
+	pytest \
+	    $(ARGUMENTS)
+		--junit-xml=./results/pytest_unit_report.xml \
+		--cov-config=.coveragerc \
+		--cov-report=html \
+		--cov=. \
+
 ENV_FILES?='test,dev'
 pytest_codecov:
 	ENV_FILES=$(ENV_FILES) \
