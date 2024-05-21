@@ -50,8 +50,8 @@ urlpatterns = [
         directory_healthcheck.views.PingView.as_view(),
         name='ping'
     ),
-    path(
-        r'pingdom/ping.xml',
+    re_path(
+        r'^pingdom/ping.xml',
         healthcheck.pingdom.views.PingDomView.as_view(),
         name='pingdom',
     ),
