@@ -1,3 +1,4 @@
+dbt-copilot-python==0.2.0
 Django==4.2.11
 dj-database-url==2.1.*
 django_extensions==1.6.7
