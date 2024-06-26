@@ -103,7 +103,7 @@ django-redis==5.4.0
     # via -r requirements.in
 django-timezone-field==5.0
     # via django-celery-beat
-djangorestframework==3.14.0
+djangorestframework==3.15.2
     # via
     #   -r requirements.in
     #   drf-spectacular
@@ -263,9 +263,7 @@ python-dateutil==2.9.0.post0
     #   freezegun
     #   python-crontab
 pytz==2021.3
-    # via
-    #   django-timezone-field
-    #   djangorestframework
+    # via django-timezone-field
 pyyaml==6.0
     # via
     #   drf-spectacular

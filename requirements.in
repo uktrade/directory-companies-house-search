@@ -2,7 +2,7 @@ dbt-copilot-python==0.2.0
 Django==4.2.11
 dj-database-url==2.1.*
 django_extensions==1.6.7
-djangorestframework==3.14.*
+djangorestframework==3.15.*
 django-filter>=23.2.*
 django-celery-beat==2.5.*
 django-redis==5.4.*
