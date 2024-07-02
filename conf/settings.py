@@ -1,17 +1,15 @@
 import os
-
 from typing import Any, Dict
-import dj_database_url
-import sentry_sdk
 
+import dj_database_url
+import environ
+import sentry_sdk
 from django_log_formatter_asim import ASIMFormatter
+from elasticsearch import RequestsHttpConnection
+from elasticsearch_dsl.connections import connections
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
-
-from elasticsearch import RequestsHttpConnection
-import environ
-from elasticsearch_dsl.connections import connections
 
 import healthcheck.backends
 
