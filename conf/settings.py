@@ -2,15 +2,20 @@ import os
 
 from typing import Any, Dict
 import dj_database_url
+import sentry_sdk
 
 from django_log_formatter_asim import ASIMFormatter
-
+from sentry_sdk.integrations.celery import CeleryIntegration
+from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.redis import RedisIntegration
 
 from elasticsearch import RequestsHttpConnection
 import environ
 from elasticsearch_dsl.connections import connections
 
 import healthcheck.backends
+
+from .utils import strip_password_data
 
 env = environ.Env()
 env = environ.Env()
@@ -43,7 +48,6 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     "rest_framework",
     'django_celery_beat',
-    "raven.contrib.django.raven_compat",
     'company.apps.CompanyConfig',
     'directory_healthcheck',
     'health_check.db',
@@ -168,11 +172,6 @@ SPECTACULAR_SETTINGS = {
     'VERSION': os.environ.get('GIT_TAG', 'dev'),
 }
 
-# Sentry
-RAVEN_CONFIG = {
-    "dsn": env.str("SENTRY_DSN", ""),
-}
-
 # Logging for development
 if DEBUG:
     LOGGING: Dict[str, Any] = {
@@ -259,6 +258,15 @@ else:
         },
     }
 
+if env.str('SENTRY_DSN', ''):
+    sentry_sdk.init(
+        dsn=env.str('SENTRY_DSN'),
+        environment=env.str('SENTRY_ENVIRONMENT'),
+        integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
+        before_send=strip_password_data,
+        enable_tracing=env.bool('SENTRY_ENABLE_TRACING', False),
+        traces_sample_rate=env.float('SENTRY_TRACES_SAMPLE_RATE', 1.0),
+    )
 
 # Admin proxy
 USE_X_FORWARDED_HOST = True
