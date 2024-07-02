@@ -33,6 +33,7 @@ certifi==2023.7.22
     #   -r requirements.in
     #   elasticsearch
     #   requests
+    #   sentry-sdk
 cffi==1.14.4
     # via cryptography
 cfgv==3.4.0
@@ -270,8 +271,6 @@ pyyaml==6.0
     # via
     #   drf-spectacular
     #   pre-commit
-raven==6.10.0
-    # via -r requirements.in
 redis==4.5.4
     # via
     #   celery
@@ -285,6 +284,8 @@ requests[security]==2.31.0
     #   requests-mock
 requests-mock==1.5.0
     # via -r requirements_test.in
+sentry-sdk==1.45.0
+    # via -r requirements.in
 sigauth==5.2.7
     # via -r requirements.in
 six==1.11.0
@@ -326,6 +327,7 @@ urllib3==1.26.18
     #   -r requirements.in
     #   elasticsearch
     #   requests
+    #   sentry-sdk
 vine==5.1.0
     # via
     #   amqp
