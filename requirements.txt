@@ -100,7 +100,7 @@ django-redis==5.4.0
     # via -r requirements.in
 django-timezone-field==5.0
     # via django-celery-beat
-djangorestframework==3.14.0
+djangorestframework==3.15.2
     # via
     #   -r requirements.in
     #   drf-spectacular
@@ -217,9 +217,7 @@ python-dateutil==2.9.0.post0
     #   elasticsearch-dsl
     #   python-crontab
 pytz==2021.3
-    # via
-    #   django-timezone-field
-    #   djangorestframework
+    # via django-timezone-field
 pyyaml==6.0
     # via
     #   drf-spectacular
@@ -228,7 +226,7 @@ redis==4.5.4
     # via
     #   celery
     #   django-redis
-requests[security]==2.31.0
+requests[security]==2.32.3
     # via
     #   -r requirements.in
     #   dbt-copilot-python
@@ -260,7 +258,7 @@ tzdata==2023.3
     #   django-celery-beat
 uritemplate==4.1.1
     # via drf-spectacular
-urllib3==1.26.18
+urllib3==1.26.19
     # via
     #   -r requirements.in
     #   elasticsearch

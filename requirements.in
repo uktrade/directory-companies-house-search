@@ -2,7 +2,7 @@ dbt-copilot-python==0.2.0
 Django==4.2.11
 dj-database-url==2.1.*
 django_extensions==1.6.7
-djangorestframework==3.14.*
+djangorestframework==3.15.2
 django-filter>=23.2.*
 django-celery-beat==2.5.*
 django-redis==5.4.*
@@ -14,7 +14,7 @@ gunicorn==22.0.0
 psycopg2==2.8.* --no-binary psycopg2
 sentry-sdk>=1.20.*,<2.0.0
 celery[redis]>=5.2.2
-requests[security]==2.31.0
+requests[security]>=2.32.0
 elasticsearch>=7.0.0,<7.14.0
 elasticsearch-dsl>=7.0.0,<8.0.0
 waitress==2.1.2
@@ -22,7 +22,7 @@ beautifulsoup4==4.6.0
 sigauth==5.2.7
 directory-healthcheck==3.7
 cryptography==42.0.4
-urllib3==1.26.18
+urllib3==1.26.19
 django-environ==0.4.5
 certifi==2023.7.22
 drf-spectacular==0.26.1
