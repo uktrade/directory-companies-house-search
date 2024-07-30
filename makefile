@@ -35,8 +35,8 @@ webserver:
 	ENV_FILES='secrets-do-not-commit,dev' python manage.py runserver 0.0.0.0:8000 $(ARGUMENTS)
 
 requirements:
-	pip-compile requirements.in
-	pip-compile requirements_test.in
+	pip-compile requirements.in --allow-unsafe
+	pip-compile requirements_test.in --allow-unsafe
 
 install_requirements:
 	pip install -r requirements_test.txt
