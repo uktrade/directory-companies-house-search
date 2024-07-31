@@ -8,6 +8,8 @@
 
 amqp==5.2.0
     # via kombu
+annotated-types==0.7.0
+    # via pydantic
 asgiref==3.6.0
     # via django
 async-timeout==4.0.2
@@ -233,6 +235,14 @@ pycodestyle==2.10.0
     # via flake8
 pycparser==2.18
     # via cffi
+pydantic==2.7.3
+    # via
+    #   -r requirements.in
+    #   pydantic-settings
+pydantic-core==2.18.4
+    # via pydantic
+pydantic-settings==2.3.1
+    # via -r requirements.in
 pyflakes==3.0.1
     # via flake8
 pyrsistent==0.19.3
@@ -263,6 +273,8 @@ python-dateutil==2.9.0.post0
     #   faker
     #   freezegun
     #   python-crontab
+python-dotenv==1.0.1
+    # via pydantic-settings
 pytz==2021.3
     # via django-timezone-field
 pyyaml==6.0
@@ -314,6 +326,8 @@ typing-extensions==4.9.0
     #   dj-database-url
     #   kombu
     #   opentelemetry-sdk
+    #   pydantic
+    #   pydantic-core
 tzdata==2023.3
     # via
     #   celery
