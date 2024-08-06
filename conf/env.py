@@ -20,6 +20,7 @@ class BaseSettings(PydanticBaseSettings):
 
     # Start of Environment Variables
     debug: bool = False
+    app_environment: str = 'dev'
     static_host: str = ""
     staticfiles_storage: str = (
         '"whitenoise.storage.CompressedManifestStaticFilesStorage"'
