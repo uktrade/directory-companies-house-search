@@ -4,7 +4,6 @@ from typing import Any, Dict
 import dj_database_url
 import sentry_sdk
 from django_log_formatter_asim import ASIMFormatter
-from opensearchpy import RequestsHttpConnection
 from opensearch_dsl.connections import connections
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration

@@ -1,12 +1,12 @@
-import os
-from typing import Any, Optional, Union
+from typing import Any, Optional
 
 from dbt_copilot_python.database import database_url_from_env
 from dbt_copilot_python.utility import is_copilot
+from opensearchpy import RequestsHttpConnection
 from pydantic import BaseModel, ConfigDict, computed_field
 from pydantic_settings import BaseSettings as PydanticBaseSettings
 from pydantic_settings import SettingsConfigDict
-from opensearchpy import RequestsHttpConnection
+
 from conf.helpers import get_env_files, is_circleci, is_local
 
 
@@ -20,27 +20,30 @@ class BaseSettings(PydanticBaseSettings):
 
     # Start of Environment Variables
     debug: bool = False
-    static_host: str = ''
-    staticfiles_storage: str = '"whitenoise.storage.CompressedManifestStaticFilesStorage"'
+    static_host: str = ""
+    staticfiles_storage: str = (
+        '"whitenoise.storage.CompressedManifestStaticFilesStorage"'
+    )
     secret_key: str
     signature_secret: str
     feature_openapi_enabled: bool = False
     health_check_token: str
     sentry_dsn: bool = False
-    sentry_environment: str = ''
+    sentry_environment: str = ""
     sentry_enable_tracing: bool = False
     sentry_traces_sample_rate: float = 1.0
-    session_cookie_domain: str = ''
+    session_cookie_domain: str = ""
     session_cookie_secure: bool = True
     csrf_cookie_secure: bool = True
-    gecko_api_key: str = ''
-    gecko_api_pass: str = 'X'
-    opensearch_company_index_alias: str = 'ch-companies'
+    gecko_api_key: str = ""
+    gecko_api_pass: str = "X"
+    opensearch_company_index_alias: str = "ch-companies"
     opensearch_chunk_size: int = 10000
     opensearch_timeout_seconds: int = 30
     opensearch_thread_count: int = 4
     opensearch_use_parallel_bulk: bool = False
     companies_house_api_key: str
+
 
 class CIEnvironment(BaseSettings):
 
@@ -48,13 +51,13 @@ class CIEnvironment(BaseSettings):
     @property
     def opensearch_config(self):
         return {
-            "alias": 'default',
-            "hosts": ['localhost:9200'],
+            "alias": "default",
+            "hosts": ["localhost:9200"],
             "use_ssl": False,
             "verify_certs": False,
             "connection_class": RequestsHttpConnection,
         }
-    
+
     database_url: str
     redis_url: str
 
@@ -67,7 +70,7 @@ class DBTPlatformEnvironment(BaseSettings):
     """
 
     build_step: bool = False
-    celery_broker_url: str = ''
+    celery_broker_url: str = ""
     opensearch_url: str
 
     @computed_field(return_type=str)
@@ -84,7 +87,7 @@ class DBTPlatformEnvironment(BaseSettings):
     @property
     def opensearch_config(self):
         return {
-            "alias": 'default',
+            "alias": "default",
             "hosts": [self.opensearch_url],
             "connection_class": RequestsHttpConnection,
             "http_compress": True,
@@ -148,14 +151,14 @@ class GovPaasEnvironment(BaseSettings):
     @property
     def opensearch_url(self):
         if self.vcap_services:
-            return self.vcap_services.opensearch[0]['credentials']['uri']
-        return ''
+            return self.vcap_services.opensearch[0]["credentials"]["uri"]
+        return ""
 
     @computed_field(return_type=dict)
     @property
     def opensearch_config(self):
         return {
-            "alias": 'default',
+            "alias": "default",
             "hosts": [self.opensearch_url],
             "connection_class": RequestsHttpConnection,
             "http_compress": True,
@@ -164,7 +167,7 @@ class GovPaasEnvironment(BaseSettings):
 
 if is_local() or is_circleci():
     # Load environment files in a local or CI environment
-    env = CIEnvironment(_env_file=get_env_files(), _env_file_encoding='utf-8')
+    env = CIEnvironment(_env_file=get_env_files(), _env_file_encoding="utf-8")
 elif is_copilot():
     # When deployed read values from DBT Platform environment
     env = DBTPlatformEnvironment()
