@@ -2,8 +2,8 @@ from functools import partial, wraps
 from urllib.parse import urljoin
 import logging
 
-from elasticsearch import NotFoundError
-from elasticsearch_dsl import Q
+from opensearchpy import NotFoundError
+from opensearch_dsl import Q
 import requests
 from requests.exceptions import RequestException
 
@@ -33,7 +33,7 @@ def local_fallback(fallback_function):
     return closure
 
 
-def retrieve_profile_from_elasticsearch(company_number):
+def retrieve_profile_from_opensearch(company_number):
     try:
         company = documents.CompanyDocument.get(id=company_number)
         company = company.to_profile_dict()
@@ -42,7 +42,7 @@ def retrieve_profile_from_elasticsearch(company_number):
         return None
 
 
-def retrieve_address_from_elasticsearch(company_number):
+def retrieve_address_from_opensearch(company_number):
     try:
         company = documents.CompanyDocument.get(id=company_number)
         return company.address.to_dict()
@@ -50,7 +50,7 @@ def retrieve_address_from_elasticsearch(company_number):
         return None
 
 
-def search_in_elasticsearch(query):
+def search_in_opensearch(query):
     query = Q(
         'multi_match',
         query=query,
@@ -67,15 +67,15 @@ class DataLoader:
     def __init__(self):
         self.companies_house_source = CompaniesHouseClient()
 
-    @local_fallback(fallback_function=retrieve_profile_from_elasticsearch)
+    @local_fallback(fallback_function=retrieve_profile_from_opensearch)
     def retrieve_profile(self, company_number):
         return self.companies_house_source.retrieve_profile(company_number)
 
-    @local_fallback(fallback_function=retrieve_address_from_elasticsearch)
+    @local_fallback(fallback_function=retrieve_address_from_opensearch)
     def retrieve_address(self, company_number):
         return self.companies_house_source.retrieve_address(company_number)
 
-    @local_fallback(fallback_function=search_in_elasticsearch)
+    @local_fallback(fallback_function=search_in_opensearch)
     def search(self, query):
         return self.companies_house_source.search(query=query)
 

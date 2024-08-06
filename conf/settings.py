@@ -2,23 +2,19 @@ import os
 from typing import Any, Dict
 
 import dj_database_url
-import environ
 import sentry_sdk
 from django_log_formatter_asim import ASIMFormatter
-from elasticsearch import RequestsHttpConnection
-from elasticsearch_dsl.connections import connections
+from opensearchpy import RequestsHttpConnection
+from opensearch_dsl.connections import connections
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
 
+from conf.env import env
 import healthcheck.backends
 
 from .utils import strip_password_data
 
-env = environ.Env()
-env = environ.Env()
-for env_file in env.list('ENV_FILES', default=[]):
-    env.read_env(f'conf/env/{env_file}')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -28,7 +24,7 @@ BASE_DIR = os.path.dirname(PROJECT_ROOT)
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG', False)
+DEBUG = env.debug
 
 # As app is running behind a host-based router supplied by Heroku or other
 # PaaS, we can open ALLOWED_HOSTS
@@ -86,18 +82,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'conf.wsgi.application'
 
-VCAP_SERVICES = env.json('VCAP_SERVICES', {})
 
-if 'redis' in VCAP_SERVICES:
-    REDIS_URL = VCAP_SERVICES['redis'][0]['credentials']['uri']
-else:
-    REDIS_URL = env.str('REDIS_URL', '')
+REDIS_URL = env.redis_url
+
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-DATABASES = {
-    'default': dj_database_url.config()
-}
+DATABASES = {'default': dj_database_url.config(default=env.database_url)}
 
 # Caches
 CACHES = {
@@ -131,12 +122,10 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 if not os.path.exists(STATIC_ROOT):
     os.makedirs(STATIC_ROOT)
-STATIC_HOST = env.str('STATIC_HOST', '')
+STATIC_HOST = env.static_host
 STATIC_URL = STATIC_HOST + '/api-static/'
-STATICFILES_STORAGE = env.str(
-    'STATICFILES_STORAGE',
-    'whitenoise.storage.CompressedManifestStaticFilesStorage'
-)
+STATICFILES_STORAGE = env.staticfiles_storage
+
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
@@ -147,10 +136,10 @@ for static_dir in STATICFILES_DIRS:
         os.makedirs(static_dir)
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str("SECRET_KEY")
+SECRET_KEY = env.secret_key
 
 # Application authorisation
-SIGNATURE_SECRET = env.str("SIGNATURE_SECRET")
+SIGNATURE_SECRET = env.signature_secret
 
 # DRF
 REST_FRAMEWORK = {
@@ -163,7 +152,7 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
-FEATURE_OPENAPI_ENABLED = env.bool("FEATURE_OPENAPI_ENABLED", False)
+FEATURE_OPENAPI_ENABLED = env.feature_openapi_enabled
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Companies House Search API',
     'DESCRIPTION': 'Companies House search service - the Department for Business and Trade (DBT)',
@@ -202,7 +191,7 @@ if DEBUG:
                 'level': 'WARNING',
                 'propagate': False,
             },
-            'elasticsearch': {
+            'opensearchpy': {
                 'handlers': ['console'],
                 'level': 'WARNING',
                 'propagate': False,
@@ -256,29 +245,29 @@ else:
         },
     }
 
-if env.str('SENTRY_DSN', ''):
+if env.sentry_dsn:
     sentry_sdk.init(
-        dsn=env.str('SENTRY_DSN'),
-        environment=env.str('SENTRY_ENVIRONMENT'),
+        dsn=env.sentry_dsn,
+        environment=env.sentry_environment,
         integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
         before_send=strip_password_data,
-        enable_tracing=env.bool('SENTRY_ENABLE_TRACING', False),
-        traces_sample_rate=env.float('SENTRY_TRACES_SAMPLE_RATE', 1.0),
+        enable_tracing=env.sentry_enable_tracing,
+        traces_sample_rate=env.sentry_traces_sample_rate,
     )
 
 # Admin proxy
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SESSION_COOKIE_DOMAIN = env.str('SESSION_COOKIE_DOMAIN', '')
+SESSION_COOKIE_DOMAIN = env.session_cookie_domain
 SESSION_COOKIE_NAME = 'chsearch_session_id'
-SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', True)
+SESSION_COOKIE_SECURE = env.session_cookie_secure
 SESSION_COOKIE_HTTPONLY = True
-CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', True)
+CSRF_COOKIE_SECURE = env.csrf_cookie_secure
 
 
-GECKO_API_KEY = env.str('GECKO_API_KEY', '')
+GECKO_API_KEY = env.gecko_api_key
 # At present geckoboard's api assumes the password will always be X
-GECKO_API_PASS = env.str('GECKO_API_PASS', 'X')
+GECKO_API_PASS = env.gecko_api_pass
 
 # Celery
 CELERY_BROKER_URL = REDIS_URL
@@ -291,39 +280,13 @@ CELERY_BROKER_POOL_LIMIT = None
 
 # Elasticsearch
 
-# aws, localhost, or govuk-paas
-ELASTICSEARCH_PROVIDER = env.str('ELASTICSEARCH_PROVIDER', 'aws').lower()
+# # aws, localhost, or govuk-paas
+connections.create_connection(**env.opensearch_config)
 
-if ELASTICSEARCH_PROVIDER == 'govuk-paas':
-    services = {
-        item['instance_name']: item for item in VCAP_SERVICES['opensearch']
-    }
-    ELASTICSEARCH_INSTANCE_NAME = env.str(
-        'ELASTICSEARCH_INSTANCE_NAME',
-        VCAP_SERVICES['opensearch'][0]['instance_name']
-    )
-    connections.create_connection(
-        alias='default',
-        hosts=[services[ELASTICSEARCH_INSTANCE_NAME]['credentials']['uri']],
-        connection_class=RequestsHttpConnection,
-    )
-elif ELASTICSEARCH_PROVIDER == 'localhost':
-    connections.create_connection(
-        alias='default',
-        hosts=['localhost:9200'],
-        use_ssl=False,
-        verify_certs=False,
-        connection_class=RequestsHttpConnection
-    )
-else:
-    raise NotImplementedError()
-
-ELASTICSEARCH_COMPANY_INDEX_ALIAS = env.str(
-    'ELASTICSEARCH_COMPANY_INDEX_ALIAS', 'ch-companies'
-)
+OPENSEARCH_COMPANY_INDEX_ALIAS = env.opensearch_company_index_alias
 
 # health check
-DIRECTORY_HEALTHCHECK_TOKEN = env.str('HEALTH_CHECK_TOKEN')
+DIRECTORY_HEALTHCHECK_TOKEN = env.health_check_token
 DIRECTORY_HEALTHCHECK_BACKENDS = [
     # health_check.db.backends.DatabaseBackend and
     # health_check.cache.CacheBackend are also registered in
@@ -332,22 +295,11 @@ DIRECTORY_HEALTHCHECK_BACKENDS = [
 ]
 
 CH_DOWNLOAD_URL = 'http://download.companieshouse.gov.uk/en_output.html'
-ELASTICSEARCH_CHUNK_SIZE = env.int(
-    'ELASTICSEARCH_CHUNK_SIZE', 10000
-)
-ELASTICSEARCH_TIMEOUT_SECONDS = env.int(
-    'ELASTICSEARCH_TIMEOUT_SECONDS',
-    30
-)
-ELASTICSEARCH_THREAD_COUNT = env.int(
-    'ELASTICSEARCH_THREAD_COUNT',
-    4
-)
-ELASTICSEARCH_USE_PARALLEL_BULK = env.bool(
-    'ELASTICSEARCH_USE_PARALLEL_BULK',
-    False
-)
+OPENSEARCH_CHUNK_SIZE = env.opensearch_chunk_size
+OPENSEARCH_TIMEOUT_SECONDS = env.opensearch_timeout_seconds
+OPENSEARCH_THREAD_COUNT = env.opensearch_thread_count
+OPENSEARCH_USE_PARALLEL_BULK = env.opensearch_use_parallel_bulk
 
 
 # Companies House
-COMPANIES_HOUSE_API_KEY = env.str('COMPANIES_HOUSE_API_KEY')
+COMPANIES_HOUSE_API_KEY = env.companies_house_api_key

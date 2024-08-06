@@ -94,7 +94,7 @@ def test_import_ch_companies_parallel_bulk(
         settings
 ):
     settings.CH_DOWNLOAD_URL = 'http://test.com/index.html'
-    settings.ELASTICSEARCH_USE_PARALLEL_BULK = True
+    settings.OPENSEARCH_USE_PARALLEL_BULK = True
     requests_mocker.get(
         'http://test.com/index.html',
         content=CH_HOMEPAGE_CONTENT
@@ -156,7 +156,7 @@ def test_import_ch_companies_delete_indices(
     call_command('import_ch_companies')
 
     mocked_indices_client().get_alias.assert_called_once_with(
-        name=settings.ELASTICSEARCH_COMPANY_INDEX_ALIAS
+        name=settings.OPENSEARCH_COMPANY_INDEX_ALIAS
     )
 
 

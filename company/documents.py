@@ -1,5 +1,5 @@
 from django.conf import settings
-from elasticsearch_dsl import field, Document
+from opensearch_dsl import field, Document
 
 
 class CompanyDocument(Document):
@@ -27,7 +27,7 @@ class CompanyDocument(Document):
     sic_codes = field.Keyword(index=False, store=True)
 
     class Meta:
-        index = settings.ELASTICSEARCH_COMPANY_INDEX_ALIAS
+        index = settings.OPENSEARCH_COMPANY_INDEX_ALIAS
 
     def to_dict(self, include_meta=False):
         meta = super().to_dict(include_meta)

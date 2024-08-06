@@ -1,5 +1,5 @@
-from elasticsearch.helpers import bulk
-from elasticsearch_dsl.connections import connections
+from opensearchpy.helpers import bulk
+from opensearch_dsl.connections import connections
 
 from django.core.management import BaseCommand
 from django.conf import settings
@@ -9,7 +9,7 @@ from company import constants, documents, helpers
 
 class Command(BaseCommand):
     help = "Load CH companies test data in Elasticsearch"
-    company_index_alias = settings.ELASTICSEARCH_COMPANY_INDEX_ALIAS
+    company_index_alias = settings.OPENSEARCH_COMPANY_INDEX_ALIAS
 
     def companies_from_csv(self, file_object):
         """Fetch & cache zipped CSV, and then iterate though contents."""

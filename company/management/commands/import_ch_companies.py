@@ -5,11 +5,11 @@ from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 from django_pglocks import advisory_lock
-from elasticsearch.client.indices import IndicesClient
-from elasticsearch.helpers import parallel_bulk, streaming_bulk
-from elasticsearch_dsl import Index, analyzer
-from elasticsearch_dsl.connections import connections
-from elasticsearch.exceptions import NotFoundError
+from opensearchpy.client.indices import IndicesClient
+from opensearchpy.helpers import parallel_bulk, streaming_bulk
+from opensearch_dsl import Index, analyzer
+from opensearch_dsl.connections import connections
+from opensearchpy.helpers import NotFoundError
 
 from django.conf import settings
 from django.core.management import BaseCommand
@@ -22,7 +22,7 @@ from company import constants, documents, helpers
 class Command(BaseCommand):
     help = "Load CH companies in Elasticsearch downloading CH dumps"
     lock_id = 'es_migrations'
-    company_index_alias = settings.ELASTICSEARCH_COMPANY_INDEX_ALIAS
+    company_index_alias = settings.OPENSEARCH_COMPANY_INDEX_ALIAS
 
     def __init__(self, *args, **kwargs):
         unique_id = get_random_string(length=32).lower()
@@ -107,14 +107,14 @@ class Command(BaseCommand):
                         url=csv_url))
             )
             starting_time = now()
-            if settings.ELASTICSEARCH_USE_PARALLEL_BULK:
+            if settings.OPENSEARCH_USE_PARALLEL_BULK:
                 deque(
                     parallel_bulk(
                         self.client,
                         companies_dicts,
-                        thread_count=settings.ELASTICSEARCH_THREAD_COUNT,
-                        chunk_size=settings.ELASTICSEARCH_CHUNK_SIZE,
-                        request_timeout=settings.ELASTICSEARCH_TIMEOUT_SECONDS,
+                        thread_count=settings.OPENSEARCH_THREAD_COUNT,
+                        chunk_size=settings.OPENSEARCH_CHUNK_SIZE,
+                        request_timeout=settings.OPENSEARCH_TIMEOUT_SECONDS,
                         raise_on_exception=True
                     )
                 )
@@ -124,8 +124,8 @@ class Command(BaseCommand):
                     streaming_bulk(
                         self.client,
                         companies_dicts,
-                        chunk_size=settings.ELASTICSEARCH_CHUNK_SIZE,
-                        request_timeout=settings.ELASTICSEARCH_TIMEOUT_SECONDS,
+                        chunk_size=settings.OPENSEARCH_CHUNK_SIZE,
+                        request_timeout=settings.OPENSEARCH_TIMEOUT_SECONDS,
                         raise_on_exception=True
                     ),
                     maxlen=0
