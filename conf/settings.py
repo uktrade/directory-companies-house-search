@@ -278,15 +278,12 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_BROKER_POOL_LIMIT = None
 
 # Elasticsearch
-
 OPENSEARCH_COMPANY_INDEX_ALIAS = env.opensearch_company_index_alias
+connections.create_connection(**env.opensearch_config)
 OPENSEARCH_CHUNK_SIZE = env.opensearch_chunk_size
 OPENSEARCH_TIMEOUT_SECONDS = env.opensearch_timeout_seconds
 OPENSEARCH_THREAD_COUNT = env.opensearch_thread_count
 OPENSEARCH_USE_PARALLEL_BULK = env.opensearch_use_parallel_bulk
-connections.create_connection(**env.opensearch_config)
-
-
 
 # health check
 DIRECTORY_HEALTHCHECK_TOKEN = env.health_check_token
@@ -298,8 +295,6 @@ DIRECTORY_HEALTHCHECK_BACKENDS = [
 ]
 
 CH_DOWNLOAD_URL = 'http://download.companieshouse.gov.uk/en_output.html'
-
-
 
 # Companies House
 COMPANIES_HOUSE_API_KEY = env.companies_house_api_key
