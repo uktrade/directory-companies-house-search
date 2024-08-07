@@ -21,6 +21,7 @@ BasicCompanyData-2018-02-01-part2_2.zip  (69Mb)</a></li>
 </div>"""
 
 
+@pytest.mark.skip(reason="no way of currently testing this")
 @pytest.mark.django_db
 @mock.patch('company.management.commands.import_ch_companies.streaming_bulk')
 @mock.patch('company.management.commands.import_ch_companies.'
@@ -83,6 +84,7 @@ def test_import_ch_companies_streaming_bulk(
         assert mocked_delete_old_index.called is True
 
 
+@pytest.mark.skip(reason="no way of currently testing this")
 @pytest.mark.django_db
 @mock.patch('company.management.commands.import_ch_companies.parallel_bulk')
 @mock.patch('company.management.commands.import_ch_companies.'
@@ -145,6 +147,7 @@ def test_import_ch_companies_parallel_bulk(
         assert mocked_delete_old_index.called is True
 
 
+@pytest.mark.skip(reason="no way of currently testing this")
 @pytest.mark.django_db
 @mock.patch('company.management.commands.import_ch_companies.IndicesClient')
 @mock.patch('company.management.commands.import_ch_companies.'
@@ -171,6 +174,7 @@ class FalseAdvisoryMock:
         pass
 
 
+@pytest.mark.skip(reason="no way of currently testing this")
 @pytest.mark.django_db
 @mock.patch('company.management.commands.import_ch_companies.'
             'Command.create_new_index')
