@@ -1,7 +1,6 @@
 import json
 import os
 from importlib import reload
-from unittest import mock
 
 import environ
 import pytest
@@ -80,9 +79,9 @@ def vcap_services():
                     'username': 'exampleuser',
                 },
                 'instance_guid': '7890',
-                'instance_name': 'directory-api-opensearch',
+                'instance_name': 'directory-companies-house-search-opensearch',
                 'label': 'opensearch',
-                'name': 'directory-api-opensearch',
+                'name': 'directory-companies-house-search-opensearch',
                 'plan': 'medium-ha-1',
                 'provider': None,
                 'syslog_drain_url': None,
@@ -127,14 +126,14 @@ def database_credentials():
 
 
 def test_gov_paas_environment(vcap_application, vcap_services, environment):
-    os.environ.pop('CIRCLECI', None)
+    os.environ.pop('IS_CIRCLECI', None)
     os.environ['APP_ENVIRONMENT'] = 'local'
     os.environ['VCAP_SERVICES'] = vcap_services
     os.environ['VCAP_APPLICATION'] = vcap_application
 
     reload(environment_reader)
 
-    os.environ['CIRCLECI'] = 'true'
+    os.environ['IS_CIRCLECI'] = 'true'
 
     assert isinstance(environment_reader.env, environment_reader.GovPaasEnvironment)
     assert environment_reader.env.app_environment == 'local'
@@ -142,7 +141,6 @@ def test_gov_paas_environment(vcap_application, vcap_services, environment):
     assert environment_reader.env.database_url == 'postgres://exampleuser:examplepassword@example.com:5432/exampledb'
     assert environment_reader.env.redis_url == 'rediss://examplepassword@example.com:6379'
     assert environment_reader.env.vcap_application.name == 'directory-companies-house-search'
-    assert environment_reader.env.allowed_hosts_list == ['*']
     assert environment_reader.env.opensearch_url == 'https://exampleuser:examplepassword@example.com:19676'
     assert environment_reader.env.opensearch_config == {
         'alias': 'default',
@@ -158,9 +156,8 @@ def test_gov_paas_environment(vcap_application, vcap_services, environment):
     assert environment_reader.env.opensearch_url == 'https://'
 
 
-@mock.patch('dbt_copilot_python.network.setup_allowed_hosts', mock.Mock(return_value=['*']))
 def test_dbt_platform_environment(database_credentials, environment):
-    os.environ.pop('CIRCLECI', None)
+    os.environ.pop('IS_CIRCLECI', None)
     os.environ['APP_ENVIRONMENT'] = 'local'
     os.environ['COPILOT_ENVIRONMENT_NAME'] = 'test'
     os.environ['DATABASE_CREDENTIALS'] = database_credentials
@@ -169,7 +166,7 @@ def test_dbt_platform_environment(database_credentials, environment):
 
     reload(environment_reader)
 
-    os.environ['CIRCLECI'] = 'true'
+    os.environ['IS_CIRCLECI'] = 'true'
 
     assert isinstance(environment_reader.env, environment_reader.DBTPlatformEnvironment)
     assert environment_reader.env.app_environment == 'local'
@@ -177,7 +174,6 @@ def test_dbt_platform_environment(database_credentials, environment):
     assert environment_reader.env.database_url == 'postgres://exampleuser:examplepassword@example.com:5432/exampledb'
     assert environment_reader.env.redis_url == 'rediss://examplepassword@example.com:6379'
     assert environment_reader.env.opensearch_url == 'https://exampleuser:examplepassword@example.com:19676'
-    assert environment_reader.env.allowed_hosts_list == ['*']
     assert environment_reader.env.opensearch_config == {
         'alias': 'default',
         'connection_class': RequestsHttpConnection,

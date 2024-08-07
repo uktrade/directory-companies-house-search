@@ -153,7 +153,7 @@ class GovPaasEnvironment(BaseSettings):
     def opensearch_url(self):
         if self.vcap_services:
             return self.vcap_services.opensearch[0]["credentials"]["uri"]
-        return ""
+        return "https://"
 
     @computed_field(return_type=dict)
     @property
