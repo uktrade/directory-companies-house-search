@@ -38,6 +38,5 @@ class Command(BaseCommand):
         documents.CompanyDocument._index.refresh()
 
     def handle(self, *args, **options):
-        breakpoint()
         self.populate_new_index()
         self.refresh_index()
