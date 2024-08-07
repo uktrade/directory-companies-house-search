@@ -4,7 +4,7 @@ from opensearch_dsl.connections import connections
 from django.core.management import BaseCommand
 from django.conf import settings
 
-from company import constants, documents, helpers
+from company import constants, helpers
 
 
 class Command(BaseCommand):
@@ -32,11 +32,8 @@ class Command(BaseCommand):
                 chunk_size=100,
                 raise_on_exception=True,
                 index=settings.OPENSEARCH_COMPANY_INDEX_ALIAS,
+                refresh=True,
             )
-
-    def refresh_index(self):
-        documents.CompanyDocument._index.refresh()
 
     def handle(self, *args, **options):
         self.populate_new_index()
-        self.refresh_index()
