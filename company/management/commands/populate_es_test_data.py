@@ -26,16 +26,19 @@ class Command(BaseCommand):
             companies = self.companies_from_csv(zipped_csv)
             companies_dicts = (company.to_dict(True) for company in companies)
 
+
             bulk(
                 client,
                 companies_dicts,
                 chunk_size=100,
-                raise_on_exception=True
+                raise_on_exception=True,
+                index=settings.OPENSEARCH_COMPANY_INDEX_ALIAS,
             )
 
     def refresh_index(self):
         documents.CompanyDocument._index.refresh()
 
     def handle(self, *args, **options):
+        breakpoint()
         self.populate_new_index()
         self.refresh_index()
