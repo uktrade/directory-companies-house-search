@@ -26,7 +26,6 @@ class Command(BaseCommand):
             companies = self.companies_from_csv(zipped_csv)
             companies_dicts = (company.to_dict(True) for company in companies)
 
-
             bulk(
                 client,
                 companies_dicts,
