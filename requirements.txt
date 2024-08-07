@@ -8,6 +8,8 @@
 
 amqp==5.2.0
     # via kombu
+annotated-types==0.7.0
+    # via pydantic
 asgiref==3.6.0
     # via django
 async-timeout==4.0.2
@@ -31,7 +33,7 @@ celery[redis]==5.4.0
 certifi==2024.7.4
     # via
     #   -r requirements.in
-    #   elasticsearch
+    #   opensearch-py
     #   requests
     #   sentry-sdk
 cffi==1.14.4
@@ -107,12 +109,8 @@ djangorestframework==3.15.2
     #   sigauth
 drf-spectacular==0.26.1
     # via -r requirements.in
-elasticsearch==7.13.4
-    # via
-    #   -r requirements.in
-    #   elasticsearch-dsl
-elasticsearch-dsl==7.4.1
-    # via -r requirements.in
+events==0.5
+    # via opensearch-py
 filelock==3.14.0
     # via virtualenv
 googleapis-common-protos==1.63.0
@@ -141,6 +139,12 @@ mohawk==0.3.4
     # via sigauth
 nodeenv==1.8.0
     # via pre-commit
+opensearch-dsl==2.1.0
+    # via -r requirements.in
+opensearch-py==2.6.0
+    # via
+    #   -r requirements.in
+    #   opensearch-dsl
 opentelemetry-api==1.22.0
     # via
     #   opentelemetry-distro
@@ -207,6 +211,14 @@ psycopg2==2.8.6
     # via -r requirements.in
 pycparser==2.18
     # via cffi
+pydantic==2.7.3
+    # via
+    #   -r requirements.in
+    #   pydantic-settings
+pydantic-core==2.18.4
+    # via pydantic
+pydantic-settings==2.3.1
+    # via -r requirements.in
 pyrsistent==0.19.3
     # via jsonschema
 python-crontab==2.5.1
@@ -214,8 +226,11 @@ python-crontab==2.5.1
 python-dateutil==2.9.0.post0
     # via
     #   celery
-    #   elasticsearch-dsl
+    #   opensearch-dsl
+    #   opensearch-py
     #   python-crontab
+python-dotenv==1.0.1
+    # via pydantic-settings
 pytz==2021.3
     # via django-timezone-field
 pyyaml==6.0
@@ -230,8 +245,9 @@ requests[security]==2.32.3
     # via
     #   -r requirements.in
     #   dbt-copilot-python
+    #   opensearch-py
     #   opentelemetry-exporter-otlp-proto-http
-sentry-sdk==1.45.0
+sentry-sdk==2.8.0
     # via -r requirements.in
 sigauth==5.2.7
     # via -r requirements.in
@@ -240,8 +256,9 @@ six==1.11.0
     #   click-repl
     #   django-extensions
     #   django-pglocks
-    #   elasticsearch-dsl
     #   mohawk
+    #   opensearch-dsl
+    #   opensearch-py
     #   python-dateutil
 sqlparse==0.5.0
     # via
@@ -252,6 +269,8 @@ typing-extensions==4.9.0
     #   dj-database-url
     #   kombu
     #   opentelemetry-sdk
+    #   pydantic
+    #   pydantic-core
 tzdata==2023.3
     # via
     #   celery
@@ -261,7 +280,7 @@ uritemplate==4.1.1
 urllib3==1.26.19
     # via
     #   -r requirements.in
-    #   elasticsearch
+    #   opensearch-py
     #   requests
     #   sentry-sdk
 vine==5.1.0
