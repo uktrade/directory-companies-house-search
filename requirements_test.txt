@@ -298,7 +298,7 @@ requests[security]==2.32.3
     #   requests-mock
 requests-mock==1.5.0
     # via -r requirements_test.in
-sentry-sdk==1.45.0
+sentry-sdk==2.8.0
     # via -r requirements.in
 sigauth==5.2.7
     # via -r requirements.in
