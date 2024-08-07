@@ -22,9 +22,7 @@ class BaseSettings(PydanticBaseSettings):
     debug: bool = False
     app_environment: str = 'dev'
     static_host: str = ""
-    staticfiles_storage: str = (
-        '"whitenoise.storage.CompressedManifestStaticFilesStorage"'
-    )
+    staticfiles_storage: str = "whitenoise.storage.CompressedManifestStaticFilesStorage"
     secret_key: str
     signature_secret: str
     feature_openapi_enabled: bool = False
