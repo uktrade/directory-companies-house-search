@@ -38,7 +38,7 @@ def test_company_search_view_missing_querystring(api_client):
 
 
 @pytest.mark.parametrize('exception', expected_exceptions)
-@pytest.mark.elasticsearch_test_data
+@pytest.mark.opensearch_test_data
 def test_company_search_by_name_local_fallback(
     mock_client_get, api_client, exception
 ):
@@ -71,7 +71,7 @@ def test_company_search_by_name_local_fallback(
     }
 
 
-@pytest.mark.elasticsearch_test_data
+@pytest.mark.opensearch_test_data
 def test_company_search_by_name(mock_client_get, api_client):
     mocked_return = mock.Mock()
     mocked_return.json.return_value = {
@@ -142,7 +142,7 @@ def test_company_search_by_name(mock_client_get, api_client):
     }
 
 
-@pytest.mark.elasticsearch_test_data
+@pytest.mark.opensearch_test_data
 @pytest.mark.parametrize('exception', expected_exceptions)
 def test_company_search_by_number_local_fallback(
     mock_client_get, api_client, exception
@@ -176,7 +176,7 @@ def test_company_search_by_number_local_fallback(
     }
 
 
-@pytest.mark.elasticsearch_test_data
+@pytest.mark.opensearch_test_data
 def test_company_search_by_number(mock_client_get, api_client):
     mocked_return = mock.Mock()
     mocked_return.json.return_value = {
@@ -249,7 +249,7 @@ def test_company_search_by_number(mock_client_get, api_client):
     }
 
 
-@pytest.mark.elasticsearch_test_data
+@pytest.mark.opensearch_test_data
 @pytest.mark.parametrize('exception', expected_exceptions)
 def test_company_registered_office_address_local_fallback(
     mock_client_get, api_client, exception
@@ -274,7 +274,7 @@ def test_company_registered_office_address_local_fallback(
     }
 
 
-@pytest.mark.elasticsearch_test_data
+@pytest.mark.opensearch_test_data
 def test_company_registered_office_address(mock_client_get, api_client):
     mocked_return = mock.Mock()
     mocked_return.json.return_value = {
@@ -301,7 +301,7 @@ def test_company_registered_office_address(mock_client_get, api_client):
     }
 
 
-@pytest.mark.elasticsearch_test_data
+@pytest.mark.opensearch_test_data
 @pytest.mark.parametrize('exception', expected_exceptions)
 def test_company_registered_office_address_company_not_found_local_fallback(
     mock_client_get, api_client, exception
@@ -316,7 +316,7 @@ def test_company_registered_office_address_company_not_found_local_fallback(
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
-@pytest.mark.elasticsearch_test_data
+@pytest.mark.opensearch_test_data
 @pytest.mark.parametrize('exception', expected_exceptions)
 def test_company_profile_company_not_found_local_fallback(
     mock_client_get, api_client, exception
@@ -331,7 +331,7 @@ def test_company_profile_company_not_found_local_fallback(
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
-@pytest.mark.elasticsearch_test_data
+@pytest.mark.opensearch_test_data
 @pytest.mark.parametrize('exception', expected_exceptions)
 def test_company_profile_local_fallback(
     mock_client_get, api_client, exception
@@ -367,7 +367,7 @@ def test_company_profile_local_fallback(
     }
 
 
-@pytest.mark.elasticsearch_test_data
+@pytest.mark.opensearch_test_data
 def test_company_profile_retrieve(mock_client_get, api_client):
     mocked_return = mock.Mock()
     mocked_return.json.return_value = {
@@ -417,7 +417,7 @@ def test_company_profile_retrieve(mock_client_get, api_client):
     }
 
 
-@pytest.mark.elasticsearch_test_data
+@pytest.mark.opensearch_test_data
 def test_list_officers(mock_client_get, api_client):
     expected = {
        "active_count": "integer",
@@ -488,7 +488,7 @@ def test_list_officers(mock_client_get, api_client):
     assert response.json() == expected
 
 
-@pytest.mark.elasticsearch_test_data
+@pytest.mark.opensearch_test_data
 def test_list_officers_not_found(mock_client_get, api_client):
     mock_client_get.return_value = create_response(status_code=404)
 

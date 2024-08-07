@@ -1,15 +1,15 @@
-from elasticsearch.helpers import bulk
-from elasticsearch_dsl.connections import connections
+from opensearchpy.helpers import bulk
+from opensearch_dsl.connections import connections
 
 from django.core.management import BaseCommand
 from django.conf import settings
 
-from company import constants, documents, helpers
+from company import constants, helpers
 
 
 class Command(BaseCommand):
     help = "Load CH companies test data in Elasticsearch"
-    company_index_alias = settings.ELASTICSEARCH_COMPANY_INDEX_ALIAS
+    company_index_alias = settings.OPENSEARCH_COMPANY_INDEX_ALIAS
 
     def companies_from_csv(self, file_object):
         """Fetch & cache zipped CSV, and then iterate though contents."""
@@ -30,12 +30,10 @@ class Command(BaseCommand):
                 client,
                 companies_dicts,
                 chunk_size=100,
-                raise_on_exception=True
+                raise_on_exception=True,
+                index=settings.OPENSEARCH_COMPANY_INDEX_ALIAS,
+                refresh=True,
             )
-
-    def refresh_index(self):
-        documents.CompanyDocument._index.refresh()
 
     def handle(self, *args, **options):
         self.populate_new_index()
-        self.refresh_index()
