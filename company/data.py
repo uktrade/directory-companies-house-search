@@ -2,7 +2,7 @@ from functools import partial, wraps
 from urllib.parse import urljoin
 import logging
 
-from opensearchpy import NotFoundError
+from opensearchpy.exceptions import NotFoundError
 from opensearch_dsl import Q
 import requests
 from requests.exceptions import RequestException

@@ -9,7 +9,7 @@ from opensearchpy.client.indices import IndicesClient
 from opensearchpy.helpers import parallel_bulk, streaming_bulk
 from opensearch_dsl import Index, analyzer
 from opensearch_dsl.connections import connections
-from opensearchpy.helpers import NotFoundError
+from opensearchpy.exceptions import NotFoundError
 
 from django.conf import settings
 from django.core.management import BaseCommand

@@ -278,7 +278,7 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_BROKER_POOL_LIMIT = None
 
 # Elasticsearch
-OPENSEARCH_COMPANY_INDEX_ALIAS = env.opensearch_company_index_alias
+OPENSEARCH_COMPANY_INDEX_ALIAS = env.πenv
 connections.create_connection(**env.opensearch_config)
 OPENSEARCH_CHUNK_SIZE = env.opensearch_chunk_size
 OPENSEARCH_TIMEOUT_SECONDS = env.opensearch_timeout_seconds
