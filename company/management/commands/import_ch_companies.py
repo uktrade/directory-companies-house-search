@@ -115,7 +115,9 @@ class Command(BaseCommand):
                         thread_count=settings.OPENSEARCH_THREAD_COUNT,
                         chunk_size=settings.OPENSEARCH_CHUNK_SIZE,
                         request_timeout=settings.OPENSEARCH_TIMEOUT_SECONDS,
-                        raise_on_exception=True
+                        raise_on_exception=True,
+                        index=settings.OPENSEARCH_COMPANY_INDEX_ALIAS,
+                        refresh=True,
                     )
                 )
             else:
@@ -126,7 +128,9 @@ class Command(BaseCommand):
                         companies_dicts,
                         chunk_size=settings.OPENSEARCH_CHUNK_SIZE,
                         request_timeout=settings.OPENSEARCH_TIMEOUT_SECONDS,
-                        raise_on_exception=True
+                        raise_on_exception=True,
+                        index=settings.OPENSEARCH_COMPANY_INDEX_ALIAS,
+                        refresh=True,
                     ),
                     maxlen=0
                 )
@@ -145,12 +149,6 @@ class Command(BaseCommand):
             self.style.SUCCESS('Old index deleted')
         )
 
-    def refresh_aliases(self):
-        Index(self.company_index_alias).refresh()
-        self.stdout.write(
-            self.style.SUCCESS('Alias refreshed')
-        )
-
     def handle(self, *args, **options):
         with advisory_lock(lock_id=self.lock_id, wait=False) as acquired:
             # if this instance was the first to call the command then
@@ -164,7 +162,6 @@ class Command(BaseCommand):
                 self.create_new_index()
                 self.populate_new_index()
                 self.delete_old_index()
-                self.refresh_aliases()
 
                 end_time = now()
                 self.stdout.write(
