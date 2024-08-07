@@ -29,7 +29,7 @@ class BaseSettings(PydanticBaseSettings):
     signature_secret: str
     feature_openapi_enabled: bool = False
     health_check_token: str
-    sentry_dsn: bool = False
+    sentry_dsn: str
     sentry_environment: str = ""
     sentry_enable_tracing: bool = False
     sentry_traces_sample_rate: float = 1.0
