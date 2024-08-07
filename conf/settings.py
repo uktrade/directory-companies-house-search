@@ -298,3 +298,5 @@ CH_DOWNLOAD_URL = 'http://download.companieshouse.gov.uk/en_output.html'
 
 # Companies House
 COMPANIES_HOUSE_API_KEY = env.companies_house_api_key
+
+APP_ENVIRONMENT = env.app_environment
