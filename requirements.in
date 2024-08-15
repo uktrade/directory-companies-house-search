@@ -30,4 +30,4 @@ sqlparse==0.5.0
 idna==3.7
 pydantic==2.7.3
 pydantic-settings==2.3.1
-setuptools<72
+setuptools==71.1.0
