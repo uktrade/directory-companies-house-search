@@ -1,9 +1,9 @@
 dbt-copilot-python==0.2.0
-Django==4.2.14
+Django==4.2.15
 dj-database-url==2.1.*
 django_extensions==1.6.7
 djangorestframework==3.15.2
-django-filter>=23.2.*
+django-filter>=23.2.0
 django-celery-beat==2.5.*
 django-redis==5.4.*
 django-pglocks==1.0.4
@@ -30,4 +30,4 @@ sqlparse==0.5.0
 idna==3.7
 pydantic==2.7.3
 pydantic-settings==2.3.1
-setuptools<72
+setuptools==71.1.0
