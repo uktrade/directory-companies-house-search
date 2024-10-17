@@ -249,7 +249,7 @@ requests[security]==2.32.3
     #   opentelemetry-exporter-otlp-proto-http
 sentry-sdk==2.8.0
     # via -r requirements.in
-sigauth==5.2.7
+sigauth==5.3.0
     # via -r requirements.in
 six==1.11.0
     # via
