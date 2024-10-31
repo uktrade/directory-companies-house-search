@@ -290,7 +290,7 @@ vine==5.1.0
     #   kombu
 virtualenv==20.26.1
     # via pre-commit
-waitress==2.1.2
+waitress==3.0.1
     # via -r requirements.in
 wcwidth==0.2.5
     # via prompt-toolkit
