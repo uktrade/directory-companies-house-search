@@ -75,7 +75,7 @@ distlib==0.3.8
     # via virtualenv
 dj-database-url==2.1.0
     # via -r requirements.in
-django==4.2.15
+django==4.2.16
     # via
     #   -r requirements.in
     #   directory-healthcheck
@@ -300,7 +300,7 @@ requests-mock==1.5.0
     # via -r requirements_test.in
 sentry-sdk==2.8.0
     # via -r requirements.in
-sigauth==5.2.7
+sigauth==5.3.0
     # via -r requirements.in
 six==1.11.0
     # via
@@ -352,7 +352,7 @@ vine==5.1.0
     #   kombu
 virtualenv==20.26.1
     # via pre-commit
-waitress==2.1.2
+waitress==3.0.1
     # via -r requirements.in
 wcwidth==0.2.5
     # via prompt-toolkit
